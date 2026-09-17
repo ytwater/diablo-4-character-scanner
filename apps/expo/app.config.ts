@@ -56,5 +56,17 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         },
       },
     ],
+    [
+      "expo-build-properties",
+      {
+        android: {
+          // Fix for corrupt build tools 36.0.0 under WSL2 (Windows-side SDK
+          // reused from WSL2 is missing Linux binaries for that version).
+          buildToolsVersion: "36.1",
+          buildArchs: ["arm64-v8a", "x86_64"],
+          memoryLimit: 4096,
+        },
+      },
+    ],
   ],
 });
