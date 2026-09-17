@@ -360,6 +360,65 @@ of noise the vote lock-in exists to filter -- not a systematic rotation defect.
 examples; tally a full session's output before concluding the pattern is
 systematic.**
 
+### Live preview performance: diagnosed and fixed
+
+An earlier revision of this section recorded live-preview lag as an unresolved
+open problem, and estimated ML Kit's cost at ~500-700ms per frame. **Both of
+those were wrong, and the way they were wrong is the useful part.** That timing
+came from the interval between JS log lines while the pipeline was stalling, so
+it measured the stall, not the recognizer. Measuring properly changed the
+conclusion entirely.
+
+Three distinct causes, none of which was the one originally suspected:
+
+1. **CameraX back-pressure stalled the preview.** VisionCamera configures
+   `ImageAnalysis` with `STRATEGY_BLOCK_PRODUCER`, so a slow analyzer
+   back-pressures the camera rather than dropping frames -- and preview and
+   analysis share one repeating capture request, so analysis stalling stalls
+   preview. This is why `runAtTargetFps` throttling did nothing: the blocking
+   call still occupied the pipeline whenever it ran. The fix is `runAsync`,
+   which VisionCamera provides for precisely this case.
+
+2. **ML Kit's YUV conversion, not its recognition, dominated the cost.**
+   Benchmarking the two input paths head to head was decisive:
+
+   | Input | Pixels | ML Kit time |
+   | --- | --- | --- |
+   | Still Bitmap 3072x4080 | 12.5 MP | ~225ms |
+   | Live YUV frame 640x480 | 0.3 MP | ~560ms |
+
+   40x fewer pixels, 2.5x slower. The cost lives in
+   `InputImage.fromMediaImage()`'s internal YUV->NV21 conversion, which runs in
+   managed code. Requesting `pixelFormat="rgb"` moves that conversion into
+   CameraX's native path, and `ImageProxy.toBitmap()` then feeds ML Kit its
+   fast `fromBitmap` entry point.
+
+3. **Reading distance was a resolution limit, not an OCR limit.** VisionCamera
+   defaults the analysis stream to 640x480. Requesting 1920x1080 via
+   `useCameraFormat` is what removed the need to hold the phone close.
+
+**Result: ~300-500ms per frame at 1920x1080** (versus ~560ms at 640x480
+before), with a fluid preview and text read at normal distance. Confirmed
+on-device.
+
+**The transferable lesson:** the first performance number was measured through
+a stalled pipeline and pointed at the wrong culprit entirely. Benchmarking two
+paths against each other -- rather than optimizing the one path in isolation --
+was what actually located the cost. Worth repeating before optimizing anything
+here in future.
+
+### Remaining performance notes
+
+- The frame processor still costs ~300-500ms per frame, which is higher than
+  raw recognition should need. Some of that is likely thread scheduling on
+  VisionCamera's async worklet context. Not investigated further, because the
+  user-visible problems (lag, reading distance) are resolved.
+- Item scanning is untested and will be the real test of the resolution
+  choice: item text is smaller and denser than the character name header, so
+  1920x1080 may or may not be enough.
+
+### Superseded: original open-problem writeup
+
 ### Open problem: live preview performance
 
 The `scanText` plugin's synchronous ML Kit call costs roughly 500-700ms per
