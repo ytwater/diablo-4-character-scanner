@@ -12,7 +12,7 @@ export function HomePage() {
     <main className="container h-screen py-16">
       <div className="flex flex-col items-center justify-center gap-4">
         <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-          Expo + Vite + <span className="text-primary">Worker</span>
+          Diablo 4 <span className="text-primary">Scanner</span>
         </h1>
         <AuthShowcase />
 

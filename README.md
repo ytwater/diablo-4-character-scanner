@@ -1,6 +1,6 @@
-# Expo Vite Worker Starter
+# Diablo 4 Character Scanner
 
-Turborepo monorepo starter with:
+Turborepo monorepo (from [expo-vite-worker-starter](https://github.com/ytwater/expo-vite-worker-starter)) with:
 
 - **Expo** — mobile client
 - **Vite** (`apps/web`) — web SPA (Better Auth + oRPC)
@@ -88,17 +88,17 @@ One-time per account/environment:
 
 ```bash
 # 1. Create the database
-pnpm -F @acme/workers-api exec wrangler d1 create my-app-db
+pnpm -F @acme/workers-api exec wrangler d1 create diablo-scanner-db
 ```
 
 Wrangler prints something like:
 
 ```text
-✅ Successfully created DB 'my-app-db'
+✅ Successfully created DB 'diablo-scanner-db'
 
 [[d1_databases]]
 binding = "DB"
-database_name = "my-app-db"
+database_name = "diablo-scanner-db"
 database_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 ```
 

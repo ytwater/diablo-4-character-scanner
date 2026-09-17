@@ -2,9 +2,9 @@ import type { ConfigContext, ExpoConfig } from "expo/config";
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: "expo",
-  slug: "expo",
-  scheme: "expo",
+  name: "Diablo 4 Character Scanner",
+  slug: "diablo-4-character-scanner",
+  scheme: "d4scanner",
   version: "0.1.0",
   orientation: "portrait",
   icon: "./assets/icon-light.png",
