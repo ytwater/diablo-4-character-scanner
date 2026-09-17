@@ -19,4 +19,9 @@ android {
 
 dependencies {
   implementation("com.google.mlkit:text-recognition:16.0.1")
+  // Frame/FrameProcessorPlugin/VisionCameraProxy/Orientation live in this
+  // project (react-native-vision-camera's Android sources are autolinked as
+  // a Gradle project, not a Maven artifact). compileOnly because the host
+  // app always provides it at runtime -- we don't want to duplicate/repackage it.
+  compileOnly(project(":react-native-vision-camera"))
 }

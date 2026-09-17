@@ -5,6 +5,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import com.mrousavy.camera.frameprocessors.FrameProcessorPluginRegistry
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 import expo.modules.kotlin.records.Field
@@ -36,6 +37,15 @@ class D4OcrModule : Module() {
     // Can be inferred from module's class name, but it's recommended to set it explicitly for clarity.
     // The module will be accessible from `requireNativeModule('D4Ocr')` in JavaScript.
     Name("D4Ocr")
+
+    // Registers this module's frame processor plugin with VisionCamera so JS can
+    // look it up via VisionCameraProxy.initFrameProcessorPlugin("scanText", {}).
+    // Runs once per module load, same lifecycle as autolinking.
+    OnCreate {
+      FrameProcessorPluginRegistry.addFrameProcessorPlugin("scanText") { proxy, options ->
+        D4OcrFrameProcessorPlugin(proxy, options)
+      }
+    }
 
     // Defines constant property on the module.
     Constant("PI") {

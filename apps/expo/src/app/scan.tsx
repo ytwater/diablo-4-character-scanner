@@ -1,12 +1,9 @@
 import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Stack } from "expo-router";
-import {
-  Camera,
-  useCameraDevice,
-  useCameraPermission,
-  useFrameProcessor,
-} from "react-native-vision-camera";
+import { Camera, useCameraDevice, useCameraPermission } from "react-native-vision-camera";
+
+import { useTextScanner } from "../features/scanner/useTextScanner";
 
 export default function ScanScreen() {
   const device = useCameraDevice("back");
@@ -16,13 +13,10 @@ export default function ScanScreen() {
     if (!hasPermission) void requestPermission();
   }, [hasPermission, requestPermission]);
 
-  // Phase 1 pass condition: frames reaching a worklet on device. Deliberately
-  // does nothing but report geometry -- no OCR, nothing that could fail for its
-  // own reasons.
-  const frameProcessor = useFrameProcessor((frame) => {
-    "worklet";
-    console.log(`frame ${frame.width}x${frame.height} ${frame.pixelFormat}`);
-  }, []);
+  // Phase 2 Task 2 pass condition: the scanText frame processor plugin runs
+  // live and logs "blocks: N" with N > 0. The callback is unused for now --
+  // wiring blocks into React state via runOnJS is a later task.
+  const frameProcessor = useTextScanner(() => {});
 
   if (!hasPermission) {
     return (
