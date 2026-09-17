@@ -164,6 +164,14 @@ export default function Index() {
 
         <MobileAuth />
 
+        <Link asChild href="/scan">
+          <Pressable className="bg-primary my-2 flex items-center rounded-sm p-2">
+            <Text className="text-foreground font-semibold">
+              Scan Character (spike)
+            </Text>
+          </Pressable>
+        </Link>
+
         <View className="py-2">
           <Text className="text-primary font-semibold italic">
             Press on a post

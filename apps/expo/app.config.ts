@@ -68,5 +68,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         },
       },
     ],
+    [
+      "react-native-vision-camera",
+      {
+        cameraPermissionText:
+          "Diablo 4 Character Scanner uses the camera to read your character sheet.",
+      },
+    ],
   ],
 });
