@@ -125,6 +125,15 @@ describe("parseItem unit behaviour", () => {
     expect(parsed.slot).toBe("Helm");
   });
 
+  it("rejects numbers from outside the tooltip as affixes", () => {
+    // These all appear in real captures: the character sheet's gold counter
+    // and other players' level tags sit behind the item overlay.
+    const parsed = parseItem(
+      ["686,691,098 283", "Kaydos | 70 (29)", "70(29)", "1,275"].join("\n"),
+    );
+    expect(parsed.affixes).toHaveLength(0);
+  });
+
   it("parses All Resist as the primary stat", () => {
     const parsed = parseItem("EQUIPPED\nRING\nUnique Ring\n138 All Resist");
     expect(parsed.primary).toEqual({ value: 138, label: "All Resist" });

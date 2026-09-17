@@ -151,7 +151,15 @@ function parseAffix(rawLine: string): ItemAffix | null {
     .replace(/\s+/g, " ")
     .trim();
 
-  if (stat.length === 0) return null;
+  // A real affix names a stat in words. Requiring that rejects numbers picked
+  // up from outside the tooltip -- captured frames include the character
+  // sheet's gold counter ("686,691,098  283") and other players' level tags
+  // ("Kaydos | 70 (29)") sitting behind the overlay, which otherwise parse as
+  // nonsense affixes. Proper spatial cropping to the tooltip region would be
+  // the more complete fix; this is the cheap guard that works today.
+  if (!/^[A-Za-z]/.test(stat)) return null;
+  if ((stat.match(/[A-Za-z]/g) ?? []).length < 3) return null;
+
   return { value, isPercent, stat, ...(range != null ? { range } : {}) };
 }
 
