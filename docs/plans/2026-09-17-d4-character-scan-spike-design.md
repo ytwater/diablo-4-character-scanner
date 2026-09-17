@@ -180,3 +180,61 @@ test. No E2E — camera behaviour is judged on device by eye.
 
 The guided step-by-step overlay, item scanning, scroll handling, persistence, API
 and database integration, iOS testing, A/B testing of tuning constants.
+
+## Phase 0 results
+
+Ran ML Kit's default Latin text recognizer against 15 real phone photos of the
+character sheet (same character, "UDAN" / "Demonic Defender" / level 93), via an
+Android instrumented test on a physical Pixel 10 Pro. Full per-photo output is in
+the test history at commit `b717faf` on `spike/d4-ocr-phase0`.
+
+**Name: 14/15 (93%). Title: 14/15 (93%). Level: 5/15 (33%).**
+
+This is a better result than the numbers alone suggest, because the field that
+actually matters for this spike's stated goal — the character *name* — is the
+one that came back strongest. "UDAN" and "Demonic Defender" were read cleanly and
+consistently across nearly every angle and distance in the set, with only one
+photo (14, a distant/blurred shot) failing to read anything useful at all.
+
+**Level underperformed independently of name/title,** and the raw text shows why:
+on the 10 failing photos, "93" isn't present as a garbled near-miss — it's just
+absent. The level lives in a small blue diamond badge, visually distinct from the
+surrounding body text (different font, on an icon, low contrast against a busy
+background), and at typical phone-to-monitor distance it's a much smaller target
+in pixel terms than the name/title block. This reads as a distinct sub-problem —
+"can OCR find and read a small isolated numeral badge" — rather than evidence
+that OCR doesn't work here.
+
+**Stray background text.** Several photos' raw output includes unrelated text —
+desktop UI fragments, other players' names/levels visible in the game world
+behind the character panel. This is the recognizer faithfully reading whatever
+was in frame; it isn't a defect, but it confirms the ROI-cropping step in the
+pipeline design isn't optional polish — without it, noise from the rest of the
+photo competes with the fields we actually want.
+
+**Gaps in this data set** (unchanged from the plan): no glare, no dark-background
+variance, single character only. All 15 photos were shot in one lighting
+condition at a monitor with a laptop visible in the background of some frames.
+
+### Decision: proceed to Phase 1, with two adjustments
+
+The spike's actual question — can a phone camera reliably read the character
+name off the sheet — has a clear yes at 93%. That clears the bar to move forward.
+
+Level, however, needs to be treated as unreliable in its current form. Two
+follow-ups carried into Phase 1/2 rather than blocking on them now:
+
+1. **ROI cropping matters more than the original design assumed.** Cropping to
+   just the character panel before running recognition should cut background
+   noise and may also help level, by giving the recognizer a smaller, less
+   cluttered frame to search.
+2. **The Level field likely needs its own handling** — a tighter crop specifically
+   around the badge, or accepting that Level is a "best-effort" field rather than
+   a hard self-verifying gate the way Class/Level was originally envisioned. Since
+   Name and Title both read as literal text reliably, they're actually stronger
+   anchor/verification candidates than a numeric badge — worth reconsidering
+   whether Level needs to anchor anything at all, versus being read opportunistically.
+
+Before broader capture-condition testing (glare, dark backgrounds, a second
+character), it's worth confirming Phase 1's build (VisionCamera + worklets-core)
+works at all — that's independent of these results and remains the top risk.
