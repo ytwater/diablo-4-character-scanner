@@ -253,6 +253,19 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 The risky-in-principle part of this phase, though Phase 1 already proved the
 worklets pipeline works — this is "just" wiring a plugin into it.
 
+**Note on a Task 1 bug that does NOT carry over here:** Task 1 found that
+returning a raw nested `Map<String, Any>` from an Expo Modules `AsyncFunction`
+silently drops nested values (fixed there with typed `Record` classes). That bug
+is specific to Expo Modules' reflection-based type converter. VisionCamera's
+frame processor bridge is different machinery entirely —
+`JSIJNIConversion.cpp`'s `convertJNIObjectToJSIValue` recursively converts nested
+`java.util.Map`/`List` by runtime `isInstanceOf` checks, not static reflection.
+Plain Kotlin `mapOf(...)` returned from `callback()` should serialize correctly
+here. Don't reach for `Record` classes in this task (the `FrameProcessorPlugin`
+base class's `callback()` returns plain `Any` — Records aren't part of this
+bridge at all) — if empty nested objects show up again, look elsewhere first
+(e.g. whether the returned type is a Kotlin data class instead of a plain Map).
+
 **Files:**
 - Create: `apps/expo/modules/d4-ocr/android/src/main/java/expo/modules/d4ocr/D4OcrFrameProcessorPlugin.kt`
 - Modify: `apps/expo/modules/d4-ocr/android/src/main/java/expo/modules/d4ocr/D4OcrModule.kt`
