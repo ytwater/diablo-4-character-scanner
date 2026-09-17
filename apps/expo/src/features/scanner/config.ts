@@ -1,5 +1,11 @@
 export const scannerConfig = {
-  targetFps: 8,
+  // NOTE: the scanText plugin's ML Kit call costs ~500-700ms per invocation
+  // (see Phase 2 Task 7 notes) -- a real ceiling of ~1.4-2 calls/sec,
+  // regardless of this target. Setting targetFps below that ceiling (rather
+  // than at the original 8 the design doc assumed) is what actually lets the
+  // camera's buffer pool recover between calls instead of running out and
+  // stalling the preview.
+  targetFps: 2,
   voteWindowSize: 8,
   lockThresholds: {
     name: 5,
