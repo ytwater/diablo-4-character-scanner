@@ -9,6 +9,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { RouterOutputs } from "~/utils/api";
 import { orpc } from "~/utils/api";
 import { authClient } from "~/utils/auth";
+import D4Ocr from "../../modules/d4-ocr/src/D4OcrModule";
 
 function PostCard(props: {
   post: RouterOutputs["post"]["all"][number];
@@ -171,6 +172,21 @@ export default function Index() {
             </Text>
           </Pressable>
         </Link>
+
+        <Pressable
+          className="bg-primary my-2 flex items-center rounded-sm p-2"
+          onPress={() => {
+            D4Ocr.recognizeTextFromUri(
+              "file:///data/data/your.bundle.identifier/files/character-sheet-03.jpg",
+            )
+              .then((blocks) => console.log(JSON.stringify(blocks, null, 2)))
+              .catch((e: unknown) => console.error(e));
+          }}
+        >
+          <Text className="text-foreground font-semibold">
+            Test OCR (spike)
+          </Text>
+        </Pressable>
 
         <View className="py-2">
           <Text className="text-primary font-semibold italic">

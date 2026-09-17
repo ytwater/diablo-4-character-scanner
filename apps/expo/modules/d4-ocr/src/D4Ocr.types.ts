@@ -8,6 +8,18 @@ export type D4OcrModuleEvents = {
   onChange: (params: ChangeEventPayload) => void;
 };
 
+export type TextBlockFrame = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
+
+export type TextBlock = {
+  text: string;
+  frame: TextBlockFrame;
+};
+
 export type ChangeEventPayload = {
   value: string;
 };
