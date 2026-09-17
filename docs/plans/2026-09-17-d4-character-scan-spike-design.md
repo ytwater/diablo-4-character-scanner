@@ -238,3 +238,68 @@ follow-ups carried into Phase 1/2 rather than blocking on them now:
 Before broader capture-condition testing (glare, dark backgrounds, a second
 character), it's worth confirming Phase 1's build (VisionCamera + worklets-core)
 works at all — that's independent of these results and remains the top risk.
+
+## Phase 1 results
+
+**Pass.** Frames reach a worklet on a physical Pixel 10 Pro: logcat shows a
+continuous stream of `frame 640x480 yuv` at roughly 30fps. Commits `78db26a`
+through `fbd678d` on `spike/d4-ocr-phase0`.
+
+### The predicted top risk did not materialize
+
+`react-native-worklets-core@1.6.3` targets RN 0.76.1 while this app runs RN
+0.81.5. That five-minor-version gap was the main remaining concern after the
+Reanimated collision was designed away, and it simply did not bite — the build
+log confirms `VisionCamera: Frame Processors: ON!` and
+`VisionCamera: Linking react-native-worklets...`, and frames flow at runtime.
+
+Removing Reanimated and `react-native-worklets` (Task 1) worked as intended:
+nothing in the app used them, `expo-router`'s peer is optional, and NativeWind 5's
+engine does not require them. With them gone, `babel.config.js` declares
+`react-native-worklets-core/plugin` as the only worklet transform, so there is no
+competing claim on the `'worklet'` directive.
+
+### Two incidental findings, both costlier than the "top risk"
+
+Neither was anticipated, and between them they consumed most of Phase 1:
+
+1. **Config plugin manifest merges need an explicit prebuild.** Adding the
+   `react-native-vision-camera` plugin to `app.config.ts` and then running
+   `expo run:android` does *not* re-merge `AndroidManifest.xml` —
+   `android.permission.CAMERA` was silently absent, so permission requests had
+   nothing to request and the camera could never start. Re-running
+   `expo prebuild --platform android` fixed it. Any future config plugin
+   addition needs the same explicit step.
+
+2. **NativeWind 5.0.0-preview.2 silently failed to size a flex container.** With
+   `className="flex-1 bg-black"` on the camera's wrapper View, CameraX connected
+   and enumerated devices normally but the preview rendered as a blank black
+   screen — the container had collapsed to zero height. Swapping that one screen
+   to `StyleSheet` inline styles fixed it immediately. This app uses NativeWind
+   `className` throughout, so this is worth knowing about generally; the fix here
+   was deliberately scoped to the scan screen rather than auditing app-wide.
+
+A third red herring cost time and is recorded so it is not chased again: the
+warning `Could not find generated setter for class
+com.mrousavy.camera.react.CameraViewManager` is benign. It fires once for every
+view manager in the app under the new architecture, including core React Native
+components, and is unrelated to VisionCamera.
+
+### Measurements that change Phase 2
+
+**Frame rate: ~30fps.** The design doc's plan to throttle to a target 8fps stands,
+but as a battery/thermal measure rather than a necessity to keep up.
+
+**Frame size: 640x480, not the 720p the latency budget assumed.** This cuts two
+ways. ML Kit will run faster than the estimated 30-80ms per frame on a smaller
+image. But 640x480 is materially less detail than the ~12MP stills Phase 0 read
+from, and Phase 0 already showed the level badge failing at 33% on those much
+larger images. Reading a small numeral badge from a 640x480 frame is likely to be
+worse, not better.
+
+Phase 2 should therefore treat frame format selection as a real task, not a
+default: VisionCamera's `useCameraFormat` can request a higher-resolution frame
+processor output, and the ROI crop should be applied to the largest frame the
+device will deliver at an acceptable rate. This reinforces the Phase 0 conclusion
+that Level is best-effort and that Name/Title — larger, plainer text — are the
+reliable fields.
