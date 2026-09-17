@@ -19,18 +19,27 @@ but not tested.
 
 ## The anchor strategy
 
+> **Revised after reviewing real capture photos (2026-09-17):** the character
+> sheet does not display the class as text anywhere. It shows Name, a
+> player-chosen flavor title (e.g. "Demonic Defender" — not the class), and
+> Level. The class vocabulary anchor below was replaced with the "CHARACTER"
+> panel header, which is fixed UI chrome present verbatim on every class's
+> sheet. See "Phase 0 results" for the photos that prompted this.
+
 Target fields, in priority order:
 
-1. **Class** — a closed vocabulary of six strings (Barbarian, Sorcerer, Druid,
-   Necromancer, Rogue, Spiritborn). Fuzzy-matchable, so a read is self-verifying.
-   This is the spike's pass/fail signal.
-2. **Level** — a 1–3 digit integer in a known range. Also self-verifying, and a
-   test of numeric glyph quality.
+1. **Level** — a 1–3 digit integer in a known range. Self-verifying by range
+   check, and a test of numeric glyph quality. This is the spike's pass/fail
+   signal.
+2. **Title** — free text from a large but enumerable list of unlockable
+   titles. Not asserted against in Phase 0 (no vocabulary was built for it),
+   but its presence/absence is a useful data point.
 3. **Name** — free text, unverifiable, judged by eye.
 
-The pipeline does not hunt for the name directly. It fuzzy-matches text blocks
-against the class vocabulary; the matched block's bounding box then **anchors
-every other field spatially**.
+The pipeline does not hunt for the name directly. It matches text blocks
+against the literal string "CHARACTER" (the panel header); the matched block's
+bounding box then **anchors every other field spatially** — Level, Title, and
+Name all sit at known offsets below and beside that header.
 
 This generalizes. The eventual guided overlay has the same problem for every item:
 find a known landmark, read the unknown text positioned relative to it. Building

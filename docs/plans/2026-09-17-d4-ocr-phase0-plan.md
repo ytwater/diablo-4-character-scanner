@@ -2,9 +2,14 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Prove that ML Kit's on-device text recognizer can read Class, Level, and
+**Goal:** Prove that ML Kit's on-device text recognizer can read Level, Title, and
 Name off a phone photo of the Diablo 4 character sheet, before any camera or
 VisionCamera code exists.
+
+> **Note:** the original plan targeted a "Class" field, assuming it appeared as
+> text on the sheet. Reviewing the actual capture photos showed the sheet has no
+> class string — only Name, a player-chosen Title, and Level. Updated below and
+> in the design doc accordingly.
 
 **Architecture:** Run `expo prebuild` once to get a native Android project, add the
 ML Kit Text Recognition Gradle dependency directly (no React Native wrapper — this
@@ -21,52 +26,46 @@ Design reference: `docs/plans/2026-09-17-d4-character-scan-spike-design.md`
 
 ---
 
-### Task 0: Capture the source photos
+### Task 0: Capture the source photos — done
 
-This has no code, but every later task depends on it — do it first.
+13 phone photos of the same character sheet were captured (Pixel camera, varying
+angle and distance, all daylight/normal indoor lighting — no glare or dark-
+background variation in this set). Ground truth, read directly off the photos:
 
-**Step 1: Shoot the photos**
+| Field | Value |
+| --- | --- |
+| Name | `UDAN` |
+| Title | `Demonic Defender` |
+| Level | `93` |
 
-With Diablo 4 running on your monitor and the character sheet open, take ~15 phone
-photos, varying:
-- angle (straight-on, and ~20-30° off to each side)
-- distance (close crop of the header, and a wider shot)
-- lighting (normal, and a pass with monitor brightness way up to induce glare)
-- background (a bright zone background, and a dark one, since the sheet overlays
-  the game world)
+Same values for all 13 photos, since it's one character. This is a smaller test
+than originally planned (no lighting/background stress, no cross-character
+variety) — noted as a gap in Phase 0 results rather than blocking on retaking
+photos.
 
-Save them as `character-sheet-01.jpg` through `character-sheet-15.jpg` (or however
-many you end up with).
+**Rename and place the files:**
 
-**Step 2: Note ground truth**
-
-In a plain text file, write down what the sheet actually says for each photo —
-class, level, name — so later steps have something to compare against. Class and
-level are checkable against real values; name is just recorded for eyeballing.
-
-**Step 3: Place the files**
-
-```
-apps/expo/android/app/src/androidTest/assets/character-sheets/character-sheet-01.jpg
-apps/expo/android/app/src/androidTest/assets/character-sheets/character-sheet-02.jpg
-...
-apps/expo/android/app/src/androidTest/assets/ground-truth.txt
+```bash
+cd apps/expo/android/app/src/androidTest/assets/character-sheets  # after Task 1's prebuild
+i=1
+for f in /home/ytwat/workspace/diablo-4-character-scanner/temp/*.jpg; do
+  cp "$f" "$(printf 'character-sheet-%02d.jpg' "$i")"
+  i=$((i + 1))
+done
 ```
 
-(The `android/` directory doesn't exist yet — that's Task 1. Come back and drop
-the files in after prebuild runs.)
+(13 files land as `character-sheet-01.jpg` through `character-sheet-13.jpg`. Do
+this after Task 1 creates the `android/` directory.)
 
-**Step 4: Commit the photos**
+**Commit the photos:**
 
 ```bash
 git add apps/expo/android/app/src/androidTest/assets/character-sheets/
 git commit -m "test: add character sheet photos for OCR phase 0"
 ```
 
-Note: these are personal screenshots of your own gameplay, not copyrighted game
-assets being redistributed — fine to commit to your own private repo. Skip this
-step if you'd rather keep them untracked; add the folder to `.gitignore` instead
-and just keep them on disk locally.
+These are personal screenshots of your own gameplay, not copyrighted game assets
+being redistributed — fine to commit to your own private repo.
 
 ---
 
@@ -179,9 +178,9 @@ git commit -m "chore: add ML Kit text recognition dependency"
 
 **Step 1: Write the failing test**
 
-Pick your clearest, most straight-on photo (say `character-sheet-01.jpg`) and its
-recorded ground truth. Write a test asserting the class comes back somewhere in
-the recognized text:
+Pick the clearest, most straight-on photo (`character-sheet-01.jpg`) and assert
+the level comes back somewhere in the recognized text — level is the numeric,
+self-verifying field, so it's the best first check:
 
 ```kotlin
 package expo.modules.d4ocr
@@ -210,19 +209,15 @@ class OcrPhase0Test {
     }
 
     @Test
-    fun recognizesClassOnClearPhoto() {
+    fun recognizesLevelOnClearPhoto() {
         val text = recognizeAsset("character-sheet-01.jpg")
-        // Replace "Sorcerer" with whatever class your ground truth photo actually shows.
         assertTrue(
-            "Expected a class name in recognized text, got:\n$text",
-            text.contains("Sorcerer", ignoreCase = true),
+            "Expected level 93 in recognized text, got:\n$text",
+            text.contains("93"),
         )
     }
 }
 ```
-
-Adjust the asserted class string to match your actual Task 0 ground truth for that
-photo.
 
 **Step 2: Run it and confirm it fails for the right reason first**
 
@@ -263,49 +258,45 @@ git commit -m "test: add first OCR phase 0 test against a known-good photo"
 **Files:**
 - Modify: `apps/expo/android/app/src/androidTest/java/expo/modules/d4ocr/OcrPhase0Test.kt`
 
-**Step 1: Write a parameterized-style test over every photo**
+**Step 1: Write a test over every photo**
 
-Rather than one assertion per photo (which gets unwieldy at 15 photos), add a test
-that loops all assets and logs a pass/fail table without stopping at the first
-failure — the goal here is a full picture of the read quality, not a single
-green checkmark.
+Rather than one assertion per photo, add a test that loops all 13 assets and logs
+a pass/fail table without stopping at the first failure — the goal here is a full
+picture of read quality, not a single green checkmark. All 13 photos share the
+same ground truth (one character), so the sample list is just the filenames plus
+whether name/title were found alongside the level check:
 
 ```kotlin
-    data class ExpectedFields(val fileName: String, val expectedClass: String, val expectedLevel: String)
-
-    // Fill in from your Task 0 ground-truth notes.
-    private val samples = listOf(
-        ExpectedFields("character-sheet-01.jpg", "Sorcerer", "47"),
-        ExpectedFields("character-sheet-02.jpg", "Barbarian", "62"),
-        // ... one entry per photo ...
-    )
-
     @Test
     fun reportsRecognitionAcrossAllSamples() {
-        val results = samples.map { sample ->
-            val text = recognizeAsset(sample.fileName)
-            val classFound = text.contains(sample.expectedClass, ignoreCase = true)
-            val levelFound = text.contains(sample.expectedLevel)
-            Triple(sample.fileName, classFound, levelFound) to text
+        val fileNames = (1..13).map { "character-sheet-%02d.jpg".format(it) }
+
+        val results = fileNames.map { fileName ->
+            val text = recognizeAsset(fileName)
+            val levelFound = text.contains("93")
+            val nameFound = text.contains("UDAN", ignoreCase = true)
+            val titleFound = text.contains("Demonic Defender", ignoreCase = true)
+            Triple(fileName, Triple(levelFound, nameFound, titleFound), text)
         }
 
-        val report = results.joinToString("\n") { (triple, text) ->
-            val (fileName, classFound, levelFound) = triple
-            "$fileName -> class=$classFound level=$levelFound\n  raw: ${text.replace("\n", " | ")}"
+        val report = results.joinToString("\n") { (fileName, found, text) ->
+            val (levelFound, nameFound, titleFound) = found
+            "$fileName -> level=$levelFound name=$nameFound title=$titleFound\n  raw: ${text.replace("\n", " | ")}"
         }
         println(report)
 
-        val classHitRate = results.count { it.first.second } .toDouble() / results.size
+        val levelHitRate = results.count { it.second.first }.toDouble() / results.size
         assertTrue(
-            "Class recognized in fewer than half of samples ($classHitRate). Report:\n$report",
-            classHitRate >= 0.5,
+            "Level recognized in fewer than half of samples ($levelHitRate). Report:\n$report",
+            levelHitRate >= 0.5,
         )
     }
 ```
 
 The 0.5 threshold is a floor, not a target — it exists so a badly broken pipeline
-fails loudly instead of silently passing with a 1-in-15 hit rate. The real
-judgment call is reading the printed report.
+fails loudly instead of silently passing with a 1-in-13 hit rate. The real
+judgment call is reading the printed report, including the name/title hit rates
+which aren't gated by the assertion.
 
 **Step 2: Run against the full set**
 
@@ -334,14 +325,14 @@ Look at the printed report from Task 4 and answer, in a short note appended to t
 bottom of `docs/plans/2026-09-17-d4-character-scan-spike-design.md` under a new
 `## Phase 0 results` heading:
 
-1. What fraction of photos had the class recognized correctly?
-2. What fraction had the level recognized correctly?
-3. For the name field specifically (not asserted in code, judge by eye from the
-   raw text in the report): is it close enough to be useful, close enough to
-   need fuzzy correction, or unusable?
-4. Did glare or off-angle shots fail dramatically worse than straight-on shots?
-   If so, that becomes a user-facing instruction in the eventual guided overlay
-   ("hold the phone flat to the screen"), not a code problem.
+1. What fraction of photos had the level recognized correctly?
+2. What fraction had the name and title recognized correctly?
+3. Judging by eye from the raw text in the report: how close was a failed name/
+   title read (garbled but recognizable vs. unusable)?
+4. Did angle or distance visibly affect the read, even without this set's
+   glare/lighting variation? Note explicitly that this set doesn't test glare,
+   dark backgrounds, or a second character — flag that as follow-up capture
+   work if Phase 1 goes ahead.
 
 **Step 1: Append the results section**
 
@@ -364,13 +355,15 @@ git commit -m "docs: record phase 0 OCR results"
 
 **Step 2: Decide**
 
-If class/level recognition is reasonably reliable on decent photos (rough
-guideline: better than 70% on the straight-on, non-glare shots), Phase 1
-(VisionCamera + worklets-core install) is worth doing. If it's much worse than
-that even on your best photos, stop and reconsider — either the ROI cropping
-approach needs rethinking, or this needs a different capture technique (e.g.
-requiring the user to photograph the sheet on a plain background) before more
-app code is written.
+If level/name recognition is reasonably reliable on decent photos (rough
+guideline: better than 70% on the closer, straight-on shots), Phase 1
+(VisionCamera + worklets-core install) is worth doing — but retake a proper
+varied set (glare, dark background, a second character) before trusting that
+number too far, since this set didn't stress those conditions. If recognition is
+much worse than that even on the best photos, stop and reconsider — either the
+ROI cropping approach needs rethinking, or this needs a different capture
+technique (e.g. requiring the user to photograph the sheet on a plain background)
+before more app code is written.
 
 ---
 
