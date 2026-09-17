@@ -28,7 +28,7 @@ Design reference: `docs/plans/2026-09-17-d4-character-scan-spike-design.md`
 
 ### Task 0: Capture the source photos — done
 
-13 phone photos of the same character sheet were captured (Pixel camera, varying
+15 phone photos of the same character sheet were captured (Pixel camera, varying
 angle and distance, all daylight/normal indoor lighting — no glare or dark-
 background variation in this set). Ground truth, read directly off the photos:
 
@@ -38,23 +38,24 @@ background variation in this set). Ground truth, read directly off the photos:
 | Title | `Demonic Defender` |
 | Level | `93` |
 
-Same values for all 13 photos, since it's one character. This is a smaller test
+Same values for all 15 photos, since it's one character. This is a smaller test
 than originally planned (no lighting/background stress, no cross-character
 variety) — noted as a gap in Phase 0 results rather than blocking on retaking
 photos.
 
 **Rename and place the files:**
 
+The renamed photos are already staged at `temp-photos/` in this worktree's root
+(copied and numbered `character-sheet-01.jpg` through `character-sheet-15.jpg`).
+After Task 1's prebuild creates the assets directory:
+
 ```bash
-cd apps/expo/android/app/src/androidTest/assets/character-sheets  # after Task 1's prebuild
-i=1
-for f in /home/ytwat/workspace/diablo-4-character-scanner/temp/*.jpg; do
-  cp "$f" "$(printf 'character-sheet-%02d.jpg' "$i")"
-  i=$((i + 1))
-done
+mkdir -p apps/expo/android/app/src/androidTest/assets/character-sheets
+cp temp-photos/*.jpg apps/expo/android/app/src/androidTest/assets/character-sheets/
+rm -rf temp-photos
 ```
 
-(13 files land as `character-sheet-01.jpg` through `character-sheet-13.jpg`. Do
+(15 files land as `character-sheet-01.jpg` through `character-sheet-15.jpg`. Do
 this after Task 1 creates the `android/` directory.)
 
 **Commit the photos:**
@@ -260,16 +261,16 @@ git commit -m "test: add first OCR phase 0 test against a known-good photo"
 
 **Step 1: Write a test over every photo**
 
-Rather than one assertion per photo, add a test that loops all 13 assets and logs
+Rather than one assertion per photo, add a test that loops all 15 assets and logs
 a pass/fail table without stopping at the first failure — the goal here is a full
-picture of read quality, not a single green checkmark. All 13 photos share the
+picture of read quality, not a single green checkmark. All 15 photos share the
 same ground truth (one character), so the sample list is just the filenames plus
 whether name/title were found alongside the level check:
 
 ```kotlin
     @Test
     fun reportsRecognitionAcrossAllSamples() {
-        val fileNames = (1..13).map { "character-sheet-%02d.jpg".format(it) }
+        val fileNames = (1..15).map { "character-sheet-%02d.jpg".format(it) }
 
         val results = fileNames.map { fileName ->
             val text = recognizeAsset(fileName)
@@ -294,7 +295,7 @@ whether name/title were found alongside the level check:
 ```
 
 The 0.5 threshold is a floor, not a target — it exists so a badly broken pipeline
-fails loudly instead of silently passing with a 1-in-13 hit rate. The real
+fails loudly instead of silently passing with a 1-in-15 hit rate. The real
 judgment call is reading the printed report, including the name/title hit rates
 which aren't gated by the assertion.
 
