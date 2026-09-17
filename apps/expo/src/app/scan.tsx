@@ -5,6 +5,7 @@ import {
   Camera,
   useCameraDevice,
   useCameraPermission,
+  useFrameProcessor,
 } from "react-native-vision-camera";
 
 export default function ScanScreen() {
@@ -14,6 +15,14 @@ export default function ScanScreen() {
   useEffect(() => {
     if (!hasPermission) void requestPermission();
   }, [hasPermission, requestPermission]);
+
+  // Phase 1 pass condition: frames reaching a worklet on device. Deliberately
+  // does nothing but report geometry -- no OCR, nothing that could fail for its
+  // own reasons.
+  const frameProcessor = useFrameProcessor((frame) => {
+    "worklet";
+    console.log(`frame ${frame.width}x${frame.height} ${frame.pixelFormat}`);
+  }, []);
 
   if (!hasPermission) {
     return (
@@ -34,7 +43,12 @@ export default function ScanScreen() {
   return (
     <View style={styles.fill}>
       <Stack.Screen options={{ title: "Scan" }} />
-      <Camera style={styles.fill} device={device} isActive={true} />
+      <Camera
+        style={styles.fill}
+        device={device}
+        isActive={true}
+        frameProcessor={frameProcessor}
+      />
     </View>
   );
 }
