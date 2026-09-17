@@ -1,0 +1,314 @@
+[
+  {
+    "label": "close-clean",
+    "blocks": [
+      {
+        "text": "Ope",
+        "frame": {
+          "x": 361,
+          "y": 81,
+          "width": 8,
+          "height": 10
+        }
+      },
+      {
+        "text": "CHARACTER",
+        "frame": {
+          "x": 98,
+          "y": 107,
+          "width": 60,
+          "height": 16
+        }
+      },
+      {
+        "text": "UDAN\nDemonic Delender",
+        "frame": {
+          "x": 103,
+          "y": 150,
+          "width": 66,
+          "height": 28
+        }
+      },
+      {
+        "text": "Stats & Materlals",
+        "frame": {
+          "x": 106,
+          "y": 219,
+          "width": 60,
+          "height": 12
+        }
+      },
+      {
+        "text": "Weapon Damage\n3,809",
+        "frame": {
+          "x": 120,
+          "y": 254,
+          "width": 52,
+          "height": 21
+        }
+      },
+      {
+        "text": "Toughness\n63,913",
+        "frame": {
+          "x": 115,
+          "y": 292,
+          "width": 37,
+          "height": 19
+        }
+      },
+      {
+        "text": "Strength",
+        "frame": {
+          "x": 98,
+          "y": 333,
+          "width": 29,
+          "height": 9
+        }
+      },
+      {
+        "text": "207",
+        "frame": {
+          "x": 157,
+          "y": 352,
+          "width": 16,
+          "height": 8
+        }
+      },
+      {
+        "text": "Intenoe",
+        "frame": {
+          "x": 99,
+          "y": 352,
+          "width": 40,
+          "height": 8
+        }
+      },
+      {
+        "text": "125",
+        "frame": {
+          "x": 162,
+          "y": 371,
+          "width": 12,
+          "height": 9
+        }
+      },
+      {
+        "text": "Wipo",
+        "frame": {
+          "x": 99,
+          "y": 371,
+          "width": 33,
+          "height": 9
+        }
+      },
+      {
+        "text": "1,501",
+        "frame": {
+          "x": 155,
+          "y": 391,
+          "width": 20,
+          "height": 10
+        }
+      },
+      {
+        "text": "Dexterity",
+        "frame": {
+          "x": 98,
+          "y": 391,
+          "width": 31,
+          "height": 8
+        }
+      },
+      {
+        "text": "Equipment",
+        "frame": {
+          "x": 106,
+          "y": 412,
+          "width": 40,
+          "height": 13
+        }
+      },
+      {
+        "text": "686,691,098 283",
+        "frame": {
+          "x": 119,
+          "y": 547,
+          "width": 105,
+          "height": 13
+        }
+      }
+    ]
+  },
+  {
+    "label": "wide-shot",
+    "blocks": [
+      {
+        "text": "Gpen with",
+        "frame": {
+          "x": 366,
+          "y": 31,
+          "width": 29,
+          "height": 10
+        }
+      },
+      {
+        "text": "CHARACTER",
+        "frame": {
+          "x": 105,
+          "y": 47,
+          "width": 64,
+          "height": 16
+        }
+      },
+      {
+        "text": "UDAN\nDemonic Defender",
+        "frame": {
+          "x": 110,
+          "y": 91,
+          "width": 68,
+          "height": 29
+        }
+      },
+      {
+        "text": "Stats & Materials",
+        "frame": {
+          "x": 113,
+          "y": 161,
+          "width": 62,
+          "height": 14
+        }
+      },
+      {
+        "text": "Weapon Damage\n3809",
+        "frame": {
+          "x": 126,
+          "y": 199,
+          "width": 53,
+          "height": 20
+        }
+      },
+      {
+        "text": "Toughness\n63,913",
+        "frame": {
+          "x": 123,
+          "y": 238,
+          "width": 36,
+          "height": 19
+        }
+      },
+      {
+        "text": "196",
+        "frame": {
+          "x": 167,
+          "y": 279,
+          "width": 13,
+          "height": 9
+        }
+      },
+      {
+        "text": "Slrength",
+        "frame": {
+          "x": 103,
+          "y": 279,
+          "width": 29,
+          "height": 7
+        }
+      },
+      {
+        "text": "207",
+        "frame": {
+          "x": 163,
+          "y": 298,
+          "width": 16,
+          "height": 8
+        }
+      },
+      {
+        "text": "Intelligence",
+        "frame": {
+          "x": 103,
+          "y": 296,
+          "width": 42,
+          "height": 8
+        }
+      },
+      {
+        "text": "125",
+        "frame": {
+          "x": 167,
+          "y": 318,
+          "width": 11,
+          "height": 8
+        }
+      },
+      {
+        "text": "Willpower",
+        "frame": {
+          "x": 103,
+          "y": 316,
+          "width": 34,
+          "height": 9
+        }
+      },
+      {
+        "text": "1.501",
+        "frame": {
+          "x": 160,
+          "y": 336,
+          "width": 19,
+          "height": 9
+        }
+      },
+      {
+        "text": "Dexterity",
+        "frame": {
+          "x": 104,
+          "y": 336,
+          "width": 30,
+          "height": 8
+        }
+      },
+      {
+        "text": "Fquipment",
+        "frame": {
+          "x": 111,
+          "y": 358,
+          "width": 40,
+          "height": 12
+        }
+      },
+      {
+        "text": "686,69I,098 283",
+        "frame": {
+          "x": 125,
+          "y": 485,
+          "width": 99,
+          "height": 11
+        }
+      }
+    ]
+  },
+  {
+    "label": "angled-degraded",
+    "blocks": [
+      {
+        "text": "GARACTa",
+        "frame": {
+          "x": 132,
+          "y": 143,
+          "width": 37,
+          "height": 9
+        }
+      },
+      {
+        "text": "DAN",
+        "frame": {
+          "x": 152,
+          "y": 168,
+          "width": 10,
+          "height": 6
+        }
+      }
+    ]
+  }
+]

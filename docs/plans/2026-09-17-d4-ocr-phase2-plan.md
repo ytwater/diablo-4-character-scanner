@@ -562,12 +562,15 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 **Step 1: Determine the real geometric relationship first**
 
 Before writing extraction logic, look at the captured fixtures from Task 3 and
-note, in a comment at the top of `fields.ts`, the actual observed layout: Name
-sits some Y-offset below the anchor at similar X; Title sits below Name; Level
-(when present) sits above/left of the anchor as a separate small block. Don't
-guess these offsets -- read them off the real fixture data captured on-device,
-since screen layout in pixels depends on the 640x480 frame size and camera
-distance, not on any documented spec.
+note, in a comment at the top of `fields.ts`, the actual observed layout. Real
+captured data (2026-09-17) showed something worth designing around: **Name and
+Title frequently come back merged into a single ML Kit block**, separated by
+`\n` (e.g. `"UDAN\nDemonic Defender"` as one block, not two) -- this differs
+from Task 1's still-image test, where they were separate blocks. `extractFields`
+needs to find the block below-and-near-x-aligned with the anchor, then split its
+text on `\n`: first line is Name, second (if present) is Title. Don't assume two
+separate blocks. Level, when it appears at all, is a distinct small block
+elsewhere (position varies -- read it off the fixtures, don't guess).
 
 **Step 2: Write failing tests against the real fixtures**
 
