@@ -65,6 +65,11 @@ class D4OcrFrameProcessorPlugin(
       "D4Ocr",
       "mlkit ${elapsedMs}ms fmt=${mediaImage.format} ${mediaImage.width}x${mediaImage.height} blocks=${result.textBlocks.size}",
     )
+    // TEMPORARY (item accuracy measurement): dump the full recognized text so
+    // it can be diffed against known ground truth from the item photos.
+    if (result.textBlocks.isNotEmpty()) {
+      Log.i("D4OcrText", "=== FRAME ===\n" + result.text)
+    }
 
     return result.textBlocks.map { block ->
       val box = block.boundingBox
