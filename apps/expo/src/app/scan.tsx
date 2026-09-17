@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Stack } from "expo-router";
-import { Camera, useCameraDevice, useCameraPermission } from "react-native-vision-camera";
+import {
+  Camera,
+  useCameraDevice,
+  useCameraFormat,
+  useCameraPermission,
+} from "react-native-vision-camera";
 
 import type { TextBlock } from "../features/scanner/anchor";
 import { findAnchor } from "../features/scanner/anchor";
@@ -20,6 +25,15 @@ const EMPTY_FIELD: FieldDisplay = { candidate: null, locked: null };
 export default function ScanScreen() {
   const device = useCameraDevice("back");
   const { hasPermission, requestPermission } = useCameraPermission();
+
+  // VisionCamera's default analysis resolution is 640x480, which is why the
+  // camera had to be held close for the name/title to be legible. The frame
+  // processor's resolution comes from the format's videoSize, so request a
+  // much larger one. runAsync already decoupled OCR from the preview, so
+  // paying more per frame costs scan rate, not smoothness.
+  const format = useCameraFormat(device, [
+    { videoResolution: { width: 1920, height: 1080 } },
+  ]);
 
   const nameVoter = useRef(
     createFieldVoter({
@@ -96,8 +110,15 @@ export default function ScanScreen() {
       <Camera
         style={styles.fill}
         device={device}
+        format={format}
         isActive={true}
         frameProcessor={frameProcessor}
+        // Ask CameraX for RGBA_8888 rather than the default YUV_420_888.
+        // ML Kit's YUV->NV21 conversion runs in managed code and dominated
+        // frame cost (~560ms for a 0.3MP frame, vs ~225ms for a 12.5MP
+        // Bitmap). RGB lets CameraX do that conversion natively and lets the
+        // plugin use ML Kit's fast fromBitmap path.
+        pixelFormat="rgb"
       />
       <View pointerEvents="none" style={styles.aimBox} />
       <View style={styles.overlay} pointerEvents="none">

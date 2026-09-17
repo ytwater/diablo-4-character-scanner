@@ -1,6 +1,9 @@
 package expo.modules.d4ocr
 
+
+import android.graphics.PixelFormat
 import android.media.Image
+import android.util.Log
 import com.google.android.gms.tasks.Tasks
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
@@ -38,8 +41,30 @@ class D4OcrFrameProcessorPlugin(
     // propagate; VisionCamera rethrows plugin errors into JS.
     val mediaImage: Image = frame.image
     val rotation = frame.orientation.toDegrees()
-    val image = InputImage.fromMediaImage(mediaImage, rotation)
-    val result = Tasks.await(recognizer.process(image))
+
+    // Measure the actual ML Kit cost. Earlier timing was inferred from the
+    // interval between JS log lines, which was confounded by CameraX
+    // back-pressure stalling the whole pipeline -- that number (~500-700ms)
+    // was an upper bound on the stall, not the recognizer's real latency.
+    val startNs = System.nanoTime()
+    val inputImage = if (mediaImage.format == PixelFormat.RGBA_8888) {
+      // ImageProxy.toBitmap() (CameraX 1.3+) handles RGBA row-stride padding
+      // correctly. A hand-rolled copyPixelsFromBuffer version here read the
+      // first frame fine and then returned garbage for every frame after,
+      // so prefer the library's tested conversion. Verified on-device that
+      // toBitmap() does NOT pre-apply rotation, so the frame's rotation still
+      // has to be passed through here.
+      InputImage.fromBitmap(frame.imageProxy.toBitmap(), rotation)
+    } else {
+      // Fallback for YUV, e.g. if the Camera's pixelFormat prop isn't "rgb".
+      InputImage.fromMediaImage(mediaImage, rotation)
+    }
+    val result = Tasks.await(recognizer.process(inputImage))
+    val elapsedMs = (System.nanoTime() - startNs) / 1_000_000
+    Log.i(
+      "D4Ocr",
+      "mlkit ${elapsedMs}ms fmt=${mediaImage.format} ${mediaImage.width}x${mediaImage.height} blocks=${result.textBlocks.size}",
+    )
 
     return result.textBlocks.map { block ->
       val box = block.boundingBox

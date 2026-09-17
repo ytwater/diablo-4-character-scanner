@@ -24,4 +24,8 @@ dependencies {
   // a Gradle project, not a Maven artifact). compileOnly because the host
   // app always provides it at runtime -- we don't want to duplicate/repackage it.
   compileOnly(project(":react-native-vision-camera"))
+  // ImageProxy.toBitmap() -- VisionCamera depends on CameraX via
+  // `implementation`, so it doesn't leak onto our compile classpath.
+  // compileOnly for the same reason as above: it's there at runtime.
+  compileOnly("androidx.camera:camera-core:1.5.0-alpha03")
 }

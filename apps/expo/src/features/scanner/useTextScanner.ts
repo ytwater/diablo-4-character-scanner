@@ -1,11 +1,9 @@
 import {
-  runAtTargetFps,
+  runAsync,
   useFrameProcessor,
   VisionCameraProxy,
 } from "react-native-vision-camera";
 import { useRunOnJS } from "react-native-worklets-core";
-
-import { scannerConfig } from "./config";
 
 const plugin = VisionCameraProxy.initFrameProcessorPlugin("scanText", {});
 
@@ -23,15 +21,24 @@ export function useTextScanner(onBlocks: (blocks: TextBlock[]) => void) {
 
   return useFrameProcessor((frame) => {
     "worklet";
-    // The scanText plugin's ML Kit call is synchronous and costs ~500-700ms
-    // per invocation -- far slower than the ~30fps the camera delivers frames
-    // at (Phase 1). Without throttling, VisionCamera dispatches the frame
-    // processor on every frame regardless of whether the previous call
-    // finished, and a synchronous native call that slow backs up badly,
-    // which is what made the live preview "pretty much unusable" before this
-    // was added. runAtTargetFps skips the expensive call on frames beyond the
-    // target rate instead of letting them queue.
-    runAtTargetFps(scannerConfig.targetFps, () => {
+    // The scanText plugin's ML Kit call is far slower than the camera's frame
+    // interval. That matters more than it normally would, because VisionCamera
+    // configures CameraX with STRATEGY_BLOCK_PRODUCER
+    // (CameraSession+Configuration.kt) -- a slow analyzer back-pressures the
+    // camera itself rather than dropping frames, and since preview and
+    // analysis share one repeating capture request, that stalls the *preview*.
+    // This is what made the live screen lag, and why throttling the call rate
+    // with runAtTargetFps didn't fix it: the blocking call still occupied the
+    // analysis pipeline whenever it ran.
+    //
+    // runAsync is VisionCamera's sanctioned answer for exactly this (its own
+    // docs use a ~500ms ML plugin as the example). The frame processor returns
+    // immediately, the heavy work runs on a separate context, and runAsync
+    // drops frames while busy -- so at most one camera buffer is held at a
+    // time and the preview keeps running at full rate. It also self-limits to
+    // whatever rate ML Kit can actually sustain, so no separate fps throttle
+    // is needed.
+    runAsync(frame, () => {
       "worklet";
       if (plugin == null) {
         console.error("scanText plugin not found");
