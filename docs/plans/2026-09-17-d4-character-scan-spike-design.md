@@ -303,3 +303,101 @@ processor output, and the ROI crop should be applied to the largest frame the
 device will deliver at an acceptable rate. This reinforces the Phase 0 conclusion
 that Level is best-effort and that Name/Title — larger, plainer text — are the
 reliable fields.
+
+## Phase 2 results
+
+**Pass, with an open problem.** The spike's core question now has a live,
+on-device demonstration rather than just Phase 0's offline proof: pointing the
+camera at the character sheet, Name and Title both correctly lock in via the
+rolling-window vote mechanism. Commits `d99d648` through `49603e0` on
+`spike/d4-ocr-phase0`.
+
+### What worked
+
+- The local `d4-ocr` Expo module scaffolds, autolinks, and builds cleanly
+  alongside VisionCamera's own autolinked Gradle project.
+- ML Kit recognizes text correctly from live camera frames, not just stills:
+  "UDAN", "CHARACTER", "Stats & Materials", "Weapon Damage" etc. all read
+  cleanly in the majority of frames.
+- The anchor/fields/voting pipeline works as designed against real fixture
+  data: `findAnchor` fuzzy-matches "CHARACTER" even when OCR degrades it (e.g.
+  "GARACTa" from an angled shot), and the vote lock-in correctly rejects
+  transient bad reads without needing them to disappear entirely.
+- The rotation mapping derived from `Frame.java`'s documented semantics
+  (`PORTRAIT→0, LANDSCAPE_RIGHT→90, PORTRAIT_UPSIDE_DOWN→180, LANDSCAPE_LEFT→270`)
+  is correct -- confirmed by high name/title read rates across multiple live
+  sessions, not just a lucky one-off.
+
+### Two bugs found and fixed, worth remembering for Phase 3+
+
+1. **Nested `Map<String, Any>` returned from an Expo Modules `AsyncFunction`
+   silently drops values.** `frame: {}` came back empty every time, even
+   though `text` read correctly, until switched to typed `Record` classes
+   (`@Field`-annotated). This is specific to Expo Modules' reflection-based
+   bridge. VisionCamera's own frame processor bridge
+   (`JSIJNIConversion.cpp`) is different machinery -- it recursively converts
+   plain nested `Map`/`List` by runtime type inspection, not static reflection
+   -- so the frame processor plugin correctly returns plain `mapOf(...)`
+   without needing Records. **Know which bridge you're returning through
+   before reaching for a fix; the two don't share a failure mode.**
+2. **Android scoped storage blocks direct `file://` reads of
+   `/sdcard/Download/`**, even for a world-readable file, with a silent
+   `EACCES`. Fixed for manual testing by copying into the app's private
+   internal storage (`/data/data/<pkg>/files/`) via `adb push` + `run-as cp`.
+   Worth remembering if any future manual on-device testing needs to hand the
+   app a file.
+
+### An investigation that turned out to be a false lead
+
+Early live testing showed alternating clean and garbled-looking reads (some
+resembling 180°-rotated text) while `frame.orientation` and frame dimensions
+both stayed constant. This looked like a rotation bug and cost real
+investigation time. Broader sampling across a longer, deliberately steady
+session showed the garbled entries were ordinary live-video OCR noise (dropped/
+substituted characters from blur, autofocus, minor hand movement) -- the kind
+of noise the vote lock-in exists to filter -- not a systematic rotation defect.
+**Lesson: don't diagnose a rotation bug from 2-3 anecdotal "this looks flipped"
+examples; tally a full session's output before concluding the pattern is
+systematic.**
+
+### Open problem: live preview performance
+
+The `scanText` plugin's synchronous ML Kit call costs roughly 500-700ms per
+frame -- far slower than the ~30fps camera frame delivery Phase 1 measured, and
+also slower than Phase 0's assumption of 30-80ms per frame (that estimate was
+based on ML Kit's typical cost on a cropped, in-memory bitmap; live YUV frame
+conversion via `InputImage.fromMediaImage` evidently costs more). Two
+mitigations were tried:
+
+- `runAtTargetFps` throttling, to stop the frame processor from being invoked
+  faster than the expensive call can complete.
+- Lowering `scannerConfig.targetFps` from the original design's assumed 8 down
+  to 2, closer to ML Kit's real sustained rate.
+
+Neither fully resolved it. The reported on-device experience: smooth for
+roughly a second, then visible lag/jitter, regardless of the target rate tried.
+The leading hypothesis -- not confirmed -- is that the frame processor holds
+each camera buffer for the full duration of the blocking ML Kit call, and the
+underlying camera capture pipeline's buffer pool (typically only a handful of
+buffers) exhausts after enough slow calls, stalling the preview itself rather
+than just the OCR output rate. This needs actual profiling to confirm (native-
+side timing around `Tasks.await`, buffer pool inspection, checking for thermal
+throttling given how much continuous camera+ML testing this session involved)
+rather than more guessing.
+
+**This does not block the spike's core conclusion.** Name and Title do lock
+correctly; the pipeline works. But a shippable version of this feature needs
+the live performance problem solved -- likely via one of: running ML Kit
+asynchronously off the frame processor thread (copying frame data rather than
+holding the camera's buffer), cropping to a smaller ROI before recognition, or
+accepting a deliberately low, buffer-pool-safe scan rate as a permanent design
+constraint rather than a stopgap.
+
+### Recommendation
+
+Stop here for this spike. The original question -- can a phone camera reliably
+read a Diablo 4 character's name -- is answered: yes, both from a still photo
+(93%, Phase 0) and live from camera frames (Phase 2). Building the guided
+step-by-step overlay, item scanning, or any other product feature on this
+foundation should treat live-preview performance as a prerequisite piece of
+work, not something to discover by surprise later.
