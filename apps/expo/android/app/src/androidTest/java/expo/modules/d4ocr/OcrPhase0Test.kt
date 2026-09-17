@@ -37,4 +37,29 @@ class OcrPhase0Test {
             text.contains("93"),
         )
     }
+
+    @Test
+    fun reportsRecognitionAcrossAllSamples() {
+        val fileNames = (1..15).map { "character-sheet-%02d.jpg".format(it) }
+
+        val results = fileNames.map { fileName ->
+            val text = recognizeAsset(fileName)
+            val levelFound = text.contains("93")
+            val nameFound = text.contains("UDAN", ignoreCase = true)
+            val titleFound = text.contains("Demonic Defender", ignoreCase = true)
+            Triple(fileName, Triple(levelFound, nameFound, titleFound), text)
+        }
+
+        val report = results.joinToString("\n") { (fileName, found, text) ->
+            val (levelFound, nameFound, titleFound) = found
+            "$fileName -> level=$levelFound name=$nameFound title=$titleFound\n  raw: ${text.replace("\n", " | ")}"
+        }
+        println(report)
+
+        val levelHitRate = results.count { it.second.first }.toDouble() / results.size
+        assertTrue(
+            "Level recognized in fewer than half of samples ($levelHitRate). Report:\n$report",
+            levelHitRate >= 0.5,
+        )
+    }
 }
