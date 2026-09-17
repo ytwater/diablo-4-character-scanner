@@ -72,16 +72,19 @@ export default function ScanScreen() {
     titleVoter.current.vote(fields.title);
     levelVoter.current.vote(fields.level);
 
+    // Show the voter's front-runner rather than this frame's raw read, so the
+    // display reflects accumulating agreement instead of flickering with
+    // every frame's OCR jitter.
     setName({
-      candidate: fields.name ?? null,
+      candidate: nameVoter.current.getLeading(),
       locked: nameVoter.current.getLocked(),
     });
     setTitle({
-      candidate: fields.title ?? null,
+      candidate: titleVoter.current.getLeading(),
       locked: titleVoter.current.getLocked(),
     });
     setLevel({
-      candidate: fields.level ?? null,
+      candidate: levelVoter.current.getLeading(),
       locked: levelVoter.current.getLocked(),
     });
   }, []);
