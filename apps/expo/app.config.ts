@@ -56,5 +56,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         },
       },
     ],
+    [
+      "expo-build-properties",
+      {
+        android: {
+          buildToolsVersion: "36.1.0",
+        },
+      },
+    ],
   ],
 });
