@@ -180,3 +180,42 @@ test. No E2E — camera behaviour is judged on device by eye.
 
 The guided step-by-step overlay, item scanning, scroll handling, persistence, API
 and database integration, iOS testing, A/B testing of tuning constants.
+
+## Phase 0 results
+
+Ran ML Kit's default Latin text recognizer (`text-recognition:16.0.1`) against
+14 of the 15 planned photos (one was lost mid-spike when a `expo prebuild`
+re-run wiped the untracked `android/` directory before the photos were
+committed — noted here as a process gap, not an OCR finding).
+
+1. **Level:** recognized in 5/14 photos (36%) — below the plan's 0.5 floor.
+2. **Name and title:** recognized in 13/14 photos each (93%).
+3. **Failure quality:** most failures were partial, not garbage — the same
+   photo would correctly read name and title while missing the level, and the
+   level digits, when misread, were simply absent from the output rather than
+   swapped for wrong characters. Only one photo (`character-sheet-13.jpg`)
+   failed almost everything, returning fragments of every line ("ER O |
+   fender | aterials | Damage | ...") — visibly blurrier/more oblique than the
+   rest, consistent with a bad angle or motion blur rather than a font
+   problem.
+4. **Likely cause of the level miss:** Level is rendered inside a small
+   colored diamond badge icon (graphic background, embossed digits), while
+   Name and Title are plain light text on a plain dark panel. The pattern
+   across all 14 reads matches this: the OCR reliably reads panel text but
+   inconsistently reads the badge digit. This looks like a badge-icon
+   contrast/rendering problem specific to the level field, not a general
+   failure of the D4 UI font.
+5. **Angle/distance:** no clear correlation in this set beyond the one bad
+   photo above — the closer, straighter shots did not obviously outperform
+   the others on level recognition, though this set never varied lighting,
+   glare, or background, so that's untested.
+
+**Go/no-go:** Name and title are reliable enough (93%) that anchoring on them
+looks viable. Level at 36% is not, as-is — but since the failure looks
+localized to the badge icon rather than the whole panel, the fix belongs in
+Phase 1/2's ROI cropping and field-detection logic (e.g. crop tighter around
+the badge, or fall back to reading level from elsewhere on the sheet) rather
+than requiring different OCR tech. Proceeding to Phase 1 is reasonable, but
+Phase 2's field-detection work should treat the level badge as a known hard
+case from day one, and a proper varied capture set (glare, dark background,
+second character) should be taken before trusting these hit rates far.
