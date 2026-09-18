@@ -62,3 +62,8 @@ dist/
 .dev.vars
 packages/db/local.db
 packages/db/local.db-journal
+# Item tooltip photo corpus: regenerate by staging temp-items/ (see
+# ItemFixtureCaptureTest). The captured OCR text is committed as
+# __fixtures__/item-photo-frames.json; the source photos are not.
+apps/expo/test-fixtures/items/
+apps/expo/android/app/src/androidTest/assets/
