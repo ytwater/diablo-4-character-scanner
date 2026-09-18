@@ -163,3 +163,46 @@ against orders EQUIPPED → name → rarity, so the guard
 `rarityLine.index > equippedIndex + 1` never holds. Deprioritised for the
 character flow, which no longer depends on scanned names, but it still affects
 item scanning.
+
+## Character profile: device verification
+
+Verified on a Pixel 10 Pro via the Metro dev client (2026-09-18).
+
+| # | Check | Result |
+| --- | --- | --- |
+| 1 | Fresh install, open Scan → setup form, no camera preview | **Pass** |
+| 2 | "Start scanning" disabled until name typed and class picked | **Pass** |
+| 3 | Long name (`Thornwyn the Undying Scourge of Hatred`) → chip shows it on its own line, ellipsized, edit glyph still visible | **Pass** |
+| 4 | Reopen app → profile persists, camera opens directly, no setup-form flash | **Pass** |
+| 5 | Tap chip → prefilled edit form → Cancel returns unchanged | **Pass** |
+| 6 | Point at character sheet → Level locks | **Did not lock** — expected. Mode detection worked (label read "Character sheet"), so the anchor and `extractFields` pipeline ran; the level vote never reached 3-of-8 consensus. Matches Phase 0's measured 40% level accuracy and `scannerConfig`'s own comment that level is best-effort. Not a regression. |
+| 7 | Reopen → locked level persisted | N/A — no level locked in this session to persist |
+| 8 | Tap chip → "Clear character" → setup form returns | **Pass**, after a fix (below) |
+
+### Two bugs found and fixed during verification
+
+1. **Camera permission requested before any profile existed.** The
+   permission-request effect had no gate on `character`, and React hooks run
+   on every render regardless of which branch is returned — so opening Scan
+   for the first time prompted for camera access while the setup form was
+   still meant to be showing, contradicting the design's "camera not
+   mounted during setup." Fixed by gating the effect on `character != null
+   && !isEditing`.
+2. **"Clear character" left the old name and class showing.** Editing and
+   clearing both render the same branch (`character == null || isEditing`),
+   so `CharacterSetup` was never unmounted between them, and its
+   `useState(existing?.name ?? "")` initializer — which only runs on mount —
+   never re-ran. Fixed with `key={character?.id ?? "new"}` on
+   `CharacterSetup`, forcing a fresh instance whenever the underlying
+   character's identity changes.
+
+Both confirmed fixed by repeating the failing sequence after the fix.
+
+### Not covered
+
+Level write-back persistence (step 7) needs a session where the level
+actually locks, which a live handheld camera didn't reliably produce here.
+Given Phase 0's 40% baseline, that would need either a steadier capture (a
+tripod, or the anchor-located ROI cropping noted as Phase 1 follow-up) or
+accepting that manual level entry may be worth adding alongside the scan,
+matching the same reasoning that led to manual name and class entry.
