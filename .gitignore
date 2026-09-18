@@ -25,7 +25,15 @@ next-env.d.ts
 expo-env.d.ts
 apps/expo/.gitignore
 apps/expo/ios
-apps/expo/android
+
+# apps/expo/android is tracked for the OCR phase 0 spike (hand-edited native
+# build.gradle + androidTest code) - ignore only its generated build output.
+apps/expo/android/.gradle
+apps/expo/android/.kotlin
+apps/expo/android/build
+apps/expo/android/app/build
+apps/expo/android/app/.cxx
+apps/expo/android/local.properties
 
 # production
 build
