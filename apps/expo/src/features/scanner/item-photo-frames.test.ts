@@ -15,7 +15,9 @@ import frames from "./__fixtures__/item-photo-frames.json";
  */
 describe("item tooltip photos, real device OCR", () => {
   const asBlocks = (text: string): TextBlock[] =>
-    text.split("\n").map((t) => ({ text: t, x: 0, y: 0, width: 1, height: 1 }));
+    text
+      .split("\n")
+      .map((t) => ({ text: t, frame: { x: 0, y: 0, width: 1, height: 1 } }));
 
   for (const frame of frames) {
     it(`detects ${frame.label} as an item`, () => {
