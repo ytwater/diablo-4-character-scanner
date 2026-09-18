@@ -164,6 +164,10 @@ export default function Index() {
 
         <MobileAuth />
 
+        <Link href="/scan-phase1-test" className="text-primary py-2 text-center">
+          Phase 1 frame processor smoke test
+        </Link>
+
         <View className="py-2">
           <Text className="text-primary font-semibold italic">
             Press on a post
