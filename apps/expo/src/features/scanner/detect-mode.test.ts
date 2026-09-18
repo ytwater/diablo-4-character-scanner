@@ -24,7 +24,27 @@ describe("detectMode", () => {
     expect(detectMode([block("ESC"), block("TAB"), block("CAPS")])).toBe("none");
   });
 
-  it("does not treat the word equipped inside prose as a tooltip", () => {
-    expect(detectMode([block("CHARACTER"), block("items equipped by you")])).toBe("character");
+  // Deliberately dropped an earlier assertion that prose containing the word
+  // "equipped" should stay in character mode. Being that strict is what broke
+  // on device: requiring an exact "EQUIPPED" line meant any OCR noise around
+  // the word sent a real tooltip to character mode. D4's character sheet
+  // doesn't render that word, so the tradeoff is worth it.
+  it("still detects an item when the EQUIPPED header is OCR-mangled", () => {
+    expect(
+      detectMode([
+        block("CHARACTER G"),
+        block("Hand"),
+        block("EQUIPPEDD ."),
+        block("850 Item Power"),
+      ]),
+    ).toBe("item");
+  });
+
+  it("detects an item from Item Power alone", () => {
+    expect(detectMode([block("CHARACTER"), block("850 Iten Power")])).toBe("item");
+  });
+
+  it("detects an item from a rarity line alone", () => {
+    expect(detectMode([block("CHARACTER"), block("Unique Ring")])).toBe("item");
   });
 });

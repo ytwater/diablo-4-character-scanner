@@ -204,7 +204,9 @@ export function parseItem(rawText: string): ParsedItem {
   // The name sits between the EQUIPPED header and the rarity line, and wraps
   // across lines for longer names ("RING OF THE" / "MIDNIGHT SUN"), so take
   // everything in between rather than assuming a single line.
-  const equippedIndex = lines.findIndex((l) => /^equipped$/i.test(l));
+  // Tolerant of trailing OCR noise ("EQUIPPEDD ."). An exact-match test here
+  // silently loses the item name whenever the header picks up a stray glyph.
+  const equippedIndex = lines.findIndex((l) => /^equipp?e?d\b/i.test(l));
   if (equippedIndex >= 0 && rarityLine != null && rarityLine.index > equippedIndex + 1) {
     const name = lines
       .slice(equippedIndex + 1, rarityLine.index)
@@ -215,7 +217,7 @@ export function parseItem(rawText: string): ParsedItem {
   }
 
   for (const line of lines) {
-    const power = /^([\d.,]+)\s+Ite?mn?\s+Power/i.exec(line);
+    const power = /^([\d.,]+)\s+Ite[mn]n?\s+Power/i.exec(line);
     if (power != null) {
       const n = num(power[1]!);
       if (n != null) item.itemPower = n;
