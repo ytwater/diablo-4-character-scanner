@@ -68,9 +68,13 @@ export default function ScanScreen() {
   const [level, setLevel] = useState<FieldDisplay>(EMPTY_FIELD);
   const [item, setItem] = useState<VotedItem | null>(null);
 
+  // Gated on having a profile: hooks run on every render regardless of which
+  // branch below returns early, so without this check the camera-permission
+  // prompt fires while the setup form is still showing, before the camera
+  // should be touched at all.
   useEffect(() => {
-    if (!hasPermission) void requestPermission();
-  }, [hasPermission, requestPermission]);
+    if (character != null && !isEditing && !hasPermission) void requestPermission();
+  }, [character, isEditing, hasPermission, requestPermission]);
 
   const resetItem = useCallback(() => {
     itemVoter.current.reset();
@@ -145,6 +149,13 @@ export default function ScanScreen() {
       <View style={styles.fill}>
         <Stack.Screen options={{ title: character == null ? "Set up" : "Edit" }} />
         <CharacterSetup
+          // Forces a fresh instance whenever the underlying character
+          // changes identity (most importantly, editing -> clearing).
+          // useState(existing?.name ?? "") only runs its initializer on
+          // mount; without this key, clearing while editing left the form
+          // showing the just-cleared character's stale values instead of
+          // resetting to blank, since neither branch unmounts the component.
+          key={character?.id ?? "new"}
           existing={character}
           onSave={async (next) => {
             await save(next);
