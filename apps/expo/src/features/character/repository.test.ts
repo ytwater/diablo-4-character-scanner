@@ -3,9 +3,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const store = new Map<string, string>();
 
 vi.mock("expo-secure-store", () => ({
-  getItemAsync: vi.fn(async (k: string) => store.get(k) ?? null),
-  setItemAsync: vi.fn(async (k: string, v: string) => void store.set(k, v)),
-  deleteItemAsync: vi.fn(async (k: string) => void store.delete(k)),
+  getItemAsync: vi.fn((k: string) => Promise.resolve(store.get(k) ?? null)),
+  setItemAsync: vi.fn((k: string, v: string) => Promise.resolve(void store.set(k, v))),
+  deleteItemAsync: vi.fn((k: string) => Promise.resolve(void store.delete(k))),
 }));
 
 const SecureStore = await import("expo-secure-store");

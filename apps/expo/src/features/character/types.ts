@@ -46,7 +46,7 @@ export function createCharacter(input: {
     id: newId(),
     name,
     class: input.class,
-    title: input.title?.trim() || undefined,
+    title: input.title?.trim() === "" ? undefined : input.title?.trim(),
     level: input.level,
     updatedAt: new Date().toISOString(),
   };

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, TextInput } from "react-native";
 
 import type { Character, D4Class } from "./types";
 import { createCharacter, D4_CLASSES, MAX_NAME_LENGTH } from "./types";

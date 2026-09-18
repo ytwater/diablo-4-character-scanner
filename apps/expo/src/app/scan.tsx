@@ -12,6 +12,10 @@ import type { TextBlock } from "../features/scanner/anchor";
 import type { ScanMode } from "../features/scanner/detect-mode";
 import type { VotedItem } from "../features/scanner/item-voting";
 import { findAnchor } from "../features/scanner/anchor";
+import { CharacterChip } from "../features/character/CharacterChip";
+import { CharacterSetup } from "../features/character/CharacterSetup";
+import { nextCharacterFromLock } from "../features/character/level-writeback";
+import { useCharacter } from "../features/character/useCharacter";
 import { scannerConfig } from "../features/scanner/config";
 import { detectMode } from "../features/scanner/detect-mode";
 import { extractFields } from "../features/scanner/fields";
@@ -48,18 +52,9 @@ export default function ScanScreen() {
     { videoResolution: { width: 1920, height: 1080 } },
   ]);
 
-  const nameVoter = useRef(
-    createFieldVoter({
-      windowSize: scannerConfig.voteWindowSize,
-      threshold: scannerConfig.lockThresholds.name,
-    }),
-  );
-  const titleVoter = useRef(
-    createFieldVoter({
-      windowSize: scannerConfig.voteWindowSize,
-      threshold: scannerConfig.lockThresholds.title,
-    }),
-  );
+  const { character, isLoading, save, clear } = useCharacter();
+  const [isEditing, setIsEditing] = useState(false);
+
   const levelVoter = useRef(
     createFieldVoter({
       windowSize: scannerConfig.voteWindowSize,
@@ -70,8 +65,6 @@ export default function ScanScreen() {
   const mismatchCount = useRef(0);
 
   const [mode, setMode] = useState<ScanMode>("none");
-  const [name, setName] = useState<FieldDisplay>(EMPTY_FIELD);
-  const [title, setTitle] = useState<FieldDisplay>(EMPTY_FIELD);
   const [level, setLevel] = useState<FieldDisplay>(EMPTY_FIELD);
   const [item, setItem] = useState<VotedItem | null>(null);
 
@@ -115,21 +108,11 @@ export default function ScanScreen() {
       if (anchor == null) return;
 
       const fields = extractFields(blocks, anchor);
-      nameVoter.current.vote(fields.name);
-      titleVoter.current.vote(fields.title);
       levelVoter.current.vote(fields.level);
 
       // Show the voter's front-runner rather than this frame's raw read, so
       // the display reflects accumulating agreement instead of flickering
       // with every frame's OCR jitter.
-      setName({
-        candidate: nameVoter.current.getLeading(),
-        locked: nameVoter.current.getLocked(),
-      });
-      setTitle({
-        candidate: titleVoter.current.getLeading(),
-        locked: titleVoter.current.getLocked(),
-      });
       setLevel({
         candidate: levelVoter.current.getLeading(),
         locked: levelVoter.current.getLocked(),
@@ -138,6 +121,48 @@ export default function ScanScreen() {
   }, []);
 
   const frameProcessor = useTextScanner(onBlocks);
+
+  // Write the locked level back to the stored profile. This must be an
+  // effect rather than inline in onBlocks: onBlocks runs from the frame-
+  // processor callback where `character` would be captured stale.
+  useEffect(() => {
+    if (character == null) return;
+    const next = nextCharacterFromLock(character, level.locked);
+    if (next != null) void save(next);
+  }, [character, level.locked, save]);
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <Stack.Screen options={{ title: "Scan" }} />
+        <Text style={styles.dim}>Loading…</Text>
+      </View>
+    );
+  }
+
+  if (character == null || isEditing) {
+    return (
+      <View style={styles.fill}>
+        <Stack.Screen options={{ title: character == null ? "Set up" : "Edit" }} />
+        <CharacterSetup
+          existing={character}
+          onSave={async (next) => {
+            await save(next);
+            setIsEditing(false);
+          }}
+          onCancel={character != null ? () => setIsEditing(false) : undefined}
+          onClear={
+            character != null
+              ? async () => {
+                  await clear();
+                  setIsEditing(false);
+                }
+              : undefined
+          }
+        />
+      </View>
+    );
+  }
 
   if (!hasPermission) {
     return (
@@ -170,6 +195,7 @@ export default function ScanScreen() {
         // the plugin use ML Kit's fast fromBitmap path.
         pixelFormat="rgb"
       />
+      <CharacterChip character={character} onEdit={() => setIsEditing(true)} />
       <View pointerEvents="none" style={styles.aimBox} />
 
       <View style={styles.overlay}>
@@ -191,11 +217,7 @@ export default function ScanScreen() {
         {mode === "item" ? (
           <ItemView item={item} />
         ) : (
-          <>
-            <FieldRow label="Name" field={name} />
-            <FieldRow label="Title" field={title} />
-            <FieldRow label="Level" field={level} />
-          </>
+          <FieldRow label="Level" field={level} />
         )}
       </View>
     </View>

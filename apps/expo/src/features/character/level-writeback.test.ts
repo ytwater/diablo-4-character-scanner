@@ -27,6 +27,8 @@ describe("nextCharacterFromLock", () => {
 
   it("advances updatedAt", () => {
     const next = nextCharacterFromLock({ ...base, updatedAt: "2020-01-01T00:00:00.000Z" }, "93");
-    expect(next!.updatedAt > "2020-01-01T00:00:00.000Z").toBe(true);
+    expect(next).not.toBeNull();
+    const updatedAt = next?.updatedAt ?? "";
+    expect(updatedAt > "2020-01-01T00:00:00.000Z").toBe(true);
   });
 });
