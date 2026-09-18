@@ -5,6 +5,9 @@ node_modules
 .pnp
 .pnp.js
 
+temp/
+temp-items/
+
 # testing
 coverage
 
@@ -30,6 +33,7 @@ build
 # misc
 .DS_Store
 *.pem
+*:Zone.Identifier
 
 # debug
 npm-debug.log*
