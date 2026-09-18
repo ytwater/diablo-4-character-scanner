@@ -4,6 +4,7 @@
     "jsx": "react-native",
     "checkJs": false,
     "moduleSuffixes": [".ios", ".android", ".native", ""],
+    "types": ["jest"],
     "paths": {
       "~/*": ["./src/*"]
     }

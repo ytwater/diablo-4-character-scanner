@@ -10,7 +10,7 @@ import type { RouterOutputs } from "~/utils/api";
 import { orpc } from "~/utils/api";
 import { authClient } from "~/utils/auth";
 
-function PostCard(props: {
+export function PostCard(props: {
   post: RouterOutputs["post"]["all"][number];
   onDelete: () => void;
 }) {
