@@ -1,0 +1,34 @@
+package expo.modules.d4ocr
+
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import com.google.android.gms.tasks.Tasks
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import org.junit.Assert.assertTrue
+import org.junit.Test
+import org.junit.runner.RunWith
+
+@RunWith(AndroidJUnit4::class)
+class OcrPhase0Test {
+
+    private fun recognizeAsset(fileName: String): String {
+        val context = InstrumentationRegistry.getInstrumentation().context
+        val bytes = context.assets.open("character-sheets/$fileName").use { it.readBytes() }
+        val bitmap = android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+        val image = InputImage.fromBitmap(bitmap, 0)
+        val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+        val result = Tasks.await(recognizer.process(image))
+        return result.text
+    }
+
+    @Test
+    fun recognizesLevelOnClearPhoto() {
+        val text = recognizeAsset("character-sheet-01.jpg")
+        assertTrue(
+            "Expected level 93 in recognized text, got:\n$text",
+            text.contains("93"),
+        )
+    }
+}
