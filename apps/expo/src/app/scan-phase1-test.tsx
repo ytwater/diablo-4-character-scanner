@@ -6,7 +6,7 @@ import {
   useCameraPermission,
   useFrameProcessor,
 } from "react-native-vision-camera";
-import { runOnJS } from "react-native-worklets-core";
+import { useRunOnJS } from "react-native-worklets-core";
 
 export default function ScanPhase1Test() {
   const { hasPermission, requestPermission } = useCameraPermission();
@@ -21,10 +21,12 @@ export default function ScanPhase1Test() {
     console.log(`[scan-phase1-test] frame ts=${count} size=${size}`);
   }, []);
 
+  const updateFromJsWorklet = useRunOnJS(updateFromJs, [updateFromJs]);
+
   const frameProcessor = useFrameProcessor((frame) => {
     "worklet";
-    runOnJS(updateFromJs)(frame.timestamp, `${frame.width}x${frame.height}`);
-  }, [updateFromJs]);
+    updateFromJsWorklet(frame.timestamp, `${frame.width}x${frame.height}`);
+  }, [updateFromJsWorklet]);
 
   if (!hasPermission) {
     requestPermission();
