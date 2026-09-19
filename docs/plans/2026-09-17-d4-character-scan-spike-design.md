@@ -219,3 +219,57 @@ than requiring different OCR tech. Proceeding to Phase 1 is reasonable, but
 Phase 2's field-detection work should treat the level badge as a known hard
 case from day one, and a proper varied capture set (glare, dark background,
 second character) should be taken before trusting these hit rates far.
+
+## Phase 1 results
+
+**Dependencies (Task 0):** `react-native-vision-camera@4.7.3` and
+`react-native-worklets-core@1.6.3` installed clean via `expo install`, pinned
+exactly as planned. No peer-dependency warnings involving `react-native-worklets`
+or `react-native-reanimated`.
+
+**Native build (Task 2):** `./gradlew :app:assembleDebug` — **BUILD SUCCESSFUL**,
+no dependency conflict, no duplicate-class or JSI symbol collision. Direct
+evidence the two worklet runtimes link cleanly at the native level: the CMake
+configure step for `react-native-vision-camera` printed
+`VisionCamera: Frame Processors: ON! Linking react-native-worklets...`
+(i.e. VisionCamera's C++ target links straight against Reanimand's
+`react-native-worklets`, not a separate/conflicting copy).
+
+**On-device run (Task 4):** Ran via `npx expo run:android` on a physical
+device (Pixel 10 Pro over USB). Confirmed via `adb logcat`:
+- `libVisionCamera.so` and `librnworklets.so` (Reanimated's) both loaded
+  successfully in the same process.
+- `VisionCameraProxy` created its own Worklet Context independently
+  (`Creating Worklet Context...` / `Worklet Context created!`) alongside
+  Reanimated's own worklets runtime already running — no crash, no conflict.
+- The frame processor fired continuously: 508 frames logged in a 15s window
+  (~34fps sustained), each one calling `useRunOnJS`'s worklet-core-to-JS hop
+  to update React state, over the full duration with no interruption.
+- `grep -iE "FATAL|AndroidRuntime|ANR"` over that window returned nothing
+  relevant (only unrelated system WifiHAL log lines).
+- The app process stayed on a single PID throughout — no crash-and-restart.
+
+**Secondary findings, not blocking but worth flagging for Phase 2:**
+- `react-native-worklets-core@1.6.3` does not export a top-level `runOnJS`
+  function — that API was replaced by the `useRunOnJS` hook
+  (`react-native-worklets-core/lib/typescript/hooks/useRunOnJS.d.ts`). Any
+  future frame-processor code (Phase 2's `useTextScanner.ts` etc.) needs to
+  use `useRunOnJS`, not `runOnJS`, when crossing from a VisionCamera frame
+  processor worklet back to JS.
+- expo-router's default `require.context` over `src/app/` treats every
+  `.tsx` file as a route, including test files. `index.test.tsx` pulled
+  `@testing-library/react-native` (and its Node-only `console` import) into
+  the Metro bundle and broke bundling for the *entire app* — unrelated to
+  VisionCamera/worklets, but blocking until fixed. Fixed with a
+  `metro.config.js` `resolver.blockList` entry excluding
+  `src/app/**/*.test.{ts,tsx}` from the route bundle. This was a pre-existing
+  gap, only surfaced now because this was the first `expo run:android`/`expo
+  start` in the repo since the test file was added.
+
+**Go/no-go for Phase 2:** **Go.** The top-ranked build risk (two worklet
+runtimes colliding) did not materialize at either the native build level or
+at runtime. VisionCamera 4.7.3 + `react-native-worklets-core` 1.6.3 coexist
+cleanly with Reanimated 4.1.3's `react-native-worklets` 0.5.1 on this app's
+exact stack (Expo SDK 54, RN 0.81.5). Phase 2 can proceed with the native
+`D4OcrPlugin`, `anchor.ts`/`fields.ts`/`voting.ts`, and the real scan screen
+as designed, using `useRunOnJS` (not `runOnJS`) for the worklet-to-JS bridge.
