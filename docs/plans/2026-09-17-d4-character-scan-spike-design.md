@@ -273,3 +273,84 @@ cleanly with Reanimated 4.1.3's `react-native-worklets` 0.5.1 on this app's
 exact stack (Expo SDK 54, RN 0.81.5). Phase 2 can proceed with the native
 `D4OcrPlugin`, `anchor.ts`/`fields.ts`/`voting.ts`, and the real scan screen
 as designed, using `useRunOnJS` (not `runOnJS`) for the worklet-to-JS bridge.
+
+## Phase 2 results
+
+**Implemented per plan:** `d4-ocr` native module (Kotlin `D4OcrRecognizer` +
+`D4OcrPlugin` registered as VisionCamera's `"scanText"` frame processor
+plugin; Swift scaffold compile-only/unverified — no macOS toolchain in this
+dev environment), the pure JS layer (`anchor.ts`, `fields.ts`, `voting.ts`,
+all unit-tested against real ML Kit fixtures captured on-device), and the
+real `useTextScanner.ts` + `scan.tsx` screen.
+
+**Deviations from the plan's snippets, caught before they became bugs:**
+- `VisionCameraProxy` is exported from `react-native-vision-camera`, not
+  `react-native-worklets-core` (the plan's `useTextScanner.ts` snippet
+  imported it from the wrong package).
+- The Android module needed `androidx.camera:camera-core` added directly as
+  a `compileOnly` dependency alongside `react-native-vision-camera` itself —
+  VisionCamera declares CameraX as `implementation`, so `ImageProxy` wasn't
+  visible transitively.
+- `create-expo-module@latest` (57.0.1) fails scaffolding local modules
+  entirely (`repo is not defined` in its podspec template, regardless of
+  `--repo`); had to pin to `create-expo-module@2.1.9`, the last version
+  aligned with this project's Expo SDK 54.
+- Gradle's `connectedDebugAndroidTest` uninstalls both APKs (and wipes their
+  external files dir) immediately after the run, which destroyed the
+  exported fixture JSON before `adb pull` could grab it. Worked around by
+  installing the pre-built APKs with `adb install` and invoking
+  `am instrument` directly.
+- `character-sheet-01.jpg` — the plan's suggested fixture for both the
+  anchor and fields tests — no longer OCRs to "93" on this device's current
+  ML Kit build, even though Phase 0's own test asserts it does (re-running
+  that exact Phase 0 test now fails the same way). Used
+  `character-sheet-02.json` instead, which does contain a clean "93" block
+  and confirmed the plan's assumed layout order (level, then name, then
+  title, all below the anchor) exactly.
+
+**On-device run (Task 12):** Built and installed via `npx expo run:android`
+on the same Pixel 10 Pro. Navigated to `/scan`, granted camera permission,
+pointed the camera at a monitor running Diablo 4.
+
+1. **Does it flow end-to-end?** Yes. Confirmed via screenshots taken over
+   `adb`: Level/Title/Name went from `—` placeholders to live OCR text within
+   seconds of pointing at any on-screen content, and stabilized (didn't keep
+   flickering) once held steady — native plugin → JS → anchor/fields/voting →
+   React state is wired correctly.
+2. **Crashes/ANRs?** None. `adb logcat` grepped for `FATAL|AndroidRuntime|
+   Exception` against the app's own PID, both during general pointing and
+   during the character-panel test, returned nothing for the whole session.
+3. **YUV→NV21 conversion legible?** Yes, indirectly confirmed: recognized
+   text was legible real substrings of on-screen content (e.g. "ROWN" from
+   "SILENT CROWN", "Head" from an equipment slot label), not the garbage a
+   striped/corrupted buffer would produce.
+4. **Field accuracy — two screens tested:**
+   - Pointed first at the equipped-item tooltip screen (not the intended
+     target): locked to `Level: y\n3-`, `Title: ROWN`, `Name: Head` — junk,
+     as expected, since this isn't the layout `fields.ts` assumes.
+   - Pointed at the actual CHARACTER stats panel (matching the fixtures —
+     "93" badge, "UDAN", "Demonic Defender" all visible on screen): still
+     locked to wrong values (`Level: 3-9`, `Title: PPED`, `Name: ad`) rather
+     than the correct `93`/`UDAN`/`Demonic Defender`. This is a genuine
+     accuracy miss on the intended screen, not a pipeline failure — the
+     unit tests against the exported-JSON fixtures passed with the correct
+     layout assumption, but live camera framing captures a wider field of
+     view (surrounding desktop/browser chrome, not a tight crop of just the
+     panel like the fixture photos were), producing a noisier block set that
+     the geometric heuristic doesn't handle.
+5. **Cosmetic bug found along the way, not yet fixed:** the "Scan character
+   sheet" home-screen link and the on-screen Level/Title/Name text both
+   render in a near-invisible dark color instead of the intended
+   `text-primary`/white — functional (confirmed via a direct `adb shell
+   input tap` on the link, which navigated correctly) but easy to miss
+   visually. Needs a styling fix, tracked separately from this plan.
+
+**Decision:** Qualified success — proceed to Phase 3. The pipeline is proven
+end-to-end with no crashes and legible OCR, satisfying this plan's pass bar.
+Phase 3's tuning priorities, in order: (1) tighten the ROI to actually match
+the live camera's framing of the character panel rather than the
+tightly-cropped fixture photos — this is very likely the single biggest
+lever, since the same layout assumption that passed unit tests failed live;
+(2) revisit `fields.ts`'s geometric offsets against on-device block sets
+(noisier than the fixture JSON) once ROI framing is fixed; (3) the
+low-contrast text styling bug (separate, low-risk fix).
