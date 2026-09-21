@@ -164,7 +164,7 @@ export default function Index() {
 
         <MobileAuth />
 
-        <Link href="/scan" className="text-primary py-2 text-center">
+        <Link href="/scan" className="py-2 text-center" style={{ color: "#ec4899" }}>
           Scan character sheet
         </Link>
 

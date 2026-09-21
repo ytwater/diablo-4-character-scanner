@@ -49,9 +49,9 @@ export default function ScanScreen() {
         }}
       />
       <View className="absolute inset-x-4 bottom-16 rounded-lg bg-black/60 p-3">
-        <Text className="mb-1 text-base text-white">Level: {candidates.level ?? "—"}</Text>
-        <Text className="mb-1 text-base text-white">Title: {candidates.title ?? "—"}</Text>
-        <Text className="text-base text-white">Name: {candidates.name ?? "—"}</Text>
+        <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>Level: {candidates.level ?? "—"}</Text>
+        <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>Title: {candidates.title ?? "—"}</Text>
+        <Text className="text-base" style={{ color: "#ffffff" }}>Name: {candidates.name ?? "—"}</Text>
       </View>
     </View>
   );
