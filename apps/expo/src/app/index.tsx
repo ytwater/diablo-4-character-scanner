@@ -164,6 +164,10 @@ export default function Index() {
 
         <MobileAuth />
 
+        <Link href="/scan" className="text-primary py-2 text-center">
+          Scan character sheet
+        </Link>
+
         <View className="py-2">
           <Text className="text-primary font-semibold italic">
             Press on a post
