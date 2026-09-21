@@ -344,13 +344,30 @@ pointed the camera at a monitor running Diablo 4.
    `text-primary`/white — functional (confirmed via a direct `adb shell
    input tap` on the link, which navigated correctly) but easy to miss
    visually. Needs a styling fix, tracked separately from this plan.
+6. **Perceived frame rate was noticeably slow** (observed directly by the
+   user handling the device, not measurable over `adb`). Given the target is
+   only 8fps by design (`scannerConfig.targetFps`), and each frame still pays
+   for a NV21 conversion, `YuvImage.compressToJpeg`, `BitmapFactory` decode,
+   and a synchronous `Tasks.await(recognizer.process(...))` call all on the
+   frame processor thread before the next frame can be picked up, the
+   *actual* achieved fps was never measured and is likely well under the
+   8fps target — Phase 1's 34fps figure was for an empty frame processor
+   with no OCR work in it, not a like-for-like comparison. This needs an
+   actual on-device fps measurement before Phase 3 tuning, not just a
+   subjective "felt slow."
 
 **Decision:** Qualified success — proceed to Phase 3. The pipeline is proven
 end-to-end with no crashes and legible OCR, satisfying this plan's pass bar.
-Phase 3's tuning priorities, in order: (1) tighten the ROI to actually match
-the live camera's framing of the character panel rather than the
-tightly-cropped fixture photos — this is very likely the single biggest
-lever, since the same layout assumption that passed unit tests failed live;
-(2) revisit `fields.ts`'s geometric offsets against on-device block sets
-(noisier than the fixture JSON) once ROI framing is fixed; (3) the
-low-contrast text styling bug (separate, low-risk fix).
+Phase 3's tuning priorities, in order: (1) measure actual achieved fps
+on-device and, if it's well under the 8fps target, look at moving the
+JPEG-compress/decode/ML-Kit round trip off the hot path (e.g. avoid the
+JPEG round-trip entirely and feed ML Kit a cropped `InputImage` built
+directly from the YUV planes) — this affects both perceived responsiveness
+and the vote-window lock-in latency the design doc's latency budget assumed;
+(2) tighten the ROI to actually match the live camera's framing of the
+character panel rather than the tightly-cropped fixture photos — this is
+very likely the single biggest lever for accuracy, since the same layout
+assumption that passed unit tests failed live; (3) revisit `fields.ts`'s
+geometric offsets against on-device block sets (noisier than the fixture
+JSON) once ROI framing is fixed; (4) the low-contrast text styling bug
+(separate, low-risk fix).
