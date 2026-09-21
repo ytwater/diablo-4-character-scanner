@@ -1,0 +1,196 @@
+{
+  "width": 3072,
+  "height": 4080,
+  "blocks": [
+    {
+      "text": "TWC> Death Beth | 70 (65)\nGutter Trash\nOmgaPaladin|70(36)",
+      "confidence": 1,
+      "frame": {
+        "x": 6,
+        "y": 1599,
+        "width": 447,
+        "height": 158
+      }
+    },
+    {
+      "text": "E",
+      "confidence": 1,
+      "frame": {
+        "x": 262,
+        "y": 1982,
+        "width": 26,
+        "height": 32
+      }
+    },
+    {
+      "text": "CHARACTER G",
+      "confidence": 1,
+      "frame": {
+        "x": 751,
+        "y": 1036,
+        "width": 453,
+        "height": 72
+      }
+    },
+    {
+      "text": "UDAN",
+      "confidence": 1,
+      "frame": {
+        "x": 906,
+        "y": 1271,
+        "width": 134,
+        "height": 39
+      }
+    },
+    {
+      "text": "Demonic Defender",
+      "confidence": 1,
+      "frame": {
+        "x": 794,
+        "y": 1359,
+        "width": 373,
+        "height": 52
+      }
+    },
+    {
+      "text": "Stats & Materials",
+      "confidence": 1,
+      "frame": {
+        "x": 823,
+        "y": 1655,
+        "width": 338,
+        "height": 49
+      }
+    },
+    {
+      "text": "Weapon Damage\n3,809",
+      "confidence": 1,
+      "frame": {
+        "x": 894,
+        "y": 1853,
+        "width": 306,
+        "height": 92
+      }
+    },
+    {
+      "text": "Toughness",
+      "confidence": 1,
+      "frame": {
+        "x": 902,
+        "y": 2052,
+        "width": 192,
+        "height": 42
+      }
+    },
+    {
+      "text": "63,913",
+      "confidence": 1,
+      "frame": {
+        "x": 909,
+        "y": 2105,
+        "width": 137,
+        "height": 36
+      }
+    },
+    {
+      "text": "Strength",
+      "confidence": 1,
+      "frame": {
+        "x": 810,
+        "y": 2264,
+        "width": 152,
+        "height": 45
+      }
+    },
+    {
+      "text": "Intelligence 207",
+      "confidence": 1,
+      "frame": {
+        "x": 813,
+        "y": 2370,
+        "width": 399,
+        "height": 43
+      }
+    },
+    {
+      "text": "willpower",
+      "confidence": 1,
+      "frame": {
+        "x": 817,
+        "y": 2478,
+        "width": 182,
+        "height": 41
+      }
+    },
+    {
+      "text": "Dexterity",
+      "confidence": 1,
+      "frame": {
+        "x": 822,
+        "y": 2577,
+        "width": 161,
+        "height": 41
+      }
+    },
+    {
+      "text": "190",
+      "confidence": 1,
+      "frame": {
+        "x": 1140,
+        "y": 2263,
+        "width": 79,
+        "height": 33
+      }
+    },
+    {
+      "text": "Equipment",
+      "confidence": 1,
+      "frame": {
+        "x": 850,
+        "y": 2705,
+        "width": 216,
+        "height": 50
+      }
+    },
+    {
+      "text": "125",
+      "confidence": 1,
+      "frame": {
+        "x": 1159,
+        "y": 2473,
+        "width": 63,
+        "height": 33
+      }
+    },
+    {
+      "text": "I,501",
+      "confidence": 1,
+      "frame": {
+        "x": 1125,
+        "y": 2575,
+        "width": 109,
+        "height": 44
+      }
+    },
+    {
+      "text": "686,691,098",
+      "confidence": 1,
+      "frame": {
+        "x": 937,
+        "y": 3414,
+        "width": 279,
+        "height": 55
+      }
+    },
+    {
+      "text": "283",
+      "confidence": 1,
+      "frame": {
+        "x": 1417,
+        "y": 3419,
+        "width": 82,
+        "height": 41
+      }
+    }
+  ]
+}

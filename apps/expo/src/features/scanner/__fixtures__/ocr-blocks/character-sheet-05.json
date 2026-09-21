@@ -1,0 +1,236 @@
+{
+  "width": 3072,
+  "height": 4080,
+  "blocks": [
+    {
+      "text": "T",
+      "confidence": 1,
+      "frame": {
+        "x": 55,
+        "y": 3374,
+        "width": 48,
+        "height": 44
+      }
+    },
+    {
+      "text": "TWO> DeathBeth |70 (65)",
+      "confidence": 1,
+      "frame": {
+        "x": 296,
+        "y": 1264,
+        "width": 489,
+        "height": 74
+      }
+    },
+    {
+      "text": "Gutter Trash\nIDF> OmgaPaladin|70 (36)",
+      "confidence": 1,
+      "frame": {
+        "x": 98,
+        "y": 1315,
+        "width": 572,
+        "height": 128
+      }
+    },
+    {
+      "text": "X",
+      "confidence": 1,
+      "frame": {
+        "x": 402,
+        "y": 3854,
+        "width": 34,
+        "height": 32
+      }
+    },
+    {
+      "text": "E",
+      "confidence": 1,
+      "frame": {
+        "x": 556,
+        "y": 1689,
+        "width": 28,
+        "height": 34
+      }
+    },
+    {
+      "text": "93",
+      "confidence": 1,
+      "frame": {
+        "x": 1042,
+        "y": 895,
+        "width": 74,
+        "height": 57
+      }
+    },
+    {
+      "text": "CHARACTER C",
+      "confidence": 1,
+      "frame": {
+        "x": 1126,
+        "y": 751,
+        "width": 460,
+        "height": 99
+      }
+    },
+    {
+      "text": "UDAN",
+      "confidence": 1,
+      "frame": {
+        "x": 1277,
+        "y": 1000,
+        "width": 133,
+        "height": 42
+      }
+    },
+    {
+      "text": "Demonic Defender",
+      "confidence": 1,
+      "frame": {
+        "x": 1157,
+        "y": 1085,
+        "width": 372,
+        "height": 62
+      }
+    },
+    {
+      "text": "Stats & Materials",
+      "confidence": 1,
+      "frame": {
+        "x": 1173,
+        "y": 1394,
+        "width": 331,
+        "height": 50
+      }
+    },
+    {
+      "text": "Weapon Damage\n3,809",
+      "confidence": 1,
+      "frame": {
+        "x": 1234,
+        "y": 1591,
+        "width": 292,
+        "height": 96
+      }
+    },
+    {
+      "text": "Toughness",
+      "confidence": 1,
+      "frame": {
+        "x": 1235,
+        "y": 1791,
+        "width": 186,
+        "height": 40
+      }
+    },
+    {
+      "text": "63,913",
+      "confidence": 1,
+      "frame": {
+        "x": 1239,
+        "y": 1843,
+        "width": 132,
+        "height": 35
+      }
+    },
+    {
+      "text": "Strength",
+      "confidence": 1,
+      "frame": {
+        "x": 1133,
+        "y": 2001,
+        "width": 152,
+        "height": 40
+      }
+    },
+    {
+      "text": "Intelligence 207",
+      "confidence": 1,
+      "frame": {
+        "x": 1132,
+        "y": 2101,
+        "width": 383,
+        "height": 41
+      }
+    },
+    {
+      "text": "willpower",
+      "confidence": 1,
+      "frame": {
+        "x": 1131,
+        "y": 2202,
+        "width": 175,
+        "height": 44
+      }
+    },
+    {
+      "text": "Dexterity",
+      "confidence": 1,
+      "frame": {
+        "x": 1129,
+        "y": 2301,
+        "width": 161,
+        "height": 42
+      }
+    },
+    {
+      "text": "190",
+      "confidence": 1,
+      "frame": {
+        "x": 1452,
+        "y": 2000,
+        "width": 73,
+        "height": 31
+      }
+    },
+    {
+      "text": "1 Equipment",
+      "confidence": 1,
+      "frame": {
+        "x": 1078,
+        "y": 2411,
+        "width": 282,
+        "height": 70
+      }
+    },
+    {
+      "text": "125",
+      "confidence": 1,
+      "frame": {
+        "x": 1464,
+        "y": 2199,
+        "width": 50,
+        "height": 30
+      }
+    },
+    {
+      "text": "I,501",
+      "confidence": 1,
+      "frame": {
+        "x": 1414,
+        "y": 2297,
+        "width": 99,
+        "height": 35
+      }
+    },
+    {
+      "text": "686,691,098",
+      "confidence": 1,
+      "frame": {
+        "x": 1195,
+        "y": 3069,
+        "width": 270,
+        "height": 81
+      }
+    },
+    {
+      "text": "283",
+      "confidence": 1,
+      "frame": {
+        "x": 1636,
+        "y": 3046,
+        "width": 74,
+        "height": 43
+      }
+    }
+  ]
+}

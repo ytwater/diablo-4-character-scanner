@@ -1,0 +1,236 @@
+{
+  "width": 3072,
+  "height": 4080,
+  "blocks": [
+    {
+      "text": "JCS DeathBeth|70 (65)",
+      "confidence": 1,
+      "frame": {
+        "x": 8,
+        "y": 1404,
+        "width": 346,
+        "height": 43
+      }
+    },
+    {
+      "text": "Gutter Trash\njaPaladin |70 (36)",
+      "confidence": 1,
+      "frame": {
+        "x": 8,
+        "y": 1456,
+        "width": 261,
+        "height": 78
+      }
+    },
+    {
+      "text": "and",
+      "confidence": 1,
+      "frame": {
+        "x": 13,
+        "y": 3767,
+        "width": 37,
+        "height": 22
+      }
+    },
+    {
+      "text": "pts",
+      "confidence": 1,
+      "frame": {
+        "x": -2,
+        "y": 3851,
+        "width": 33,
+        "height": 23
+      }
+    },
+    {
+      "text": "E",
+      "confidence": 1,
+      "frame": {
+        "x": 189,
+        "y": 1746,
+        "width": 23,
+        "height": 27
+      }
+    },
+    {
+      "text": "CHARACTER G",
+      "confidence": 1,
+      "frame": {
+        "x": 636,
+        "y": 922,
+        "width": 418,
+        "height": 47
+      }
+    },
+    {
+      "text": "UDAN",
+      "confidence": 1,
+      "frame": {
+        "x": 778,
+        "y": 1128,
+        "width": 125,
+        "height": 31
+      }
+    },
+    {
+      "text": "Demonic Defender",
+      "confidence": 1,
+      "frame": {
+        "x": 676,
+        "y": 1211,
+        "width": 336,
+        "height": 39
+      }
+    },
+    {
+      "text": "Stats & Materials",
+      "confidence": 1,
+      "frame": {
+        "x": 701,
+        "y": 1474,
+        "width": 305,
+        "height": 39
+      }
+    },
+    {
+      "text": "Weapon Damage\n3,809",
+      "confidence": 1,
+      "frame": {
+        "x": 762,
+        "y": 1646,
+        "width": 275,
+        "height": 85
+      }
+    },
+    {
+      "text": "Toughness\n63,913",
+      "confidence": 1,
+      "frame": {
+        "x": 771,
+        "y": 1825,
+        "width": 173,
+        "height": 77
+      }
+    },
+    {
+      "text": "Strength",
+      "confidence": 1,
+      "frame": {
+        "x": 688,
+        "y": 2008,
+        "width": 139,
+        "height": 40
+      }
+    },
+    {
+      "text": "Intelligence",
+      "confidence": 1,
+      "frame": {
+        "x": 692,
+        "y": 2099,
+        "width": 186,
+        "height": 34
+      }
+    },
+    {
+      "text": "Willpower",
+      "confidence": 1,
+      "frame": {
+        "x": 694,
+        "y": 2188,
+        "width": 162,
+        "height": 41
+      }
+    },
+    {
+      "text": "Dexterity",
+      "confidence": 1,
+      "frame": {
+        "x": 699,
+        "y": 2276,
+        "width": 144,
+        "height": 36
+      }
+    },
+    {
+      "text": "Equipment",
+      "confidence": 1,
+      "frame": {
+        "x": 726,
+        "y": 2386,
+        "width": 189,
+        "height": 41
+      }
+    },
+    {
+      "text": "190",
+      "confidence": 1,
+      "frame": {
+        "x": 983,
+        "y": 2014,
+        "width": 65,
+        "height": 28
+      }
+    },
+    {
+      "text": "207",
+      "confidence": 1,
+      "frame": {
+        "x": 978,
+        "y": 2105,
+        "width": 67,
+        "height": 28
+      }
+    },
+    {
+      "text": "125",
+      "confidence": 1,
+      "frame": {
+        "x": 999,
+        "y": 2193,
+        "width": 52,
+        "height": 28
+      }
+    },
+    {
+      "text": "I,5OI",
+      "confidence": 1,
+      "frame": {
+        "x": 971,
+        "y": 2276,
+        "width": 90,
+        "height": 35
+      }
+    },
+    {
+      "text": "686,691,098",
+      "confidence": 1,
+      "frame": {
+        "x": 798,
+        "y": 2977,
+        "width": 239,
+        "height": 44
+      }
+    },
+    {
+      "text": "283",
+      "confidence": 1,
+      "frame": {
+        "x": 1207,
+        "y": 2980,
+        "width": 69,
+        "height": 32
+      }
+    },
+    {
+      "text": "AaNGOuNTY",
+      "confidence": 1,
+      "frame": {
+        "x": 1895,
+        "y": 3864,
+        "width": 134,
+        "height": 27
+      }
+    }
+  ]
+}

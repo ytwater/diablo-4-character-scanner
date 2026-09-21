@@ -1,0 +1,186 @@
+{
+  "width": 3072,
+  "height": 4080,
+  "blocks": [
+    {
+      "text": "eathBeth |70 (65)",
+      "confidence": 1,
+      "frame": {
+        "x": 0,
+        "y": 1186,
+        "width": 326,
+        "height": 56
+      }
+    },
+    {
+      "text": "itter Trash",
+      "confidence": 1,
+      "frame": {
+        "x": 10,
+        "y": 1259,
+        "width": 163,
+        "height": 31
+      }
+    },
+    {
+      "text": "CHARACTER G",
+      "confidence": 1,
+      "frame": {
+        "x": 687,
+        "y": 597,
+        "width": 521,
+        "height": 70
+      }
+    },
+    {
+      "text": "UDAN",
+      "confidence": 1,
+      "frame": {
+        "x": 857,
+        "y": 850,
+        "width": 156,
+        "height": 48
+      }
+    },
+    {
+      "text": "Demonic Defender",
+      "confidence": 1,
+      "frame": {
+        "x": 748,
+        "y": 943,
+        "width": 401,
+        "height": 62
+      }
+    },
+    {
+      "text": "Stats & Materials",
+      "confidence": 1,
+      "frame": {
+        "x": 751,
+        "y": 1282,
+        "width": 381,
+        "height": 48
+      }
+    },
+    {
+      "text": "Weapon Damage\n3,809",
+      "confidence": 1,
+      "frame": {
+        "x": 823,
+        "y": 1494,
+        "width": 343,
+        "height": 107
+      }
+    },
+    {
+      "text": "Toughness\n63,913",
+      "confidence": 1,
+      "frame": {
+        "x": 828,
+        "y": 1722,
+        "width": 218,
+        "height": 97
+      }
+    },
+    {
+      "text": "Strength",
+      "confidence": 1,
+      "frame": {
+        "x": 717,
+        "y": 1958,
+        "width": 177,
+        "height": 46
+      }
+    },
+    {
+      "text": "Intelligence 207",
+      "confidence": 1,
+      "frame": {
+        "x": 719,
+        "y": 2072,
+        "width": 452,
+        "height": 49
+      }
+    },
+    {
+      "text": "Willpower",
+      "confidence": 1,
+      "frame": {
+        "x": 721,
+        "y": 2188,
+        "width": 198,
+        "height": 49
+      }
+    },
+    {
+      "text": "Dexterity",
+      "confidence": 1,
+      "frame": {
+        "x": 724,
+        "y": 2302,
+        "width": 183,
+        "height": 43
+      }
+    },
+    {
+      "text": "190",
+      "confidence": 1,
+      "frame": {
+        "x": 1091,
+        "y": 1963,
+        "width": 84,
+        "height": 35
+      }
+    },
+    {
+      "text": "1 Equipment",
+      "confidence": 1,
+      "frame": {
+        "x": 679,
+        "y": 2438,
+        "width": 319,
+        "height": 62
+      }
+    },
+    {
+      "text": "125",
+      "confidence": 1,
+      "frame": {
+        "x": 1105,
+        "y": 2192,
+        "width": 68,
+        "height": 36
+      }
+    },
+    {
+      "text": "I501",
+      "confidence": 1,
+      "frame": {
+        "x": 1055,
+        "y": 2307,
+        "width": 117,
+        "height": 37
+      }
+    },
+    {
+      "text": "686,691,098",
+      "confidence": 1,
+      "frame": {
+        "x": 829,
+        "y": 3221,
+        "width": 309,
+        "height": 54
+      }
+    },
+    {
+      "text": "283",
+      "confidence": 1,
+      "frame": {
+        "x": 1355,
+        "y": 3218,
+        "width": 87,
+        "height": 42
+      }
+    }
+  ]
+}

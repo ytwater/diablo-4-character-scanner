@@ -1,0 +1,206 @@
+{
+  "width": 3072,
+  "height": 4080,
+  "blocks": [
+    {
+      "text": "STWC>DeathBeth|70 (65)",
+      "confidence": 1,
+      "frame": {
+        "x": 4,
+        "y": 1236,
+        "width": 463,
+        "height": 65
+      }
+    },
+    {
+      "text": "Guter Trash\nOmgaPaladin | 70 (36)",
+      "confidence": 1,
+      "frame": {
+        "x": -5,
+        "y": 1278,
+        "width": 373,
+        "height": 121
+      }
+    },
+    {
+      "text": "E",
+      "confidence": 1,
+      "frame": {
+        "x": 253,
+        "y": 1615,
+        "width": 25,
+        "height": 28
+      }
+    },
+    {
+      "text": "CHARACTER C",
+      "confidence": 1,
+      "frame": {
+        "x": 791,
+        "y": 778,
+        "width": 438,
+        "height": 87
+      }
+    },
+    {
+      "text": "Demonic Defender",
+      "confidence": 1,
+      "frame": {
+        "x": 814,
+        "y": 1078,
+        "width": 353,
+        "height": 58
+      }
+    },
+    {
+      "text": "UDAN",
+      "confidence": 1,
+      "frame": {
+        "x": 927,
+        "y": 1005,
+        "width": 127,
+        "height": 38
+      }
+    },
+    {
+      "text": "Stats & Materials",
+      "confidence": 1,
+      "frame": {
+        "x": 823,
+        "y": 1357,
+        "width": 320,
+        "height": 54
+      }
+    },
+    {
+      "text": "Weapon Damage\n3, 809",
+      "confidence": 1,
+      "frame": {
+        "x": 878,
+        "y": 1541,
+        "width": 290,
+        "height": 95
+      }
+    },
+    {
+      "text": "Toughness\n63,913",
+      "confidence": 1,
+      "frame": {
+        "x": 876,
+        "y": 1728,
+        "width": 184,
+        "height": 85
+      }
+    },
+    {
+      "text": "Strength",
+      "confidence": 1,
+      "frame": {
+        "x": 774,
+        "y": 1921,
+        "width": 150,
+        "height": 45
+      }
+    },
+    {
+      "text": "Intelligence 207",
+      "confidence": 1,
+      "frame": {
+        "x": 773,
+        "y": 2021,
+        "width": 378,
+        "height": 45
+      }
+    },
+    {
+      "text": "Willpower",
+      "confidence": 1,
+      "frame": {
+        "x": 770,
+        "y": 2117,
+        "width": 176,
+        "height": 47
+      }
+    },
+    {
+      "text": "Dexterity",
+      "confidence": 1,
+      "frame": {
+        "x": 768,
+        "y": 2215,
+        "width": 154,
+        "height": 42
+      }
+    },
+    {
+      "text": "190",
+      "confidence": 1,
+      "frame": {
+        "x": 1090,
+        "y": 1939,
+        "width": 68,
+        "height": 31
+      }
+    },
+    {
+      "text": "Equipment",
+      "confidence": 1,
+      "frame": {
+        "x": 788,
+        "y": 2339,
+        "width": 209,
+        "height": 42
+      }
+    },
+    {
+      "text": "125",
+      "confidence": 1,
+      "frame": {
+        "x": 1096,
+        "y": 2132,
+        "width": 60,
+        "height": 30
+      }
+    },
+    {
+      "text": "L,50I",
+      "confidence": 1,
+      "frame": {
+        "x": 1067,
+        "y": 2225,
+        "width": 84,
+        "height": 36
+      }
+    },
+    {
+      "text": "686,691,098",
+      "confidence": 1,
+      "frame": {
+        "x": 826,
+        "y": 3006,
+        "width": 266,
+        "height": 45
+      }
+    },
+    {
+      "text": "283",
+      "confidence": 1,
+      "frame": {
+        "x": 1275,
+        "y": 3004,
+        "width": 71,
+        "height": 38
+      }
+    },
+    {
+      "text": "AGING NY",
+      "confidence": 1,
+      "frame": {
+        "x": 1966,
+        "y": 4032,
+        "width": 145,
+        "height": 41
+      }
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "width": 3072,
+  "height": 4080,
+  "blocks": [
+    {
+      "text": "93",
+      "confidence": 1,
+      "frame": {
+        "x": 50,
+        "y": 1033,
+        "width": 47,
+        "height": 56
+      }
+    },
+    {
+      "text": "CHARACTER G",
+      "confidence": 1,
+      "frame": {
+        "x": 98,
+        "y": 856,
+        "width": 488,
+        "height": 67
+      }
+    },
+    {
+      "text": "UDAN",
+      "confidence": 1,
+      "frame": {
+        "x": 266,
+        "y": 1111,
+        "width": 148,
+        "height": 36
+      }
+    },
+    {
+      "text": "Demonic Defender",
+      "confidence": 1,
+      "frame": {
+        "x": 145,
+        "y": 1204,
+        "width": 400,
+        "height": 50
+      }
+    },
+    {
+      "text": "Stats & Materials",
+      "confidence": 1,
+      "frame": {
+        "x": 169,
+        "y": 1524,
+        "width": 368,
+        "height": 47
+      }
+    },
+    {
+      "text": "Weapon Damage\n3,809",
+      "confidence": 1,
+      "frame": {
+        "x": 246,
+        "y": 1733,
+        "width": 326,
+        "height": 100
+      }
+    },
+    {
+      "text": "Toughness\n63,9 13",
+      "confidence": 1,
+      "frame": {
+        "x": 257,
+        "y": 1950,
+        "width": 206,
+        "height": 95
+      }
+    },
+    {
+      "text": "Strength",
+      "confidence": 1,
+      "frame": {
+        "x": 159,
+        "y": 2181,
+        "width": 166,
+        "height": 44
+      }
+    },
+    {
+      "text": "Intelligence 207",
+      "confidence": 1,
+      "frame": {
+        "x": 163,
+        "y": 2293,
+        "width": 431,
+        "height": 44
+      }
+    },
+    {
+      "text": "Willpower",
+      "confidence": 1,
+      "frame": {
+        "x": 168,
+        "y": 2406,
+        "width": 192,
+        "height": 44
+      }
+    },
+    {
+      "text": "Dexterity",
+      "confidence": 1,
+      "frame": {
+        "x": 171,
+        "y": 2512,
+        "width": 175,
+        "height": 47
+      }
+    },
+    {
+      "text": "190",
+      "confidence": 1,
+      "frame": {
+        "x": 510,
+        "y": 2183,
+        "width": 84,
+        "height": 35
+      }
+    },
+    {
+      "text": "1 Equipment",
+      "confidence": 1,
+      "frame": {
+        "x": 117,
+        "y": 2646,
+        "width": 320,
+        "height": 60
+      }
+    },
+    {
+      "text": "125",
+      "confidence": 1,
+      "frame": {
+        "x": 531,
+        "y": 2409,
+        "width": 69,
+        "height": 35
+      }
+    },
+    {
+      "text": "I,50I",
+      "confidence": 1,
+      "frame": {
+        "x": 486,
+        "y": 2522,
+        "width": 112,
+        "height": 37
+      }
+    },
+    {
+      "text": "686,691,098",
+      "confidence": 1,
+      "frame": {
+        "x": 295,
+        "y": 3414,
+        "width": 300,
+        "height": 51
+      }
+    },
+    {
+      "text": "283",
+      "confidence": 1,
+      "frame": {
+        "x": 804,
+        "y": 3418,
+        "width": 85,
+        "height": 42
+      }
+    }
+  ]
+}
