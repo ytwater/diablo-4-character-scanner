@@ -1,14 +1,11 @@
 package expo.modules.d4ocr
 
-import android.graphics.ImageFormat
 import android.graphics.Rect
-import android.graphics.YuvImage
 import android.media.Image
 import com.google.mlkit.vision.common.InputImage
 import com.mrousavy.camera.frameprocessors.Frame
 import com.mrousavy.camera.frameprocessors.FrameProcessorPlugin
 import com.mrousavy.camera.frameprocessors.VisionCameraProxy
-import java.io.ByteArrayOutputStream
 
 class D4OcrPlugin(proxy: VisionCameraProxy, options: Map<String, Any>?) : FrameProcessorPlugin() {
 
@@ -22,23 +19,27 @@ class D4OcrPlugin(proxy: VisionCameraProxy, options: Map<String, Any>?) : FrameP
         val roiWidth = ((params?.get("roiWidth") as? Number)?.toDouble() ?: 1.0).coerceIn(0.01, 1.0)
         val roiHeight = ((params?.get("roiHeight") as? Number)?.toDouble() ?: 1.0).coerceIn(0.01, 1.0)
 
+        // NV21/YUV420 chroma planes are subsampled 2x2, so every edge must
+        // land on an even pixel or the chroma crop below reads the wrong
+        // samples.
         val roiRect = Rect(
-            (roiX * width).toInt(),
-            (roiY * height).toInt(),
-            ((roiX + roiWidth) * width).toInt().coerceAtMost(width),
-            ((roiY + roiHeight) * height).toInt().coerceAtMost(height),
+            ((roiX * width).toInt() and 1.inv()),
+            ((roiY * height).toInt() and 1.inv()),
+            (((roiX + roiWidth) * width).toInt().coerceAtMost(width) and 1.inv()),
+            (((roiY + roiHeight) * height).toInt().coerceAtMost(height) and 1.inv()),
         )
+        if (roiRect.width() <= 0 || roiRect.height() <= 0) return null
 
         val nv21 = imageToNv21(image)
-        val yuvImage = YuvImage(nv21, ImageFormat.NV21, width, height, null)
-        val jpegStream = ByteArrayOutputStream()
-        yuvImage.compressToJpeg(roiRect, 90, jpegStream)
-        val jpegBytes = jpegStream.toByteArray()
-
-        val bitmap = android.graphics.BitmapFactory.decodeByteArray(jpegBytes, 0, jpegBytes.size)
-            ?: return null
+        val croppedNv21 = cropNv21(nv21, width, height, roiRect)
         val rotationDegrees = frame.imageProxy.imageInfo.rotationDegrees
-        val inputImage = InputImage.fromBitmap(bitmap, rotationDegrees)
+        val inputImage = InputImage.fromByteArray(
+            croppedNv21,
+            roiRect.width(),
+            roiRect.height(),
+            rotationDegrees,
+            InputImage.IMAGE_FORMAT_NV21,
+        )
 
         val blocks = D4OcrRecognizer.recognize(inputImage)
 
@@ -55,9 +56,45 @@ class D4OcrPlugin(proxy: VisionCameraProxy, options: Map<String, Any>?) : FrameP
                     ),
                 )
             },
-            "width" to bitmap.width,
-            "height" to bitmap.height,
+            "width" to roiRect.width(),
+            "height" to roiRect.height(),
         )
+    }
+
+    /**
+     * Crops a tightly-packed full-frame NV21 buffer (as produced by
+     * [imageToNv21]) down to [roiRect], avoiding the
+     * YuvImage->JPEG->Bitmap round trip ML Kit's InputImage.fromByteArray
+     * doesn't need. roiRect's edges are already snapped to even pixels by
+     * the caller.
+     */
+    private fun cropNv21(nv21: ByteArray, fullWidth: Int, fullHeight: Int, roiRect: Rect): ByteArray {
+        val cropWidth = roiRect.width()
+        val cropHeight = roiRect.height()
+        val cropChromaWidth = cropWidth / 2
+        val cropChromaHeight = cropHeight / 2
+        val cropped = ByteArray(cropWidth * cropHeight + cropChromaWidth * cropChromaHeight * 2)
+
+        var pos = 0
+        for (row in 0 until cropHeight) {
+            val srcRowStart = (roiRect.top + row) * fullWidth + roiRect.left
+            System.arraycopy(nv21, srcRowStart, cropped, pos, cropWidth)
+            pos += cropWidth
+        }
+
+        val fullChromaWidth = fullWidth / 2
+        val yPlaneSize = fullWidth * fullHeight
+        val roiChromaLeft = roiRect.left / 2
+        val roiChromaTop = roiRect.top / 2
+        for (row in 0 until cropChromaHeight) {
+            val srcRowStart = yPlaneSize +
+                (roiChromaTop + row) * fullChromaWidth * 2 +
+                roiChromaLeft * 2
+            System.arraycopy(nv21, srcRowStart, cropped, pos, cropChromaWidth * 2)
+            pos += cropChromaWidth * 2
+        }
+
+        return cropped
     }
 
     /**
