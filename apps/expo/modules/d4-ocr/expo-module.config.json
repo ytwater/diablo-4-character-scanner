@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android", "web"],
+  "apple": {
+    "modules": ["D4OcrModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.d4ocr.D4OcrModule"]
+  }
+}
