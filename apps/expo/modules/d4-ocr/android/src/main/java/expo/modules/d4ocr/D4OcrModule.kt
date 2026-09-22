@@ -2,7 +2,9 @@ package expo.modules.d4ocr
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.graphics.Rect
+import androidx.exifinterface.media.ExifInterface
 import com.google.mlkit.vision.common.InputImage
 import expo.modules.kotlin.exception.CodedException
 import expo.modules.kotlin.modules.Module
@@ -30,8 +32,9 @@ class D4OcrModule : Module() {
 
     AsyncFunction("recognizeImage") { uri: String, roi: RoiRecord ->
       val path = uri.removePrefix("file://")
-      val bitmap = BitmapFactory.decodeFile(path)
+      val decoded = BitmapFactory.decodeFile(path)
         ?: throw CodedException("Failed to decode photo at $uri")
+      val bitmap = applyExifRotation(decoded, path)
 
       val roiRect = roiRectFor(bitmap, roi)
       val cropped = Bitmap.createBitmap(bitmap, roiRect.left, roiRect.top, roiRect.width(), roiRect.height())
@@ -56,6 +59,27 @@ class D4OcrModule : Module() {
         "height" to roiRect.height(),
       )
     }
+  }
+
+  // takePhoto() writes the sensor's native (often landscape) orientation
+  // with an EXIF rotation tag rather than pre-rotated pixels. The ROI is
+  // defined relative to the upright portrait framing the user saw on
+  // screen, so the bitmap must be rotated to match before cropping.
+  private fun applyExifRotation(bitmap: Bitmap, path: String): Bitmap {
+    val orientation = ExifInterface(path).getAttributeInt(
+      ExifInterface.TAG_ORIENTATION,
+      ExifInterface.ORIENTATION_NORMAL,
+    )
+    val degrees = when (orientation) {
+      ExifInterface.ORIENTATION_ROTATE_90 -> 90f
+      ExifInterface.ORIENTATION_ROTATE_180 -> 180f
+      ExifInterface.ORIENTATION_ROTATE_270 -> 270f
+      else -> 0f
+    }
+    if (degrees == 0f) return bitmap
+
+    val matrix = Matrix().apply { postRotate(degrees) }
+    return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
   }
 
   private fun roiRectFor(bitmap: Bitmap, roi: RoiRecord): Rect {
