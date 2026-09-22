@@ -43,12 +43,14 @@ export default function ScanScreen() {
       )}
       {status === "idle" && (
         <View
-          className="absolute border-2 border-cyan-400"
+          className="absolute"
           style={{
             left: `${scannerConfig.roi.x * 100}%`,
             top: `${scannerConfig.roi.y * 100}%`,
             width: `${scannerConfig.roi.width * 100}%`,
             height: `${scannerConfig.roi.height * 100}%`,
+            borderWidth: 2,
+            borderColor: "#22d3ee",
           }}
         />
       )}
