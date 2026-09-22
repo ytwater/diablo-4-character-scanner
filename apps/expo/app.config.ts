@@ -69,7 +69,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       {
         cameraPermissionText: "$(PRODUCT_NAME) needs camera access to scan your Diablo 4 character sheet.",
         enableMicrophonePermission: false,
-        enableFrameProcessors: true,
+        enableFrameProcessors: false,
       },
     ],
   ],

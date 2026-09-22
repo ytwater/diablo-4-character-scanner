@@ -137,9 +137,15 @@ importers:
       expo-dev-client:
         specifier: ~6.0.16
         version: 6.0.16(expo@54.0.20)
+      expo-file-system:
+        specifier: ~19.0.17
+        version: 19.0.17(expo@54.0.20)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.12)(bufferutil@4.0.8)(react@19.1.4)(utf-8-validate@6.0.4))
       expo-linking:
         specifier: ~8.0.8
         version: 8.0.8(expo@54.0.20)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.12)(bufferutil@4.0.8)(react@19.1.4)(utf-8-validate@6.0.4))(react@19.1.4)
+      expo-modules-core:
+        specifier: ~3.0.22
+        version: 3.0.22(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.12)(bufferutil@4.0.8)(react@19.1.4)(utf-8-validate@6.0.4))(react@19.1.4)
       expo-router:
         specifier: ~6.0.13
         version: 6.0.13(c0c1292f23814a40f55632bf7e575354)
@@ -191,9 +197,6 @@ importers:
       react-native-worklets:
         specifier: ~0.5.1
         version: 0.5.1(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.12)(bufferutil@4.0.8)(react@19.1.4)(utf-8-validate@6.0.4))(react@19.1.4)
-      react-native-worklets-core:
-        specifier: 1.6.3
-        version: 1.6.3(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.12)(bufferutil@4.0.8)(react@19.1.4)(utf-8-validate@6.0.4))(react@19.1.4)
     devDependencies:
       '@acme/api':
         specifier: workspace:*
@@ -18011,6 +18014,7 @@ snapshots:
       react: 19.1.4
       react-native: 0.81.5(@babel/core@7.28.5)(@types/react@19.1.12)(bufferutil@4.0.8)(react@19.1.4)(utf-8-validate@6.0.4)
       string-hash-64: 1.0.3
+    optional: true
 
   react-native-worklets@0.5.1(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.12)(bufferutil@4.0.8)(react@19.1.4)(utf-8-validate@6.0.4))(react@19.1.4):
     dependencies:
@@ -18709,7 +18713,8 @@ snapshots:
 
   strict-uri-encode@2.0.0: {}
 
-  string-hash-64@1.0.3: {}
+  string-hash-64@1.0.3:
+    optional: true
 
   string-length@4.0.2:
     dependencies:
