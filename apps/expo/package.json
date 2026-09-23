@@ -9,6 +9,8 @@
     "dev:ios": "expo start --ios",
     "android": "expo run:android",
     "ios": "expo run:ios",
+    "build:web": "expo export -p web",
+    "deploy": "pnpm build:web && wrangler deploy",
     "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path .prettierignore",
     "lint": "eslint --flag unstable_native_nodejs_ts_config",
     "test": "jest",
@@ -65,7 +67,8 @@
     "prettier": "catalog:",
     "react-test-renderer": "^19.1.4",
     "tailwindcss": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "wrangler": "^4.38.0"
   },
   "prettier": "@acme/prettier-config"
 }
