@@ -38,7 +38,7 @@ export default function ScanWebScreen() {
 
       <div
         onPaste={(e) => {
-          const item = Array.from(e.clipboardData?.items ?? []).find((i) =>
+          const item = Array.from(e.clipboardData.items).find((i) =>
             i.type.startsWith("image/"),
           );
           handleFile(item?.getAsFile());
