@@ -5,18 +5,28 @@ import type { Camera } from "react-native-vision-camera";
 import D4Ocr from "../../../modules/d4-ocr";
 import { findAnchor } from "./anchor";
 import { extractFields } from "./fields";
+import { extractItemFields } from "./itemFields";
+import { classifyRarity } from "./rarity";
 import { scannerConfig } from "./config";
 
-export interface ScanCandidates {
+export type ScanMode = "character" | "item";
+export type ScanStatus = "idle" | "capturing" | "processing" | "done" | "error";
+
+export interface CharacterCandidates {
   level?: string;
   title?: string;
   name?: string;
 }
 
-export type ScanStatus = "idle" | "capturing" | "processing" | "done" | "error";
+export interface ItemCandidates {
+  name?: string;
+  type?: string;
+  rarity?: string;
+  affixes: string[];
+}
 
-export function useCharacterScan(cameraRef: React.RefObject<Camera | null>) {
-  const [candidates, setCandidates] = useState<ScanCandidates>({});
+export function useScan(mode: ScanMode, cameraRef: React.RefObject<Camera | null>) {
+  const [candidates, setCandidates] = useState<CharacterCandidates | ItemCandidates>({});
   const [status, setStatus] = useState<ScanStatus>("idle");
   const [photoPath, setPhotoPath] = useState<string | undefined>();
   const [error, setError] = useState<string | undefined>();
@@ -34,15 +44,25 @@ export function useCharacterScan(cameraRef: React.RefObject<Camera | null>) {
       setPhotoPath(uri);
       setStatus("processing");
 
-      const result = await D4Ocr.recognizeImage(uri, scannerConfig.roi);
-      const anchor = findAnchor(result.blocks, scannerConfig.anchorText, scannerConfig.anchorFuzzyThreshold);
-      const fields = anchor ? extractFields(result.blocks, anchor) : {};
-
-      setCandidates({
-        level: fields.level?.text,
-        title: fields.title?.text,
-        name: fields.name?.text,
-      });
+      if (mode === "character") {
+        const result = await D4Ocr.recognizeImage(uri, scannerConfig.roi);
+        const anchor = findAnchor(result.blocks, scannerConfig.anchorText, scannerConfig.anchorFuzzyThreshold);
+        const fields = anchor ? extractFields(result.blocks, anchor) : {};
+        setCandidates({
+          level: fields.level?.text,
+          title: fields.title?.text,
+          name: fields.name?.text,
+        });
+      } else {
+        const result = await D4Ocr.recognizeImage(uri, null);
+        const fields = extractItemFields(result.blocks);
+        setCandidates({
+          name: fields.name?.text,
+          type: fields.type?.text,
+          affixes: fields.affixes,
+          rarity: result.topBlockColor ? classifyRarity(result.topBlockColor) : undefined,
+        });
+      }
       setStatus("done");
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
@@ -56,7 +76,7 @@ export function useCharacterScan(cameraRef: React.RefObject<Camera | null>) {
     }
     photoFileRef.current = undefined;
     setPhotoPath(undefined);
-    setCandidates({});
+    setCandidates(mode === "item" ? { affixes: [] } : {});
     setError(undefined);
     setStatus("idle");
   };
