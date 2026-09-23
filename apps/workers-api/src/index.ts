@@ -60,6 +60,8 @@ app.use("*", async (c, next) => {
       "http://localhost:8081",
       ...(c.env.WEB_APP_URL ? [c.env.WEB_APP_URL] : []),
     ],
+    mailgunApiKey: c.env.MAILGUN_API_KEY,
+    mailgunDomain: c.env.MAILGUN_DOMAIN,
   });
 
   c.set("db", db);

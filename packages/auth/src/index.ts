@@ -19,6 +19,9 @@ export function initAuth<
   googleClientSecret: string;
   trustedOrigins?: string[];
   extraPlugins?: TExtraPlugins;
+
+  mailgunApiKey: string | undefined;
+  mailgunDomain: string | undefined;
 }) {
   const config = {
     database: drizzleAdapter(options.db, {
@@ -34,6 +37,41 @@ export function initAuth<
       expo(),
       ...(options.extraPlugins ?? []),
     ],
+    emailAndPassword: {
+      enabled: true,
+      sendResetPassword: async ({ user, url }) => {
+        if (!options.mailgunApiKey || !options.mailgunDomain) {
+          console.error(
+            "Cannot send reset password email: Mailgun is not configured",
+          );
+          return;
+        }
+        const body = new URLSearchParams({
+          from: `Diablo 4 Scanner <noreply@${options.mailgunDomain}>`,
+          to: user.email,
+          subject: "Reset your password",
+          text: `Click the link below to reset your password:\n\n${url}\n\nIf you didn't request this, you can ignore this email.`,
+        }).toString();
+        const res = await fetch(
+          `https://api.mailgun.net/v3/${options.mailgunDomain}/messages`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Basic ${btoa(`api:${options.mailgunApiKey}`)}`,
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body,
+          },
+        );
+        if (!res.ok) {
+          console.error(
+            "Failed to send reset password email",
+            res.status,
+            await res.text(),
+          );
+        }
+      },
+    },
     socialProviders: {
       google: {
         clientId: options.googleClientId,
@@ -41,7 +79,7 @@ export function initAuth<
         redirectURI: `${options.productionUrl}/api/auth/callback/google`,
       },
     },
-    trustedOrigins: ["expo://", ...(options.trustedOrigins ?? [])],
+    trustedOrigins: ["d4scanner://", ...(options.trustedOrigins ?? [])],
     onAPIError: {
       onError(error, ctx) {
         console.error("BETTER AUTH API ERROR", error, ctx);
