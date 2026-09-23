@@ -17,6 +17,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@acme/validators": "workspace:*",
     "@better-auth/expo": "catalog:",
     "@expo/metro-runtime": "^6.1.2",
     "@legendapp/list": "^2.0.14",

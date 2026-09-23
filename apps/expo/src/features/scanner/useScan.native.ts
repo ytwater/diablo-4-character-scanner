@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import { File } from "expo-file-system";
 import type { Camera } from "react-native-vision-camera";
 
+import type { CharacterCandidates, ItemCandidates, ScanMode } from "@acme/validators";
+
 import D4Ocr from "../../../modules/d4-ocr";
 import { findAnchor } from "./anchor";
 import { extractFields } from "./fields";
@@ -9,21 +11,9 @@ import { extractItemFields } from "./itemFields";
 import { classifyRarity } from "./rarity";
 import { itemConfig, scannerConfig } from "./config";
 
-export type ScanMode = "character" | "item";
 export type ScanStatus = "idle" | "capturing" | "processing" | "done" | "error";
 
-export interface CharacterCandidates {
-  level?: string;
-  title?: string;
-  name?: string;
-}
-
-export interface ItemCandidates {
-  name?: string;
-  type?: string;
-  rarity?: string;
-  affixes: string[];
-}
+export type { ScanMode, CharacterCandidates, ItemCandidates };
 
 export function useScan(mode: ScanMode, cameraRef: React.RefObject<Camera | null>) {
   const [candidates, setCandidates] = useState<CharacterCandidates | ItemCandidates>({});
