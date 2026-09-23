@@ -1,12 +1,26 @@
+import type { Href } from "expo-router";
 import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Stack } from "expo-router";
+import { Link, Stack } from "expo-router";
+import { LegendList } from "@legendapp/list";
+import { useQuery } from "@tanstack/react-query";
 
+import type { RouterOutputs } from "~/utils/api";
 import { ScanLink } from "~/components/scan-link";
+import { orpc } from "~/utils/api";
 import { authClient } from "~/utils/auth";
 
 const WEB_APP_URL = "https://diablo-4-character-scanner.ytwater.workers.dev";
+
+// "/character/new" and "/character/[id]" don't exist as routes yet (they
+// land in a later task), so they're outside the generated typed-routes
+// union. Cast the same way scan-link.native.tsx/scan-link.web.tsx do for
+// "/scan" until the route files exist.
+const NEW_CHARACTER_HREF = "/character/new" as Href;
+function characterHref(id: string): Href {
+  return { pathname: "/character/[id]", params: { id } } as unknown as Href;
+}
 
 function EmailPasswordAuth() {
   const [email, setEmail] = useState("");
@@ -128,17 +142,65 @@ function MobileAuth() {
   );
 }
 
+function CharacterRow(props: {
+  character: RouterOutputs["character"]["list"][number];
+}) {
+  return (
+    <Link asChild href={characterHref(props.character.id)}>
+      <Pressable className="bg-muted flex flex-row items-center justify-between rounded-lg p-4">
+        <View>
+          <Text className="text-foreground text-lg font-semibold">
+            {props.character.name}
+          </Text>
+          <Text className="text-muted-foreground capitalize">
+            {props.character.class} · Level {props.character.level}
+            {props.character.paragon != null &&
+              ` · Paragon ${props.character.paragon}`}
+          </Text>
+        </View>
+        <Text className="text-muted-foreground">
+          {props.character.filledSlots}/11 slots
+        </Text>
+      </Pressable>
+    </Link>
+  );
+}
+
 export default function Index() {
+  const { data: session } = authClient.useSession();
+  const charactersQuery = useQuery({
+    ...orpc.character.list.queryOptions(),
+    enabled: !!session,
+  });
+
   return (
     <SafeAreaView className="bg-background">
       {/* Changes page title visible on the header */}
-      <Stack.Screen options={{ title: "Home Page" }} />
+      <Stack.Screen options={{ title: "My Characters" }} />
       <View className="bg-background h-full w-full p-4">
         <Text className="text-foreground pb-2 text-center text-5xl font-bold">
           Diablo 4 <Text className="text-primary">Scanner</Text>
         </Text>
 
         <MobileAuth />
+
+        {session && (
+          <>
+            <Link
+              href={NEW_CHARACTER_HREF}
+              className="bg-primary my-2 items-center rounded-sm p-2 text-center"
+            >
+              + New Character
+            </Link>
+            <LegendList
+              data={charactersQuery.data ?? []}
+              estimatedItemSize={72}
+              keyExtractor={(item) => item.id}
+              ItemSeparatorComponent={() => <View className="h-2" />}
+              renderItem={(c) => <CharacterRow character={c.item} />}
+            />
+          </>
+        )}
 
         <ScanLink />
       </View>
