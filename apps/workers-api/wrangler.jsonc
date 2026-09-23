@@ -1,15 +1,29 @@
 {
-  "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "diablo-4-character-scanner-api",
-  "main": "src/index.ts",
-  "compatibility_date": "2025-09-17",
-  "compatibility_flags": ["nodejs_compat"],
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "diablo-scanner-db",
-      "database_id": "00000000-0000-0000-0000-000000000000",
-      "migrations_dir": "../../packages/db/drizzle"
-    }
-  ]
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "diablo-4-character-scanner-api",
+	"main": "src/index.ts",
+	"compatibility_date": "2025-09-17",
+	"compatibility_flags": ["nodejs_compat"],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "diablo-scanner-db",
+			"database_id": "4c20bf15-2ecd-47ed-bc4e-4be5ea4c0a82",
+			"migrations_dir": "../../packages/db/drizzle"
+		}
+	],
+	"r2_buckets": [
+		{
+			"bucket_name": "diablo-scanner-storage",
+			"binding": "STORAGE"
+		}
+	],
+	"ai": {
+		"binding": "AI"
+	},
+	"vars": {
+		"AUTH_PRODUCTION_URL": "https://diablo-4-character-scanner-api.ytwater.workers.dev",
+		"MAILGUN_DOMAIN": "thestorybookcharactercompany.com",
+		"WEB_APP_URL": "https://diablo-4-character-scanner.ytwater.workers.dev"
+	}
 }
