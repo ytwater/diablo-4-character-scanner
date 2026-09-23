@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@better-auth/expo": "catalog:",
-    "@expo/metro-runtime": "^57.0.16",
+    "@expo/metro-runtime": "^6.1.2",
     "@legendapp/list": "^2.0.14",
     "@orpc/client": "catalog:",
     "@orpc/server": "catalog:",
