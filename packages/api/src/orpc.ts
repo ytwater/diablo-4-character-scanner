@@ -27,6 +27,7 @@ export const createORPCContext = async (opts: {
   headers: Headers;
   auth: Auth;
   db: DB;
+  env: { AI: Ai; STORAGE: R2Bucket };
 }) => {
   const authApi = opts.auth.api;
   const session = await authApi.getSession({
@@ -36,6 +37,7 @@ export const createORPCContext = async (opts: {
     authApi,
     session,
     db: opts.db,
+    env: opts.env,
   };
 };
 

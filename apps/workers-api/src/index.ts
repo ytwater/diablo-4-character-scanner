@@ -77,6 +77,7 @@ app.all("/api/rpc/*", async (c) => {
       headers: c.req.raw.headers,
       auth: c.var.auth,
       db: c.var.db,
+      env: { AI: c.env.AI, STORAGE: c.env.STORAGE },
     }),
   });
 

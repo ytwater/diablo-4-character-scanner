@@ -317,6 +317,9 @@ importers:
       '@acme/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/typescript
+      '@cloudflare/workers-types':
+        specifier: ^5.20260917.1
+        version: 5.20260917.1
       eslint:
         specifier: 'catalog:'
         version: 9.38.0(jiti@2.7.0)
