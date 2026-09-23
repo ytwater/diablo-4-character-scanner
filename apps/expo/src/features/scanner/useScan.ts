@@ -7,7 +7,7 @@ import { findAnchor } from "./anchor";
 import { extractFields } from "./fields";
 import { extractItemFields } from "./itemFields";
 import { classifyRarity } from "./rarity";
-import { scannerConfig } from "./config";
+import { itemConfig, scannerConfig } from "./config";
 
 export type ScanMode = "character" | "item";
 export type ScanStatus = "idle" | "capturing" | "processing" | "done" | "error";
@@ -54,7 +54,7 @@ export function useScan(mode: ScanMode, cameraRef: React.RefObject<Camera | null
           name: fields.name?.text,
         });
       } else {
-        const result = await D4Ocr.recognizeImage(uri, null);
+        const result = await D4Ocr.recognizeImage(uri, itemConfig.roi);
         const fields = extractItemFields(result.blocks);
         setCandidates({
           name: fields.name?.text,

@@ -3,7 +3,7 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { Camera, useCameraDevice, useCameraPermission } from "react-native-vision-camera";
 import { Stack } from "expo-router";
 
-import { scannerConfig } from "~/features/scanner/config";
+import { itemConfig, scannerConfig } from "~/features/scanner/config";
 import { useScan } from "~/features/scanner/useScan";
 import type { CharacterCandidates, ItemCandidates, ScanMode } from "~/features/scanner/useScan";
 
@@ -36,6 +36,7 @@ export default function ScanScreen() {
   const showPhoto = status !== "idle" && photoPath;
   const characterCandidates = candidates as CharacterCandidates;
   const itemCandidates = candidates as ItemCandidates;
+  const roi = mode === "character" ? scannerConfig.roi : itemConfig.roi;
 
   return (
     <View className="h-full w-full">
@@ -45,14 +46,14 @@ export default function ScanScreen() {
       ) : (
         <Camera ref={cameraRef} style={StyleSheet.absoluteFill} device={device} isActive={true} photo={true} />
       )}
-      {status === "idle" && mode === "character" && (
+      {status === "idle" && (
         <View
           className="absolute"
           style={{
-            left: `${scannerConfig.roi.x * 100}%`,
-            top: `${scannerConfig.roi.y * 100}%`,
-            width: `${scannerConfig.roi.width * 100}%`,
-            height: `${scannerConfig.roi.height * 100}%`,
+            left: `${roi.x * 100}%`,
+            top: `${roi.y * 100}%`,
+            width: `${roi.width * 100}%`,
+            height: `${roi.height * 100}%`,
             borderWidth: 2,
             borderColor: "#22d3ee",
           }}
