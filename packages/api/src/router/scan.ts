@@ -20,7 +20,7 @@ import { protectedProcedure } from "../orpc";
 const RATE_LIMIT_MAX_SCANS = 10;
 const RATE_LIMIT_WINDOW_MS = 60_000;
 
-const MAX_IMAGE_BYTES = 8 * 1024 * 1024; // 8MB
+const MAX_IMAGE_BYTES = 20 * 1024 * 1024; // 20MB - uncompressed PNG screenshots can get large
 const ALLOWED_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 
 // Workers AI vision model. Revisit after evaluating real D4 screenshots — see
