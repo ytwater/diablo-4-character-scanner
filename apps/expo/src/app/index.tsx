@@ -6,6 +6,7 @@ import { LegendList } from "@legendapp/list";
 import { ORPCError } from "@orpc/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { ScanLink } from "~/components/scan-link";
 import type { RouterOutputs } from "~/utils/api";
 import { orpc } from "~/utils/api";
 import { authClient } from "~/utils/auth";
@@ -164,9 +165,7 @@ export default function Index() {
 
         <MobileAuth />
 
-        <Link href="/scan" className="py-2 text-center" style={{ color: "#ec4899" }}>
-          Scan character sheet
-        </Link>
+        <ScanLink />
 
         <View className="py-2">
           <Text className="text-primary font-semibold italic">
