@@ -30,17 +30,23 @@ class D4OcrModule : Module() {
   override fun definition() = ModuleDefinition {
     Name("D4Ocr")
 
-    AsyncFunction("recognizeImage") { uri: String, roi: RoiRecord ->
+    AsyncFunction("recognizeImage") { uri: String, roi: RoiRecord? ->
       val path = uri.removePrefix("file://")
       val decoded = BitmapFactory.decodeFile(path)
         ?: throw CodedException("Failed to decode photo at $uri")
       val bitmap = applyExifRotation(decoded, path)
 
-      val roiRect = roiRectFor(bitmap, roi)
-      val cropped = Bitmap.createBitmap(bitmap, roiRect.left, roiRect.top, roiRect.width(), roiRect.height())
-      val inputImage = InputImage.fromBitmap(cropped, 0)
+      val target = if (roi != null) {
+        val roiRect = roiRectFor(bitmap, roi)
+        Bitmap.createBitmap(bitmap, roiRect.left, roiRect.top, roiRect.width(), roiRect.height())
+      } else {
+        bitmap
+      }
 
+      val inputImage = InputImage.fromBitmap(target, 0)
       val blocks = D4OcrRecognizer.recognize(inputImage)
+      val topBlock = blocks.minByOrNull { it.y }
+      val topBlockColor = topBlock?.let { averageColor(target, it) }
 
       mapOf(
         "blocks" to blocks.map { b ->
@@ -55,8 +61,9 @@ class D4OcrModule : Module() {
             ),
           )
         },
-        "width" to roiRect.width(),
-        "height" to roiRect.height(),
+        "width" to target.width,
+        "height" to target.height,
+        "topBlockColor" to topBlockColor,
       )
     }
   }
@@ -80,6 +87,38 @@ class D4OcrModule : Module() {
 
     val matrix = Matrix().apply { postRotate(degrees) }
     return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+  }
+
+  // Samples every 4th pixel in both axes for speed - a rarity color read
+  // only needs the dominant hue, not per-pixel precision, and item-name
+  // bounding boxes can be large enough that a full scan is wasteful.
+  private fun averageColor(bitmap: Bitmap, block: D4OcrBlock): Map<String, Int> {
+    val rect = Rect(
+      block.x.coerceIn(0, bitmap.width),
+      block.y.coerceIn(0, bitmap.height),
+      (block.x + block.width).coerceIn(0, bitmap.width),
+      (block.y + block.height).coerceIn(0, bitmap.height),
+    )
+    var rSum = 0L
+    var gSum = 0L
+    var bSum = 0L
+    var count = 0L
+    val stride = 4
+    var y = rect.top
+    while (y < rect.bottom) {
+      var x = rect.left
+      while (x < rect.right) {
+        val pixel = bitmap.getPixel(x, y)
+        rSum += (pixel shr 16) and 0xFF
+        gSum += (pixel shr 8) and 0xFF
+        bSum += pixel and 0xFF
+        count++
+        x += stride
+      }
+      y += stride
+    }
+    if (count == 0L) return mapOf("r" to 0, "g" to 0, "b" to 0)
+    return mapOf("r" to (rSum / count).toInt(), "g" to (gSum / count).toInt(), "b" to (bSum / count).toInt())
   }
 
   private fun roiRectFor(bitmap: Bitmap, roi: RoiRecord): Rect {
