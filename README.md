@@ -2,8 +2,7 @@
 
 Turborepo monorepo (from [expo-vite-worker-starter](https://github.com/ytwater/expo-vite-worker-starter)) with:
 
-- **Expo** — mobile client
-- **Vite** (`apps/web`) — web SPA (Better Auth + oRPC)
+- **Expo** — mobile + web client (Expo Router + Metro + react-native-web, Better Auth + oRPC)
 - **Cloudflare Worker** (`apps/workers-api`) — Hono API host
 - **oRPC** — typesafe RPC (`/api/rpc`)
 - **Better Auth** — Google + Expo (`/api/auth/*`)
@@ -17,8 +16,7 @@ Turborepo monorepo (from [expo-vite-worker-starter](https://github.com/ytwater/e
 
 ```text
 apps
-  ├─ expo           Expo SDK 54 (oRPC + Better Auth clients)
-  ├─ web            Vite + React SPA (oRPC + Better Auth)
+  ├─ expo           Expo SDK 54 (oRPC + Better Auth clients, native + web)
   └─ workers-api    Cloudflare Worker (Hono) → /api/rpc, /api/auth
 packages
   ├─ api            oRPC router / procedures
@@ -130,13 +128,13 @@ pnpm db:migrate:local   # and :remote when ready
 
 ```bash
 pnpm dev:api              # Worker on http://localhost:8787
-pnpm dev:web              # Vite SPA on http://localhost:5173
-pnpm -F @acme/expo dev    # Expo
+pnpm dev:web              # Expo web (Metro) — press w, or open http://localhost:8081
+pnpm -F @acme/expo dev    # Expo (native + web)
 ```
 
-Copy [`apps/web/.env.example`](./apps/web/.env.example) → `apps/web/.env` (`VITE_API_URL=http://localhost:8787`).
+Copy [`apps/expo/.env.example`](./apps/expo/.env.example) → `apps/expo/.env` (`EXPO_PUBLIC_API_URL=http://localhost:8787`).
 
-Expo resolves the API as `http://<lan-ip>:8787` via [`apps/expo/src/utils/base-url.ts`](./apps/expo/src/utils/base-url.ts). The web app uses `VITE_API_URL` and Google OAuth redirects back to `http://localhost:5173/` after the Worker callback.
+Native resolves the API as `http://<lan-ip>:8787` via [`apps/expo/src/utils/base-url.native.ts`](./apps/expo/src/utils/base-url.native.ts). Web uses `EXPO_PUBLIC_API_URL` via [`apps/expo/src/utils/base-url.web.ts`](./apps/expo/src/utils/base-url.web.ts), and Google OAuth redirects back to the web origin (e.g. `http://localhost:8081/`) after the Worker callback.
 
 Quick checks:
 
@@ -153,8 +151,8 @@ curl -X POST http://localhost:8787/api/rpc/post/all \
 | --- | --- |
 | Router / procedures | [`packages/api`](./packages/api) |
 | HTTP host | [`apps/workers-api`](./apps/workers-api) → `/api/rpc`, `/api/auth/*` |
-| Expo client | [`apps/expo/src/utils/api.tsx`](./apps/expo/src/utils/api.tsx) |
-| Web client | [`apps/web/src/lib/api.ts`](./apps/web/src/lib/api.ts) |
+| Expo client (native) | [`apps/expo/src/utils/api.native.ts`](./apps/expo/src/utils/api.native.ts) |
+| Expo client (web) | [`apps/expo/src/utils/api.web.ts`](./apps/expo/src/utils/api.web.ts) |
 
 ```ts
 import { orpc } from "~/utils/api";
@@ -162,6 +160,16 @@ import { orpc } from "~/utils/api";
 useQuery(orpc.post.all.queryOptions());
 useMutation(orpc.post.create.mutationOptions());
 ```
+
+## Deploy web (Expo web)
+
+Static assets-only Worker at `https://diablo-4-character-scanner.ytwater.workers.dev`, built from `apps/expo`'s Metro web export.
+
+```bash
+pnpm -F @acme/expo deploy
+```
+
+Production API URL is set in [`apps/expo/.env.production`](./apps/expo/.env.production) (`EXPO_PUBLIC_API_URL`). After first deploy, redeploy the API so `WEB_APP_URL` in [`apps/workers-api/wrangler.jsonc`](./apps/workers-api/wrangler.jsonc) trusts the web origin for Better Auth.
 
 ## Deploy Workers API
 
@@ -193,7 +201,8 @@ Use [EAS Build / Submit](https://docs.expo.dev/distribution/introduction) as usu
 | Script | What it does |
 | --- | --- |
 | `pnpm dev:api` | `wrangler dev` for `@acme/workers-api` |
-| `pnpm dev:web` | Vite SPA for `@acme/web` |
+| `pnpm dev:web` | Expo web (Metro) dev server for `@acme/expo` |
+| `pnpm -F @acme/expo deploy` | Build + deploy Expo web export to Workers |
 | `pnpm db:generate` | Drizzle → SQL in `packages/db/drizzle` |
 | `pnpm db:migrate:local` | Apply migrations to local D1 |
 | `pnpm db:migrate:remote` | Apply migrations to remote D1 |
