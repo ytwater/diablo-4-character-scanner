@@ -57,7 +57,7 @@ app.use("*", async (c, next) => {
     googleClientId: c.env.AUTH_GOOGLE_ID,
     googleClientSecret: c.env.AUTH_GOOGLE_SECRET,
     trustedOrigins: [
-      "http://localhost:5173",
+      "http://localhost:8081",
       ...(c.env.WEB_APP_URL ? [c.env.WEB_APP_URL] : []),
     ],
   });
