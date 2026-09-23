@@ -4,7 +4,7 @@
     "jsx": "react-native",
     "checkJs": false,
     "moduleSuffixes": [".ios", ".android", ".native", ""],
-    "types": ["jest"],
+    "types": ["jest", "@cloudflare/workers-types"],
     "paths": {
       "~/*": ["./src/*"]
     }
