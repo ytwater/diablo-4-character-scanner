@@ -27,6 +27,16 @@ export const itemConfig = {
   },
   // Max Euclidean RGB distance to accept a rarity color match.
   rarityColorThreshold: 40,
+  // Approximate Diablo 4 aspect-text color (the italic legendary-aspect
+  // paragraph in an item tooltip) - placeholder, needs on-device calibration
+  // (Task 11) against real item-tooltip captures.
+  aspectColor: "#e08a3e",
+  // Max Euclidean RGB distance to accept an aspect color match.
+  aspectColorThreshold: 40,
+  // Minimum vertical gap (px) between two vertically-adjacent OCR blocks to
+  // treat it as the implicit/affix divider line ML Kit doesn't report as its
+  // own element - placeholder, tune on-device (Task 11).
+  implicitDividerGapPx: 24,
 } as const;
 
 export type ItemConfig = typeof itemConfig;

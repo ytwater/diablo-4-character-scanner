@@ -67,6 +67,12 @@ export default function CharacterScanWebScreen() {
       }
       await updateMutation.mutateAsync({ id, ...patch });
     } else {
+      // Deliberate, permanent split from scan.native.tsx: Workers AI's
+      // ItemCandidates.affixes are plain strings with no bounding-box/color
+      // data, so classifyLines (which needs per-block frame.y/height and
+      // color to tell item power/armor/dps/socket/implicit/aspect/affix
+      // apart) cannot run here - only native's per-block OCR output supports
+      // it.
       await upsertItemMutation.mutateAsync({
         characterId: id,
         slot: target,

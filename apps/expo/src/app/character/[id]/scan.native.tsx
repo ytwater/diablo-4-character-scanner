@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import type { CharacterCandidates, ItemCandidates } from "@acme/validators";
 
+import { classifyLines } from "~/features/scanner/classifyLines";
 import { interpretBadge } from "~/features/scanner/interpretBadge";
 import { itemConfig, scannerConfig } from "~/features/scanner/config";
 import { useScan } from "~/features/scanner/useScan";
@@ -17,7 +18,7 @@ export default function CharacterScanScreen() {
   const { hasPermission, requestPermission } = useCameraPermission();
   const device = useCameraDevice("back");
   const cameraRef = useRef<Camera>(null);
-  const { candidates, status, photoPath, error, capture, retake } = useScan(
+  const { candidates, status, photoPath, error, blocks, capture, retake } = useScan(
     isHeader ? "character" : "item",
     cameraRef,
   );
@@ -69,16 +70,23 @@ export default function CharacterScanScreen() {
       }
       await updateMutation.mutateAsync({ id, ...patch });
     } else {
+      // Native has per-block OCR text/frame/color data (blocks, from
+      // useScan.native.ts), so classifyLines can actually distinguish item
+      // power/armor/dps/socket/implicit/aspect/affix lines. See
+      // scan.web.tsx for why the web path can't do this.
+      const lines = blocks
+        ? classifyLines(blocks)
+        : itemCandidates.affixes.map((text) => ({
+            kind: "other" as const,
+            text,
+          }));
       await upsertItemMutation.mutateAsync({
         characterId: id,
         slot: target,
         name: itemCandidates.name ?? "Unknown item",
         typeLine: itemCandidates.type,
         rarity: itemCandidates.rarity as never,
-        lines: itemCandidates.affixes.map((text) => ({
-          kind: "other" as const,
-          text,
-        })),
+        lines,
       });
     }
     await queryClient.invalidateQueries({

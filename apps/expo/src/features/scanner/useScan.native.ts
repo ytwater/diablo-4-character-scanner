@@ -5,6 +5,7 @@ import type { Camera } from "react-native-vision-camera";
 import type { CharacterCandidates, ItemCandidates, ScanMode } from "@acme/validators";
 
 import D4Ocr from "../../../modules/d4-ocr";
+import type { OcrBlock } from "./anchor";
 import { findAnchor } from "./anchor";
 import { extractFields } from "./fields";
 import { extractItemFields } from "./itemFields";
@@ -20,6 +21,10 @@ export function useScan(mode: ScanMode, cameraRef: React.RefObject<Camera | null
   const [status, setStatus] = useState<ScanStatus>("idle");
   const [photoPath, setPhotoPath] = useState<string | undefined>();
   const [error, setError] = useState<string | undefined>();
+  // Raw OCR blocks from the last item-mode scan (undefined in character
+  // mode) - exposed so classifyLines can run against real per-block
+  // text/frame/color data instead of the flat candidates.affixes strings.
+  const [blocks, setBlocks] = useState<OcrBlock[] | undefined>();
   const photoFileRef = useRef<File | undefined>(undefined);
 
   const capture = async () => {
@@ -56,6 +61,7 @@ export function useScan(mode: ScanMode, cameraRef: React.RefObject<Camera | null
           affixes: fields.affixes,
           rarity: rarityColor ? classifyRarity(rarityColor) : undefined,
         });
+        setBlocks(result.blocks);
       }
       setStatus("done");
     } catch (err) {
@@ -71,9 +77,10 @@ export function useScan(mode: ScanMode, cameraRef: React.RefObject<Camera | null
     photoFileRef.current = undefined;
     setPhotoPath(undefined);
     setCandidates(mode === "item" ? { affixes: [] } : {});
+    setBlocks(undefined);
     setError(undefined);
     setStatus("idle");
   };
 
-  return { candidates, status, photoPath, error, capture, retake };
+  return { candidates, status, photoPath, error, blocks, capture, retake };
 }
