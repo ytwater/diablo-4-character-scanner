@@ -45,8 +45,6 @@ class D4OcrModule : Module() {
 
       val inputImage = InputImage.fromBitmap(target, 0)
       val blocks = D4OcrRecognizer.recognize(inputImage)
-      val topBlock = blocks.minByOrNull { it.y }
-      val topBlockColor = topBlock?.let { averageColor(target, it) }
 
       mapOf(
         "blocks" to blocks.map { b ->
@@ -59,11 +57,15 @@ class D4OcrModule : Module() {
               "width" to b.width,
               "height" to b.height,
             ),
+            // Sampled per-block rather than just for the topmost block, since
+            // the topmost OCR block in the ROI is often UI chrome (a panel
+            // tab or header) rather than the item's own name/rarity text -
+            // callers pick whichever block they've identified as relevant.
+            "color" to averageColor(target, b),
           )
         },
         "width" to target.width,
         "height" to target.height,
-        "topBlockColor" to topBlockColor,
       )
     }
   }
@@ -99,20 +101,46 @@ class D4OcrModule : Module() {
       (block.x + block.width).coerceIn(0, bitmap.width),
       (block.y + block.height).coerceIn(0, bitmap.height),
     )
-    var rSum = 0L
-    var gSum = 0L
-    var bSum = 0L
-    var count = 0L
     val stride = 4
+
+    // Diablo tooltip text is bright/saturated against a dark background, and
+    // the glyphs themselves have a darker outline/shadow, so an unweighted
+    // average over the whole bounding box (or even a fixed brightness cutoff)
+    // washes the sampled color out toward the background or the outline. A
+    // first pass finds the brightest pixel in the block, then only pixels
+    // close to that peak - the glyph fill itself - are averaged.
+    var maxBrightness = 0
     var y = rect.top
     while (y < rect.bottom) {
       var x = rect.left
       while (x < rect.right) {
         val pixel = bitmap.getPixel(x, y)
-        rSum += (pixel shr 16) and 0xFF
-        gSum += (pixel shr 8) and 0xFF
-        bSum += pixel and 0xFF
-        count++
+        val brightness = maxOf((pixel shr 16) and 0xFF, (pixel shr 8) and 0xFF, pixel and 0xFF)
+        if (brightness > maxBrightness) maxBrightness = brightness
+        x += stride
+      }
+      y += stride
+    }
+    val brightnessFloor = (maxBrightness * 0.75).toInt()
+
+    var rSum = 0L
+    var gSum = 0L
+    var bSum = 0L
+    var count = 0L
+    y = rect.top
+    while (y < rect.bottom) {
+      var x = rect.left
+      while (x < rect.right) {
+        val pixel = bitmap.getPixel(x, y)
+        val r = (pixel shr 16) and 0xFF
+        val g = (pixel shr 8) and 0xFF
+        val b = pixel and 0xFF
+        if (maxOf(r, g, b) >= brightnessFloor) {
+          rSum += r
+          gSum += g
+          bSum += b
+          count++
+        }
         x += stride
       }
       y += stride

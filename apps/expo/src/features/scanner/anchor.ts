@@ -1,7 +1,10 @@
+import type { Rgb } from "./rarity";
+
 export interface OcrBlock {
   text: string;
   confidence: number;
   frame: { x: number; y: number; width: number; height: number };
+  color?: Rgb;
 }
 
 function levenshtein(a: string, b: string): number {

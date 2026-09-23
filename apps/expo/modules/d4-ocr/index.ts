@@ -9,17 +9,10 @@ export interface Roi {
   height: number;
 }
 
-export interface Rgb {
-  r: number;
-  g: number;
-  b: number;
-}
-
 export interface RecognizeImageResult {
   blocks: OcrBlock[];
   width: number;
   height: number;
-  topBlockColor?: Rgb;
 }
 
 interface D4OcrModule {

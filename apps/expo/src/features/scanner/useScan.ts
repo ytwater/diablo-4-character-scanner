@@ -56,11 +56,15 @@ export function useScan(mode: ScanMode, cameraRef: React.RefObject<Camera | null
       } else {
         const result = await D4Ocr.recognizeImage(uri, itemConfig.roi);
         const fields = extractItemFields(result.blocks);
+        // The type line ("Rare Helm") and the item name are both rendered in
+        // the item's rarity color - the type line uses a plainer font, so it
+        // gives a more consistent color sample.
+        const rarityColor = fields.type?.color ?? fields.name?.color;
         setCandidates({
           name: fields.name?.text,
           type: fields.type?.text,
           affixes: fields.affixes,
-          rarity: result.topBlockColor ? classifyRarity(result.topBlockColor) : undefined,
+          rarity: rarityColor ? classifyRarity(rarityColor) : undefined,
         });
       }
       setStatus("done");
