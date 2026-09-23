@@ -30,6 +30,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     edgeToEdgeEnabled: true,
   },
+  web: {
+    bundler: "metro",
+    output: "static",
+  },
   // extra: {
   //   eas: {
   //     projectId: "your-eas-project-id",
