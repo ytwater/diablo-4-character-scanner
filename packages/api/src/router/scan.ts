@@ -30,8 +30,8 @@ const VISION_MODEL = "@cf/meta/llama-3.2-11b-vision-instruct";
 function buildPrompt(mode: ScanMode): string {
   if (mode === "character") {
     return [
-      "You are reading a screenshot of a Diablo 4 character sheet.",
-      "Extract the character's level, title, and name.",
+      "You are reading a screenshot of a Diablo 4 character sheet panel.",
+      "Extract three fields: the character's level (a number next to a diamond/gem icon), their name (in large capitalized text), and their title — a short class/role phrase like 'Demonic Defender' or 'Slayer' displayed directly below the name, above the two icon buttons.",
       'Respond with ONLY a JSON object of this exact shape, no other text: {"level": string, "title": string, "name": string}.',
       "If a field isn't visible in the image, omit that key entirely.",
     ].join(" ");
