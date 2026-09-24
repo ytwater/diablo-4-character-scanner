@@ -1,0 +1,126 @@
+{
+  "width": 3072,
+  "height": 4080,
+  "blocks": [
+    {
+      "text": "ER O",
+      "confidence": 1,
+      "frame": {
+        "x": 24,
+        "y": 320,
+        "width": 240,
+        "height": 94
+      }
+    },
+    {
+      "text": "fender",
+      "confidence": 1,
+      "frame": {
+        "x": 1,
+        "y": 771,
+        "width": 193,
+        "height": 67
+      }
+    },
+    {
+      "text": "aterials",
+      "confidence": 1,
+      "frame": {
+        "x": 0,
+        "y": 1194,
+        "width": 189,
+        "height": 65
+      }
+    },
+    {
+      "text": "Damage",
+      "confidence": 1,
+      "frame": {
+        "x": 15,
+        "y": 1471,
+        "width": 226,
+        "height": 57
+      }
+    },
+    {
+      "text": "ess",
+      "confidence": 1,
+      "frame": {
+        "x": 11,
+        "y": 1761,
+        "width": 83,
+        "height": 34
+      }
+    },
+    {
+      "text": "ent",
+      "confidence": 1,
+      "frame": {
+        "x": 12,
+        "y": 2657,
+        "width": 62,
+        "height": 42
+      }
+    },
+    {
+      "text": "190",
+      "confidence": 1,
+      "frame": {
+        "x": 162,
+        "y": 2046,
+        "width": 108,
+        "height": 45
+      }
+    },
+    {
+      "text": "207",
+      "confidence": 1,
+      "frame": {
+        "x": 150,
+        "y": 2193,
+        "width": 124,
+        "height": 44
+      }
+    },
+    {
+      "text": "125",
+      "confidence": 1,
+      "frame": {
+        "x": 194,
+        "y": 2334,
+        "width": 88,
+        "height": 44
+      }
+    },
+    {
+      "text": "I,501",
+      "confidence": 1,
+      "frame": {
+        "x": 160,
+        "y": 2474,
+        "width": 122,
+        "height": 51
+      }
+    },
+    {
+      "text": "5,691,098",
+      "confidence": 1,
+      "frame": {
+        "x": 2,
+        "y": 3593,
+        "width": 290,
+        "height": 77
+      }
+    },
+    {
+      "text": "283",
+      "confidence": 1,
+      "frame": {
+        "x": 562,
+        "y": 3583,
+        "width": 110,
+        "height": 54
+      }
+    }
+  ]
+}

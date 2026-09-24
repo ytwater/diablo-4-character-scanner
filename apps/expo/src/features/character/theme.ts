@@ -10,5 +10,8 @@ export const characterTheme = {
     rare: "#f5e14a",
     legendary: "#f59b42",
     unique: "#c9a86a",
+    // Calibrated from an on-device mythic-unique capture (Task 11); matches
+    // itemConfig.rarityColors.mythicUnique.
+    mythicUnique: "#d193b6",
   },
 } as const;

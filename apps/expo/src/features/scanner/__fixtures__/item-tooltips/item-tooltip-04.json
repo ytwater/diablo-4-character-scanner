@@ -1,0 +1,376 @@
+{
+  "width": 3072,
+  "height": 4080,
+  "blocks": [
+    {
+      "text": "Boh|70 (155)",
+      "confidence": 1,
+      "frame": {
+        "x": 583,
+        "y": 539,
+        "width": 293,
+        "height": 79
+      }
+    },
+    {
+      "text": "AptAnthero",
+      "confidence": 1,
+      "frame": {
+        "x": 630,
+        "y": 624,
+        "width": 284,
+        "height": 59
+      }
+    },
+    {
+      "text": "Dinnl7",
+      "confidence": 1,
+      "frame": {
+        "x": 740,
+        "y": 694,
+        "width": 183,
+        "height": 76
+      }
+    },
+    {
+      "text": "TIBAULT'S WILL",
+      "confidence": 1,
+      "frame": {
+        "x": 1031,
+        "y": 651,
+        "width": 669,
+        "height": 66
+      }
+    },
+    {
+      "text": "Unique Pants",
+      "confidence": 1,
+      "frame": {
+        "x": 1035,
+        "y": 770,
+        "width": 368,
+        "height": 63
+      }
+    },
+    {
+      "text": "Le8HAR ACTER C",
+      "confidence": 1,
+      "frame": {
+        "x": 1529,
+        "y": 330,
+        "width": 725,
+        "height": 83
+      }
+    },
+    {
+      "text": "EQUIPPED",
+      "confidence": 1,
+      "frame": {
+        "x": 1409,
+        "y": 444,
+        "width": 372,
+        "height": 72
+      }
+    },
+    {
+      "text": "850 Item Power",
+      "confidence": 1,
+      "frame": {
+        "x": 1040,
+        "y": 870,
+        "width": 425,
+        "height": 52
+      }
+    },
+    {
+      "text": "25 (** +25) Quality",
+      "confidence": 1,
+      "frame": {
+        "x": 1042,
+        "y": 953,
+        "width": 493,
+        "height": 67
+      }
+    },
+    {
+      "text": "1,992 Armor",
+      "confidence": 1,
+      "frame": {
+        "x": 1049,
+        "y": 1122,
+        "width": 381,
+        "height": 76
+      }
+    },
+    {
+      "text": "+156 Dexterity +[83 - 99]",
+      "confidence": 1,
+      "frame": {
+        "x": 1127,
+        "y": 1237,
+        "width": 655,
+        "height": 65
+      }
+    },
+    {
+      "text": "• +1,308 Maximum Life [1,016 - 1,225]",
+      "confidence": 1,
+      "frame": {
+        "x": 1062,
+        "y": 1326,
+        "width": 1050,
+        "height": 71
+      }
+    },
+    {
+      "text": "• +12.5% Barrier Generation [10.0-",
+      "confidence": 1,
+      "frame": {
+        "x": 1064,
+        "y": 1427,
+        "width": 958,
+        "height": 65
+      }
+    },
+    {
+      "text": "15.01%",
+      "confidence": 1,
+      "frame": {
+        "x": 1135,
+        "y": 1515,
+        "width": 175,
+        "height": 67
+      }
+    },
+    {
+      "text": "• +2,376 Poison Resistance [1,800 -",
+      "confidence": 1,
+      "frame": {
+        "x": 1096,
+        "y": 1607,
+        "width": 928,
+        "height": 66
+      }
+    },
+    {
+      "text": "2,274]",
+      "confidence": 1,
+      "frame": {
+        "x": 1137,
+        "y": 1697,
+        "width": 160,
+        "height": 61
+      }
+    },
+    {
+      "text": "+4 Maximum Resolve Stacks [3-4]",
+      "confidence": 1,
+      "frame": {
+        "x": 1156,
+        "y": 1783,
+        "width": 898,
+        "height": 61
+      }
+    },
+    {
+      "text": "You deal 20%[x] [15 - 20)% increased",
+      "confidence": 1,
+      "frame": {
+        "x": 1141,
+        "y": 1876,
+        "width": 960,
+        "height": 66
+      }
+    },
+    {
+      "text": "damage and gain 25 Primary",
+      "confidence": 1,
+      "frame": {
+        "x": 1143,
+        "y": 1961,
+        "width": 756,
+        "height": 62
+      }
+    },
+    {
+      "text": "Resource Regeneration while",
+      "confidence": 1,
+      "frame": {
+        "x": 1144,
+        "y": 2036,
+        "width": 759,
+        "height": 67
+      }
+    },
+    {
+      "text": "Unstoppable and for 5 seconds after.",
+      "confidence": 1,
+      "frame": {
+        "x": 1145,
+        "y": 2118,
+        "width": 962,
+        "height": 61
+      }
+    },
+    {
+      "text": "60 Dexterity",
+      "confidence": 1,
+      "frame": {
+        "x": 1195,
+        "y": 2206,
+        "width": 297,
+        "height": 67
+      }
+    },
+    {
+      "text": "+60 Dexterity",
+      "confidence": 1,
+      "frame": {
+        "x": 1164,
+        "y": 2306,
+        "width": 328,
+        "height": 65
+      }
+    },
+    {
+      "text": "\"The younger apprentices think wearing heavy",
+      "confidence": 1,
+      "frame": {
+        "x": 1067,
+        "y": 2416,
+        "width": 1074,
+        "height": 61
+      }
+    },
+    {
+      "text": "plate in the swamps is foolish. They fail to",
+      "confidence": 1,
+      "frame": {
+        "x": 1066,
+        "y": 2493,
+        "width": 974,
+        "height": 60
+      }
+    },
+    {
+      "text": "understamd that our armor is our legacy, and",
+      "confidence": 1,
+      "frame": {
+        "x": 1068,
+        "y": 2570,
+        "width": 1049,
+        "height": 56
+      }
+    },
+    {
+      "text": "without it we are nothing.\"",
+      "confidence": 1,
+      "frame": {
+        "x": 1069,
+        "y": 2646,
+        "width": 612,
+        "height": 56
+      }
+    },
+    {
+      "text": "-Crusader Pembroke",
+      "confidence": 1,
+      "frame": {
+        "x": 1082,
+        "y": 2710,
+        "width": 480,
+        "height": 69
+      }
+    },
+    {
+      "text": "Account Bound",
+      "confidence": 1,
+      "frame": {
+        "x": 1824,
+        "y": 2879,
+        "width": 330,
+        "height": 57
+      }
+    },
+    {
+      "text": "A Scroll Downque Equipped",
+      "confidence": 1,
+      "frame": {
+        "x": 1387,
+        "y": 2914,
+        "width": 767,
+        "height": 104
+      }
+    },
+    {
+      "text": "Unequip",
+      "confidence": 1,
+      "frame": {
+        "x": 1131,
+        "y": 3078,
+        "width": 215,
+        "height": 69
+      }
+    },
+    {
+      "text": "TsrTA Link",
+      "confidence": 1,
+      "frame": {
+        "x": 1059,
+        "y": 3170,
+        "width": 389,
+        "height": 57
+      }
+    },
+    {
+      "text": "Requires Level 70",
+      "confidence": 1,
+      "frame": {
+        "x": 1749,
+        "y": 2814,
+        "width": 408,
+        "height": 53
+      }
+    },
+    {
+      "text": "Unmark Item",
+      "confidence": 1,
+      "frame": {
+        "x": 1169,
+        "y": 3261,
+        "width": 340,
+        "height": 48
+      }
+    },
+    {
+      "text": "Unstoppable characters have all Control",
+      "confidence": 1,
+      "frame": {
+        "x": 1064,
+        "y": 3403,
+        "width": 1044,
+        "height": 63
+      }
+    },
+    {
+      "text": "Impairing Effects removed and prevented.",
+      "confidence": 1,
+      "frame": {
+        "x": 1069,
+        "y": 3480,
+        "width": 1061,
+        "height": 60
+      }
+    },
+    {
+      "text": "1,485",
+      "confidence": 1,
+      "frame": {
+        "x": 2463,
+        "y": 3519,
+        "width": 161,
+        "height": 59
+      }
+    }
+  ]
+}

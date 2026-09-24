@@ -1,0 +1,386 @@
+{
+  "width": 3072,
+  "height": 4080,
+  "blocks": [
+    {
+      "text": "T",
+      "confidence": 1,
+      "frame": {
+        "x": 384,
+        "y": 3562,
+        "width": 51,
+        "height": 61
+      }
+    },
+    {
+      "text": "Bon|70 (155)",
+      "confidence": 1,
+      "frame": {
+        "x": 592,
+        "y": 416,
+        "width": 304,
+        "height": 79
+      }
+    },
+    {
+      "text": "Apt Anthero",
+      "confidence": 1,
+      "frame": {
+        "x": 658,
+        "y": 504,
+        "width": 242,
+        "height": 61
+      }
+    },
+    {
+      "text": "Dnn|",
+      "confidence": 1,
+      "frame": {
+        "x": 775,
+        "y": 568,
+        "width": 127,
+        "height": 76
+      }
+    },
+    {
+      "text": "7",
+      "confidence": 1,
+      "frame": {
+        "x": 872,
+        "y": 570,
+        "width": 76,
+        "height": 75
+      }
+    },
+    {
+      "text": "BOTS",
+      "confidence": 1,
+      "frame": {
+        "x": 1048,
+        "y": 637,
+        "width": 271,
+        "height": 61
+      }
+    },
+    {
+      "text": "GHOSTWALKER",
+      "confidence": 1,
+      "frame": {
+        "x": 1046,
+        "y": 529,
+        "width": 631,
+        "height": 71
+      }
+    },
+    {
+      "text": "Legendary Boots",
+      "confidence": 1,
+      "frame": {
+        "x": 1050,
+        "y": 746,
+        "width": 457,
+        "height": 71
+      }
+    },
+    {
+      "text": "EQUIPPED",
+      "confidence": 1,
+      "frame": {
+        "x": 1423,
+        "y": 320,
+        "width": 383,
+        "height": 76
+      }
+    },
+    {
+      "text": "850 Item Power",
+      "confidence": 1,
+      "frame": {
+        "x": 1053,
+        "y": 853,
+        "width": 429,
+        "height": 53
+      }
+    },
+    {
+      "text": "25 (% +25) Quality",
+      "confidence": 1,
+      "frame": {
+        "x": 1054,
+        "y": 934,
+        "width": 499,
+        "height": 70
+      }
+    },
+    {
+      "text": "798 Armor",
+      "confidence": 1,
+      "frame": {
+        "x": 1058,
+        "y": 1121,
+        "width": 334,
+        "height": 57
+      }
+    },
+    {
+      "text": "FeetIAR ACTERc",
+      "confidence": 1,
+      "frame": {
+        "x": 1571,
+        "y": 208,
+        "width": 751,
+        "height": 84
+      }
+    },
+    {
+      "text": "• +111 Dexterity +[83 -99]",
+      "confidence": 1,
+      "frame": {
+        "x": 1073,
+        "y": 1225,
+        "width": 729,
+        "height": 65
+      }
+    },
+    {
+      "text": "o +25% Movement Speed [20 - 24]%",
+      "confidence": 1,
+      "frame": {
+        "x": 1077,
+        "y": 1323,
+        "width": 980,
+        "height": 65
+      }
+    },
+    {
+      "text": "• +18.1% Barrier Generation [10.0-",
+      "confidence": 1,
+      "frame": {
+        "x": 1078,
+        "y": 1419,
+        "width": 967,
+        "height": 63
+      }
+    },
+    {
+      "text": "15.0]%",
+      "confidence": 1,
+      "frame": {
+        "x": 1153,
+        "y": 1509,
+        "width": 173,
+        "height": 63
+      }
+    },
+    {
+      "text": "P Unequip",
+      "confidence": 1,
+      "frame": {
+        "x": 1042,
+        "y": 2700,
+        "width": 319,
+        "height": 63
+      }
+    },
+    {
+      "text": "• +1 Maximum Evade Charge [1 - 2]",
+      "confidence": 1,
+      "frame": {
+        "x": 1083,
+        "y": 1601,
+        "width": 966,
+        "height": 60
+      }
+    },
+    {
+      "text": "V +25% Movement Speed [12 - 15|%",
+      "confidence": 1,
+      "frame": {
+        "x": 1076,
+        "y": 1698,
+        "width": 975,
+        "height": 65
+      }
+    },
+    {
+      "text": "* Imprinted: While Unstoppable and",
+      "confidence": 1,
+      "frame": {
+        "x": 1081,
+        "y": 1792,
+        "width": 1007,
+        "height": 66
+      }
+    },
+    {
+      "text": "for 4 seconds after, you gain 12.0%[x]",
+      "confidence": 1,
+      "frame": {
+        "x": 1156,
+        "y": 1875,
+        "width": 990,
+        "height": 62
+      }
+    },
+    {
+      "text": "[10.0 - 20.01% increased Movement",
+      "confidence": 1,
+      "frame": {
+        "x": 1160,
+        "y": 1956,
+        "width": 924,
+        "height": 64
+      }
+    },
+    {
+      "text": "Speed and are Unhindered.",
+      "confidence": 1,
+      "frame": {
+        "x": 1159,
+        "y": 2034,
+        "width": 710,
+        "height": 65
+      }
+    },
+    {
+      "text": "TSHIFT H Link",
+      "confidence": 1,
+      "frame": {
+        "x": 1063,
+        "y": 2788,
+        "width": 380,
+        "height": 61
+      }
+    },
+    {
+      "text": "Unmark Item",
+      "confidence": 1,
+      "frame": {
+        "x": 1176,
+        "y": 2882,
+        "width": 344,
+        "height": 54
+      }
+    },
+    {
+      "text": "Requires Level 70",
+      "confidence": 1,
+      "frame": {
+        "x": 1763,
+        "y": 2151,
+        "width": 413,
+        "height": 61
+      }
+    },
+    {
+      "text": "Account Bound",
+      "confidence": 1,
+      "frame": {
+        "x": 1812,
+        "y": 2230,
+        "width": 366,
+        "height": 43
+      }
+    },
+    {
+      "text": "Vessel of Hatred Item D",
+      "confidence": 1,
+      "frame": {
+        "x": 1624,
+        "y": 2294,
+        "width": 539,
+        "height": 58
+      }
+    },
+    {
+      "text": "PA Scroll Downity: 100/100",
+      "confidence": 1,
+      "frame": {
+        "x": 1401,
+        "y": 2514,
+        "width": 774,
+        "height": 84
+      }
+    },
+    {
+      "text": "Sell Value: 0",
+      "confidence": 1,
+      "frame": {
+        "x": 1829,
+        "y": 2426,
+        "width": 313,
+        "height": 63
+      }
+    },
+    {
+      "text": "Temners: 1/3",
+      "confidence": 1,
+      "frame": {
+        "x": 1830,
+        "y": 2604,
+        "width": 344,
+        "height": 43
+      }
+    },
+    {
+      "text": "Unstoppable characters have all Control",
+      "confidence": 1,
+      "frame": {
+        "x": 1069,
+        "y": 3033,
+        "width": 1060,
+        "height": 60
+      }
+    },
+    {
+      "text": "Impairing Effects removed and prevented.",
+      "confidence": 1,
+      "frame": {
+        "x": 1075,
+        "y": 3107,
+        "width": 1076,
+        "height": 61
+      }
+    },
+    {
+      "text": "Unhindered characters can move through",
+      "confidence": 1,
+      "frame": {
+        "x": 1075,
+        "y": 3249,
+        "width": 1091,
+        "height": 58
+      }
+    },
+    {
+      "text": "enemies and their Movement Speed cannot",
+      "confidence": 1,
+      "frame": {
+        "x": 1080,
+        "y": 3323,
+        "width": 1107,
+        "height": 57
+      }
+    },
+    {
+      "text": "be reduced,",
+      "confidence": 1,
+      "frame": {
+        "x": 1081,
+        "y": 3394,
+        "width": 285,
+        "height": 54
+      }
+    },
+    {
+      "text": "1,485",
+      "confidence": 1,
+      "frame": {
+        "x": 2479,
+        "y": 3424,
+        "width": 161,
+        "height": 59
+      }
+    }
+  ]
+}

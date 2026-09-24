@@ -1,0 +1,36 @@
+{
+  "x1": {
+    "width": 310,
+    "height": 202,
+    "blocks": [
+      {
+        "text": "K£6",
+        "confidence": 1,
+        "angle": 180,
+        "frame": {
+          "x": 159,
+          "y": 102,
+          "width": 85,
+          "height": 43
+        }
+      }
+    ]
+  },
+  "x3": {
+    "width": 930,
+    "height": 606,
+    "blocks": [
+      {
+        "text": "£6",
+        "confidence": 1,
+        "angle": -178.43972778320312,
+        "frame": {
+          "x": 473,
+          "y": 308,
+          "width": 154,
+          "height": 139
+        }
+      }
+    ]
+  }
+}

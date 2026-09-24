@@ -30,7 +30,10 @@ class D4OcrModule : Module() {
   override fun definition() = ModuleDefinition {
     Name("D4Ocr")
 
-    AsyncFunction("recognizeImage") { uri: String, roi: RoiRecord? ->
+    // `scale` > 1 upscales the (cropped) image before recognition - for a
+    // second pass over small text like the level badge, which ML Kit can
+    // miss at native size. Returned frames are in the scaled image's space.
+    AsyncFunction("recognizeImage") { uri: String, roi: RoiRecord?, scale: Double? ->
       val path = uri.removePrefix("file://")
       val decoded = BitmapFactory.decodeFile(path)
         ?: throw CodedException("Failed to decode photo at $uri")
@@ -41,6 +44,18 @@ class D4OcrModule : Module() {
         Bitmap.createBitmap(bitmap, roiRect.left, roiRect.top, roiRect.width(), roiRect.height())
       } else {
         bitmap
+      }.let { cropped ->
+        val factor = scale ?: 1.0
+        if (factor > 1.0) {
+          Bitmap.createScaledBitmap(
+            cropped,
+            (cropped.width * factor).toInt(),
+            (cropped.height * factor).toInt(),
+            true,
+          )
+        } else {
+          cropped
+        }
       }
 
       val inputImage = InputImage.fromBitmap(target, 0)
@@ -51,6 +66,7 @@ class D4OcrModule : Module() {
           mapOf(
             "text" to b.text,
             "confidence" to b.confidence,
+            "angle" to b.angle,
             "frame" to mapOf(
               "x" to b.x,
               "y" to b.y,

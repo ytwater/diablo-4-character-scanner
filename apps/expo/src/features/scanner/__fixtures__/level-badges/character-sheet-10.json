@@ -1,0 +1,36 @@
+{
+  "x1": {
+    "width": 236,
+    "height": 149,
+    "blocks": [
+      {
+        "text": "93",
+        "confidence": 1,
+        "angle": 0.6523154973983765,
+        "frame": {
+          "x": 130,
+          "y": 46,
+          "width": 43,
+          "height": 39
+        }
+      }
+    ]
+  },
+  "x3": {
+    "width": 708,
+    "height": 447,
+    "blocks": [
+      {
+        "text": "26",
+        "confidence": 1,
+        "angle": 179.39389038085938,
+        "frame": {
+          "x": 364,
+          "y": 137,
+          "width": 76,
+          "height": 121
+        }
+      }
+    ]
+  }
+}
