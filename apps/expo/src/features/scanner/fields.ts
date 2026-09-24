@@ -6,14 +6,69 @@ export interface FieldCandidates {
   name?: OcrBlock;
 }
 
-export function extractFields(blocks: OcrBlock[], anchor: OcrBlock): FieldCandidates {
+// The level badge is a bare 1-3 digit number. Anything else with digits
+// below the anchor - player nameplates ("DeathBeth | 70 (65)"), stat values
+// ("3,809") - is never the level, name, or title.
+const LEVEL_PATTERN = /^\d{1,3}$/;
+
+export interface Region {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+/**
+ * Where the level badge (the small number on a blue diamond) sits, for a
+ * second, zoomed-in OCR pass when the first pass misses it: left of the
+ * name, straddling the "CHARACTER" header's left edge, between the bottom of
+ * the header and the bottom of the name. Sized relative to the anchor-to-name
+ * offset rather than any block's height, since ML Kit fuses the header's tab
+ * icons into its block and inflates that height unpredictably.
+ */
+export function findLevelBadgeRegion(
+  anchor: OcrBlock,
+  name: OcrBlock,
+): Region | undefined {
+  const span = name.frame.x - anchor.frame.x;
+  if (span <= 0) return undefined;
+  const top = anchor.frame.y + anchor.frame.height;
+  const bottom = name.frame.y + name.frame.height;
+  if (bottom <= top) return undefined;
+  const left = anchor.frame.x - span * 1.5;
+  return { x: left, y: top, width: span * 2, height: bottom - top };
+}
+
+// ML Kit sometimes takes the badge's diamond as upside down and reads "93" as
+// "26" or "£6" - still a plausible level, so check the line's rotation.
+const MAX_UPRIGHT_ANGLE = 45;
+
+/** Picks the level from a second-pass OCR of the badge region, if read upright. */
+export function pickBadgeLevel(blocks: OcrBlock[]): OcrBlock | undefined {
+  return blocks.find(
+    (b) =>
+      LEVEL_PATTERN.test(b.text.trim()) &&
+      Math.abs(b.angle ?? 0) <= MAX_UPRIGHT_ANGLE,
+  );
+}
+
+export function extractFields(
+  blocks: OcrBlock[],
+  anchor: OcrBlock,
+): FieldCandidates {
   const below = blocks
-    .filter((b) => b !== anchor && b.frame.y > anchor.frame.y + anchor.frame.height)
+    .filter(
+      (b) => b !== anchor && b.frame.y > anchor.frame.y + anchor.frame.height,
+    )
     .sort((a, b) => a.frame.y - b.frame.y);
 
-  const level = below.find((b) => /\d{1,3}/.test(b.text.trim()));
-  const remaining = below.filter((b) => b !== level);
-  const [name, title] = remaining;
+  const [name, title] = below.filter((b) => !/\d/.test(b.text));
+
+  // The badge sits beside the name, so it can't be lower than the title -
+  // anything further down is a stat value (e.g. Strength's "190"). If ML
+  // Kit missed the badge, leave the level blank rather than guess.
+  const levelLimit = title ? title.frame.y + title.frame.height : Infinity;
+  const level = pickBadgeLevel(below.filter((b) => b.frame.y < levelLimit));
 
   return { level, name, title };
 }

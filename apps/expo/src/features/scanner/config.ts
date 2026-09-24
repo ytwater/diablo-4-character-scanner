@@ -20,10 +20,17 @@ export const itemConfig = {
   // on-device calibration against real item-tooltip captures.
   rarityColors: {
     common: "#c8c8c8",
-    magic: "#5bb0f5",
+    // Calibrated from an on-device magic-item capture (Task 11); see
+    // useScan.native.ts's "[rarity-calibration]" debug log.
+    magic: "#838ae8",
     rare: "#f5e14a",
     legendary: "#f59b42",
-    unique: "#c9a86a",
+    // Calibrated from an on-device unique-item capture (Task 11); see
+    // useScan.native.ts's "[rarity-calibration]" debug log.
+    unique: "#d8b09b",
+    // Calibrated from an on-device mythic-unique capture (Task 11); see
+    // useScan.native.ts's "[rarity-calibration]" debug log.
+    mythicUnique: "#d193b6",
   },
   // Max Euclidean RGB distance to accept a rarity color match.
   rarityColorThreshold: 40,

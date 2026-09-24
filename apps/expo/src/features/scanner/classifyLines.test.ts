@@ -49,6 +49,14 @@ describe("classifyLines", () => {
     expect(lines[0]?.kind).toBe("affix");
   });
 
+  it("classifies a starred line as a Greater Affix, keeping the star in the text", () => {
+    const lines = classifyLines([block("* +30% Movement Speed", 0)]);
+    expect(lines[0]).toEqual({
+      kind: "greater",
+      text: "* +30% Movement Speed",
+    });
+  });
+
   it("falls back to 'other' for unrecognized text with no gap above it", () => {
     const lines = classifyLines([block("Some random unclassified string", 0)]);
     expect(lines[0]?.kind).toBe("other");

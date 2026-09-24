@@ -16,6 +16,10 @@ data class D4OcrBlock(
     // version (text-recognition:16.0.1) - kept for shape parity with the
     // design doc, not a real reliability signal.
     val confidence: Double,
+    // Line rotation in degrees (ML Kit's Line.angle). ML Kit can read a
+    // small, rotationally symmetric shape like the level badge's diamond
+    // upside down ("93" -> "£6"); such lines come back near +/-180.
+    val angle: Float = 0f,
 )
 
 object D4OcrRecognizer {
@@ -23,15 +27,24 @@ object D4OcrRecognizer {
 
     fun recognize(image: InputImage): List<D4OcrBlock> {
         val result = Tasks.await(recognizer.process(image))
-        return result.textBlocks.map { block ->
-            val box = block.boundingBox ?: Rect()
+        // Flatten to ML Kit's Line level, not Block level: a "block" is a
+        // paragraph-like grouping that can fuse multiple visually distinct
+        // tooltip lines (item name + type + subtype) into one entry when
+        // they're tightly spaced, which breaks every caller's one-line-per-
+        // block assumption (all-caps name/type detection, per-line color
+        // sampling, classifyLines' row classification) and washes out the
+        // sampled color by averaging across lines that may differ subtly in
+        // tint. Lines give accurate, independent bounding boxes instead.
+        return result.textBlocks.flatMap { block -> block.lines }.map { line ->
+            val box = line.boundingBox ?: Rect()
             D4OcrBlock(
-                text = block.text,
+                text = line.text,
                 x = box.left,
                 y = box.top,
                 width = box.width(),
                 height = box.height(),
                 confidence = 1.0,
+                angle = line.angle,
             )
         }
     }

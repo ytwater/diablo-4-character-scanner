@@ -5,6 +5,8 @@ export interface OcrBlock {
   confidence: number;
   frame: { x: number; y: number; width: number; height: number };
   color?: Rgb;
+  // Line rotation in degrees; near +/-180 means ML Kit read it upside down.
+  angle?: number;
 }
 
 function levenshtein(a: string, b: string): number {
@@ -26,7 +28,7 @@ function levenshtein(a: string, b: string): number {
   return dp[a.length]![b.length]!;
 }
 
-function similarity(a: string, b: string): number {
+export function similarity(a: string, b: string): number {
   const maxLen = Math.max(a.length, b.length);
   if (maxLen === 0) return 1;
   return 1 - levenshtein(a, b) / maxLen;

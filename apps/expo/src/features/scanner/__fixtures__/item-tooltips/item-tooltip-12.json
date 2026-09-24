@@ -1,0 +1,576 @@
+{
+  "width": 3072,
+  "height": 4080,
+  "blocks": [
+    {
+      "text": "<Retty Pha",
+      "confidence": 1,
+      "frame": {
+        "x": 196,
+        "y": 1635,
+        "width": 261,
+        "height": 61
+      }
+    },
+    {
+      "text": "CHHARACTER ra",
+      "confidence": 1,
+      "frame": {
+        "x": 558,
+        "y": 205,
+        "width": 565,
+        "height": 85
+      }
+    },
+    {
+      "text": "UDAN",
+      "confidence": 1,
+      "frame": {
+        "x": 719,
+        "y": 518,
+        "width": 184,
+        "height": 50
+      }
+    },
+    {
+      "text": "Demonic Defende",
+      "confidence": 1,
+      "frame": {
+        "x": 596,
+        "y": 635,
+        "width": 449,
+        "height": 68
+      }
+    },
+    {
+      "text": "Stats & Materials",
+      "confidence": 1,
+      "frame": {
+        "x": 606,
+        "y": 1029,
+        "width": 444,
+        "height": 57
+      }
+    },
+    {
+      "text": "Weapon Dama",
+      "confidence": 1,
+      "frame": {
+        "x": 698,
+        "y": 1283,
+        "width": 339,
+        "height": 62
+      }
+    },
+    {
+      "text": "3,809",
+      "confidence": 1,
+      "frame": {
+        "x": 706,
+        "y": 1359,
+        "width": 166,
+        "height": 53
+      }
+    },
+    {
+      "text": "Toughness",
+      "confidence": 1,
+      "frame": {
+        "x": 706,
+        "y": 1553,
+        "width": 260,
+        "height": 57
+      }
+    },
+    {
+      "text": "63,9 13",
+      "confidence": 1,
+      "frame": {
+        "x": 714,
+        "y": 1619,
+        "width": 183,
+        "height": 54
+      }
+    },
+    {
+      "text": "Strength",
+      "confidence": 1,
+      "frame": {
+        "x": 582,
+        "y": 1836,
+        "width": 206,
+        "height": 59
+      }
+    },
+    {
+      "text": "Intelligence 22",
+      "confidence": 1,
+      "frame": {
+        "x": 588,
+        "y": 1976,
+        "width": 496,
+        "height": 56
+      }
+    },
+    {
+      "text": "Willpower",
+      "confidence": 1,
+      "frame": {
+        "x": 592,
+        "y": 2115,
+        "width": 241,
+        "height": 58
+      }
+    },
+    {
+      "text": "Dexterity",
+      "confidence": 1,
+      "frame": {
+        "x": 598,
+        "y": 2252,
+        "width": 223,
+        "height": 52
+      }
+    },
+    {
+      "text": "19",
+      "confidence": 1,
+      "frame": {
+        "x": 1025,
+        "y": 1837,
+        "width": 50,
+        "height": 44
+      }
+    },
+    {
+      "text": "1 Equipment",
+      "confidence": 1,
+      "frame": {
+        "x": 535,
+        "y": 2409,
+        "width": 393,
+        "height": 79
+      }
+    },
+    {
+      "text": "I,5",
+      "confidence": 1,
+      "frame": {
+        "x": 992,
+        "y": 2246,
+        "width": 107,
+        "height": 54
+      }
+    },
+    {
+      "text": "686,691,098",
+      "confidence": 1,
+      "frame": {
+        "x": 752,
+        "y": 3330,
+        "width": 369,
+        "height": 75
+      }
+    },
+    {
+      "text": "RING F THE",
+      "confidence": 1,
+      "frame": {
+        "x": 1145,
+        "y": 501,
+        "width": 519,
+        "height": 74
+      }
+    },
+    {
+      "text": "IDNIGHT SUN",
+      "confidence": 1,
+      "frame": {
+        "x": 1229,
+        "y": 593,
+        "width": 524,
+        "height": 78
+      }
+    },
+    {
+      "text": "Unique Ring",
+      "confidence": 1,
+      "frame": {
+        "x": 1146,
+        "y": 715,
+        "width": 338,
+        "height": 63
+      }
+    },
+    {
+      "text": "850 Item Power",
+      "confidence": 1,
+      "frame": {
+        "x": 1149,
+        "y": 814,
+        "width": 418,
+        "height": 52
+      }
+    },
+    {
+      "text": "Ring",
+      "confidence": 1,
+      "frame": {
+        "x": 1650,
+        "y": 175,
+        "width": 116,
+        "height": 80
+      }
+    },
+    {
+      "text": "EQUIPPED",
+      "confidence": 1,
+      "frame": {
+        "x": 1510,
+        "y": 300,
+        "width": 366,
+        "height": 74
+      }
+    },
+    {
+      "text": "17 ( +17/25) Quality",
+      "confidence": 1,
+      "frame": {
+        "x": 1155,
+        "y": 894,
+        "width": 561,
+        "height": 67
+      }
+    },
+    {
+      "text": "138 All Resist",
+      "confidence": 1,
+      "frame": {
+        "x": 1176,
+        "y": 1068,
+        "width": 390,
+        "height": 69
+      }
+    },
+    {
+      "text": "•",
+      "confidence": 1,
+      "frame": {
+        "x": 1177,
+        "y": 1368,
+        "width": 27,
+        "height": 59
+      }
+    },
+    {
+      "text": "+104 Dexterity +[83 - 99]",
+      "confidence": 1,
+      "frame": {
+        "x": 1238,
+        "y": 1170,
+        "width": 643,
+        "height": 64
+      }
+    },
+    {
+      "text": "• +242 Life Regeneration (183 - 220]",
+      "confidence": 1,
+      "frame": {
+        "x": 1176,
+        "y": 1262,
+        "width": 956,
+        "height": 71
+      }
+    },
+    {
+      "text": "+996 Armor [780 - 980]",
+      "confidence": 1,
+      "frame": {
+        "x": 1241,
+        "y": 1360,
+        "width": 595,
+        "height": 66
+      }
+    },
+    {
+      "text": "• +4.1% Critical Strike Chance [3.5 -",
+      "confidence": 1,
+      "frame": {
+        "x": 1180,
+        "y": 1449,
+        "width": 947,
+        "height": 72
+      }
+    },
+    {
+      "text": "5.0}%",
+      "confidence": 1,
+      "frame": {
+        "x": 1249,
+        "y": 1545,
+        "width": 141,
+        "height": 63
+      }
+    },
+    {
+      "text": "10.2% Resource Cost Reduction [6.0-",
+      "confidence": 1,
+      "frame": {
+        "x": 1256,
+        "y": 1617,
+        "width": 959,
+        "height": 78
+      }
+    },
+    {
+      "text": "9.01%",
+      "confidence": 1,
+      "frame": {
+        "x": 1251,
+        "y": 1717,
+        "width": 142,
+        "height": 62
+      }
+    },
+    {
+      "text": "* When you Critically Strike, you",
+      "confidence": 1,
+      "frame": {
+        "x": 1183,
+        "y": 1795,
+        "width": 867,
+        "height": 72
+      }
+    },
+    {
+      "text": "regain 46%[+] (40- 501% of the Vigor",
+      "confidence": 1,
+      "frame": {
+        "x": 1257,
+        "y": 1864,
+        "width": 936,
+        "height": 87
+      }
+    },
+    {
+      "text": "you've spent in the last 2 seconds.",
+      "confidence": 1,
+      "frame": {
+        "x": 1258,
+        "y": 1944,
+        "width": 875,
+        "height": 83
+      }
+    },
+    {
+      "text": "Gain Counterattack's Passive Effect.",
+      "confidence": 1,
+      "frame": {
+        "x": 1263,
+        "y": 2103,
+        "width": 909,
+        "height": 67
+      }
+    },
+    {
+      "text": "You gain 10%[+] Attack Speed and",
+      "confidence": 1,
+      "frame": {
+        "x": 1283,
+        "y": 2187,
+        "width": 844,
+        "height": 83
+      }
+    },
+    {
+      "text": "Critical Strike Chance, but your",
+      "confidence": 1,
+      "frame": {
+        "x": 1266,
+        "y": 2276,
+        "width": 788,
+        "height": 65
+      }
+    },
+    {
+      "text": "Primary Resource Costs are",
+      "confidence": 1,
+      "frame": {
+        "x": 1267,
+        "y": 2354,
+        "width": 695,
+        "height": 67
+      }
+    },
+    {
+      "text": "increased by 30%.+1,750 Fire",
+      "confidence": 1,
+      "frame": {
+        "x": 1269,
+        "y": 2425,
+        "width": 732,
+        "height": 72
+      }
+    },
+    {
+      "text": "Resistance",
+      "confidence": 1,
+      "frame": {
+        "x": 1270,
+        "y": 2519,
+        "width": 269,
+        "height": 48
+      }
+    },
+    {
+      "text": "\"At midnight laughed the second brother,",
+      "confidence": 1,
+      "frame": {
+        "x": 1191,
+        "y": 2603,
+        "width": 919,
+        "height": 73
+      }
+    },
+    {
+      "text": "Nebahayomo, spirit of cunning. Trickery is his",
+      "confidence": 1,
+      "frame": {
+        "x": 1191,
+        "y": 2674,
+        "width": 1034,
+        "height": 79
+      }
+    },
+    {
+      "text": "blessing, suffering is his prayer. Honor him",
+      "confidence": 1,
+      "frame": {
+        "x": 1192,
+        "y": 2747,
+        "width": 965,
+        "height": 80
+      }
+    },
+    {
+      "text": "and shrewdness shall be your reward.\" -The",
+      "confidence": 1,
+      "frame": {
+        "x": 1194,
+        "y": 2823,
+        "width": 990,
+        "height": 72
+      }
+    },
+    {
+      "text": "Nitī Sē, Verse V",
+      "confidence": 1,
+      "frame": {
+        "x": 1196,
+        "y": 2906,
+        "width": 352,
+        "height": 65
+      }
+    },
+    {
+      "text": "Unequip",
+      "confidence": 1,
+      "frame": {
+        "x": 1255,
+        "y": 3112,
+        "width": 215,
+        "height": 57
+      }
+    },
+    {
+      "text": "TsurT",
+      "confidence": 1,
+      "frame": {
+        "x": 1174,
+        "y": 3196,
+        "width": 102,
+        "height": 63
+      }
+    },
+    {
+      "text": "F Scroll Down",
+      "confidence": 1,
+      "frame": {
+        "x": 1506,
+        "y": 2951,
+        "width": 437,
+        "height": 63
+      }
+    },
+    {
+      "text": "Link",
+      "confidence": 1,
+      "frame": {
+        "x": 1437,
+        "y": 3188,
+        "width": 112,
+        "height": 62
+      }
+    },
+    {
+      "text": "Unmark Item",
+      "confidence": 1,
+      "frame": {
+        "x": 1290,
+        "y": 3285,
+        "width": 332,
+        "height": 51
+      }
+    },
+    {
+      "text": "kequires Level 70",
+      "confidence": 1,
+      "frame": {
+        "x": 1858,
+        "y": 2977,
+        "width": 392,
+        "height": 69
+      }
+    },
+    {
+      "text": "91%",
+      "confidence": 1,
+      "frame": {
+        "x": 2051,
+        "y": 3597,
+        "width": 57,
+        "height": 24
+      }
+    },
+    {
+      "text": "Open with",
+      "confidence": 1,
+      "frame": {
+        "x": 2411,
+        "y": 47,
+        "width": 191,
+        "height": 52
+      }
+    },
+    {
+      "text": "12:32 PM",
+      "confidence": 1,
+      "frame": {
+        "x": 2835,
+        "y": 3642,
+        "width": 142,
+        "height": 43
+      }
+    },
+    {
+      "text": "9/24/2026",
+      "confidence": 1,
+      "frame": {
+        "x": 2831,
+        "y": 3687,
+        "width": 144,
+        "height": 45
+      }
+    }
+  ]
+}

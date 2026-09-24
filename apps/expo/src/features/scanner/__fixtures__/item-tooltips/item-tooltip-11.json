@@ -1,0 +1,346 @@
+{
+  "width": 3072,
+  "height": 4080,
+  "blocks": [
+    {
+      "text": "Subo",
+      "confidence": 1,
+      "frame": {
+        "x": 197,
+        "y": 1240,
+        "width": 172,
+        "height": 74
+      }
+    },
+    {
+      "text": "Kaydos |7O (29)",
+      "confidence": 1,
+      "frame": {
+        "x": 456,
+        "y": 1022,
+        "width": 345,
+        "height": 76
+      }
+    },
+    {
+      "text": "WOLF Moist|70 (47)",
+      "confidence": 1,
+      "frame": {
+        "x": 32,
+        "y": 1974,
+        "width": 482,
+        "height": 70
+      }
+    },
+    {
+      "text": "(0)",
+      "confidence": 1,
+      "frame": {
+        "x": 501,
+        "y": 1973,
+        "width": 96,
+        "height": 62
+      }
+    },
+    {
+      "text": "Rare Helm",
+      "confidence": 1,
+      "frame": {
+        "x": 1023,
+        "y": 768,
+        "width": 300,
+        "height": 64
+      }
+    },
+    {
+      "text": "Head",
+      "confidence": 1,
+      "frame": {
+        "x": 1527,
+        "y": 296,
+        "width": 149,
+        "height": 66
+      }
+    },
+    {
+      "text": "EQUIPPED",
+      "confidence": 1,
+      "frame": {
+        "x": 1409,
+        "y": 423,
+        "width": 395,
+        "height": 81
+      }
+    },
+    {
+      "text": "SILENT CROWN",
+      "confidence": 1,
+      "frame": {
+        "x": 1020,
+        "y": 635,
+        "width": 667,
+        "height": 76
+      }
+    },
+    {
+      "text": "850 Item Power",
+      "confidence": 1,
+      "frame": {
+        "x": 1050,
+        "y": 863,
+        "width": 421,
+        "height": 72
+      }
+    },
+    {
+      "text": "HCHARACTER OK",
+      "confidence": 1,
+      "frame": {
+        "x": 1554,
+        "y": 129,
+        "width": 1046,
+        "height": 143
+      }
+    },
+    {
+      "text": "1,275 Armor",
+      "confidence": 1,
+      "frame": {
+        "x": 1040,
+        "y": 1042,
+        "width": 399,
+        "height": 76
+      }
+    },
+    {
+      "text": "• +86 Dexterity +[83-99]",
+      "confidence": 1,
+      "frame": {
+        "x": 1051,
+        "y": 1147,
+        "width": 740,
+        "height": 88
+      }
+    },
+    {
+      "text": "• +1,204 Maximum Life (1,016 - 1,225]",
+      "confidence": 1,
+      "frame": {
+        "x": 1054,
+        "y": 1240,
+        "width": 1109,
+        "height": 95
+      }
+    },
+    {
+      "text": "• +140 Life Regeneration [128 - 153]",
+      "confidence": 1,
+      "frame": {
+        "x": 1058,
+        "y": 1346,
+        "width": 1035,
+        "height": 91
+      }
+    },
+    {
+      "text": "• +6.2% Lucky Hit Chance [6.0 - 8.0]%",
+      "confidence": 1,
+      "frame": {
+        "x": 1094,
+        "y": 1446,
+        "width": 1056,
+        "height": 94
+      }
+    },
+    {
+      "text": "MoniTzic (100/200) - Alacrity",
+      "confidence": 1,
+      "frame": {
+        "x": 1139,
+        "y": 1558,
+        "width": 814,
+        "height": 85
+      }
+    },
+    {
+      "text": "Stampede",
+      "confidence": 1,
+      "frame": {
+        "x": 1143,
+        "y": 1659,
+        "width": 279,
+        "height": 72
+      }
+    },
+    {
+      "text": "Cast 2 Mobility or Macabre Skills. (2",
+      "confidence": 1,
+      "frame": {
+        "x": 1147,
+        "y": 1734,
+        "width": 1001,
+        "height": 91
+      }
+    },
+    {
+      "text": "times)",
+      "confidence": 1,
+      "frame": {
+        "x": 1151,
+        "y": 1846,
+        "width": 174,
+        "height": 62
+      }
+    },
+    {
+      "text": "Invoke the Spiritbom's Concussive",
+      "confidence": 1,
+      "frame": {
+        "x": 1153,
+        "y": 1901,
+        "width": 967,
+        "height": 95
+      }
+    },
+    {
+      "text": "Stomp Skill, dealing damage and",
+      "confidence": 1,
+      "frame": {
+        "x": 1156,
+        "y": 1988,
+        "width": 910,
+        "height": 100
+      }
+    },
+    {
+      "text": "Knocking Down enemies.",
+      "confidence": 1,
+      "frame": {
+        "x": 1160,
+        "y": 2084,
+        "width": 707,
+        "height": 80
+      }
+    },
+    {
+      "text": "(Overflow: Increase damage by 1%",
+      "confidence": 1,
+      "frame": {
+        "x": 1163,
+        "y": 2162,
+        "width": 946,
+        "height": 88
+      }
+    },
+    {
+      "text": "per Offering)",
+      "confidence": 1,
+      "frame": {
+        "x": 1167,
+        "y": 2261,
+        "width": 350,
+        "height": 74
+      }
+    },
+    {
+      "text": "Unequip",
+      "confidence": 1,
+      "frame": {
+        "x": 1159,
+        "y": 2964,
+        "width": 233,
+        "height": 63
+      }
+    },
+    {
+      "text": "+ Link",
+      "confidence": 1,
+      "frame": {
+        "x": 1207,
+        "y": 3056,
+        "width": 276,
+        "height": 56
+      }
+    },
+    {
+      "text": "Mark as Favorite",
+      "confidence": 1,
+      "frame": {
+        "x": 1200,
+        "y": 3146,
+        "width": 447,
+        "height": 64
+      }
+    },
+    {
+      "text": "Requires Level 70",
+      "confidence": 1,
+      "frame": {
+        "x": 1802,
+        "y": 2372,
+        "width": 434,
+        "height": 68
+      }
+    },
+    {
+      "text": "Lord of Hatred Item D",
+      "confidence": 1,
+      "frame": {
+        "x": 1669,
+        "y": 2446,
+        "width": 553,
+        "height": 61
+      }
+    },
+    {
+      "text": "Sell Value: 18,257",
+      "confidence": 1,
+      "frame": {
+        "x": 1722,
+        "y": 2590,
+        "width": 456,
+        "height": 72
+      }
+    },
+    {
+      "text": "Durability: 100/100",
+      "confidence": 1,
+      "frame": {
+        "x": 1712,
+        "y": 2682,
+        "width": 525,
+        "height": 76
+      }
+    },
+    {
+      "text": "Tempers: 1/1",
+      "confidence": 1,
+      "frame": {
+        "x": 1879,
+        "y": 2766,
+        "width": 354,
+        "height": 70
+      }
+    },
+    {
+      "text": "686,691,098",
+      "confidence": 1,
+      "frame": {
+        "x": 1846,
+        "y": 3503,
+        "width": 390,
+        "height": 73
+      }
+    },
+    {
+      "text": "283",
+      "confidence": 1,
+      "frame": {
+        "x": 2514,
+        "y": 3499,
+        "width": 112,
+        "height": 56
+      }
+    }
+  ]
+}

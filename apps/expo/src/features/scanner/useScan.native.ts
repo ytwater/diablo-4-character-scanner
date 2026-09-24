@@ -7,10 +7,30 @@ import type { CharacterCandidates, ItemCandidates, ScanMode } from "@acme/valida
 import D4Ocr from "../../../modules/d4-ocr";
 import type { OcrBlock } from "./anchor";
 import { findAnchor } from "./anchor";
-import { extractFields } from "./fields";
+import { extractFields, findLevelBadgeRegion, pickBadgeLevel } from "./fields";
 import { extractItemFields } from "./itemFields";
-import { classifyRarity } from "./rarity";
+import { classifyRarity, parseRarityFromAnyLine } from "./rarity";
 import { itemConfig, scannerConfig } from "./config";
+import { blocksInFrame, findTooltipFrame } from "./tooltipFrame";
+
+function blocksInRoi(
+  blocks: OcrBlock[],
+  width: number,
+  height: number,
+  roi: { x: number; y: number; width: number; height: number },
+): OcrBlock[] {
+  const left = roi.x * width;
+  const top = roi.y * height;
+  const right = (roi.x + roi.width) * width;
+  const bottom = (roi.y + roi.height) * height;
+  return blocks.filter(
+    (b) =>
+      b.frame.x >= left &&
+      b.frame.y >= top &&
+      b.frame.x + b.frame.width <= right &&
+      b.frame.y + b.frame.height <= bottom,
+  );
+}
 
 export type ScanStatus = "idle" | "capturing" | "processing" | "done" | "error";
 
@@ -40,28 +60,82 @@ export function useScan(mode: ScanMode, cameraRef: React.RefObject<Camera | null
       setStatus("processing");
 
       if (mode === "character") {
-        const result = await D4Ocr.recognizeImage(uri, scannerConfig.roi);
+        const roi = scannerConfig.roi;
+        const result = await D4Ocr.recognizeImage(uri, roi, 1);
         const anchor = findAnchor(result.blocks, scannerConfig.anchorText, scannerConfig.anchorFuzzyThreshold);
         const fields = anchor ? extractFields(result.blocks, anchor) : {};
+
+        // ML Kit often misses the small level badge in the first pass. Re-OCR
+        // just the badge region, then the same region upscaled 3x.
+        let level = fields.level;
+        const badge = anchor && fields.name ? findLevelBadgeRegion(anchor, fields.name) : undefined;
+        if (!level && badge) {
+          // The first pass ran on the ROI crop - convert the badge region from
+          // crop pixels to a ROI normalized against the whole photo.
+          const photoWidth = result.width / roi.width;
+          const photoHeight = result.height / roi.height;
+          const left = Math.max(0, roi.x + badge.x / photoWidth);
+          const top = Math.max(0, roi.y + badge.y / photoHeight);
+          const right = Math.min(1, roi.x + (badge.x + badge.width) / photoWidth);
+          const bottom = Math.min(1, roi.y + (badge.y + badge.height) / photoHeight);
+          if (right > left && bottom > top) {
+            const badgeRoi = { x: left, y: top, width: right - left, height: bottom - top };
+            for (const scale of [1, 3]) {
+              const pass = await D4Ocr.recognizeImage(uri, badgeRoi, scale);
+              level = pickBadgeLevel(pass.blocks);
+              if (level) break;
+            }
+          }
+        }
+
         setCandidates({
-          level: fields.level?.text,
+          level: level?.text,
           title: fields.title?.text,
           name: fields.name?.text,
         });
       } else {
-        const result = await D4Ocr.recognizeImage(uri, itemConfig.roi);
-        const fields = extractItemFields(result.blocks);
+        // OCR the whole photo, then bound the tooltip by its EQUIPPED header
+        // and Unequip action - far tighter than any fixed ROI, and it
+        // doesn't depend on how the user framed the shot. Fall back to the
+        // fixed ROI region when the header isn't found (e.g. a non-equipped
+        // item's tooltip).
+        const result = await D4Ocr.recognizeImage(uri, null, 1);
+        const frame = findTooltipFrame(result.blocks, result.width, result.height);
+        const tooltipBlocks = frame
+          ? blocksInFrame(result.blocks, frame)
+          : blocksInRoi(result.blocks, result.width, result.height, itemConfig.roi);
+        const fields = extractItemFields(tooltipBlocks);
         // The type line ("Rare Helm") and the item name are both rendered in
         // the item's rarity color - the type line uses a plainer font, so it
         // gives a more consistent color sample.
         const rarityColor = fields.type?.color ?? fields.name?.color;
+        // Task 11 calibration aid — read this in logcat while scanning each
+        // rarity to tune itemConfig.rarityColors/rarityColorThreshold, then
+        // remove it.
+        if (rarityColor) {
+          const hex = `#${[rarityColor.r, rarityColor.g, rarityColor.b]
+            .map((c) => c.toString(16).padStart(2, "0"))
+            .join("")}`;
+          console.log("[rarity-calibration] sampled color", hex, rarityColor);
+        }
+        // The type line spells the rarity out in plain text ("Unique Ring") -
+        // far more reliable than the sampled color. Also check the name and
+        // affix lines in case name/type-line detection got confused by a bad
+        // capture and the rarity word landed somewhere else; sampled color
+        // stays as the last-resort fallback.
+        const rarity =
+          parseRarityFromAnyLine([
+            fields.type?.text,
+            fields.name?.text,
+            ...fields.affixes,
+          ]) ?? (rarityColor ? classifyRarity(rarityColor) : undefined);
         setCandidates({
           name: fields.name?.text,
           type: fields.type?.text,
           affixes: fields.affixes,
-          rarity: rarityColor ? classifyRarity(rarityColor) : undefined,
+          rarity,
         });
-        setBlocks(result.blocks);
+        setBlocks(fields.affixBlocks);
       }
       setStatus("done");
     } catch (err) {

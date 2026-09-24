@@ -26,6 +26,9 @@ const SOCKET_PATTERN = /empty socket/i;
 // A "plain" affix line - leads with a sign, digit, or percent, e.g.
 // "+20% Damage" or "12% Damage Reduction".
 const AFFIX_PATTERN = /^[+\d%]/;
+// A "*" anywhere on an affix line marks it as a rolled Greater Affix (one
+// "*" per starred attribute) - distinct from the item-name star count.
+const GREATER_AFFIX_PATTERN = /\*/;
 
 function classifyOne(block: OcrBlock): ItemLineKind {
   const text = block.text.trim();
@@ -36,6 +39,7 @@ function classifyOne(block: OcrBlock): ItemLineKind {
   if (colorNear(block.color, itemConfig.aspectColor, itemConfig.aspectColorThreshold)) {
     return "aspect";
   }
+  if (GREATER_AFFIX_PATTERN.test(text)) return "greater";
   if (AFFIX_PATTERN.test(text)) return "affix";
   return "other";
 }

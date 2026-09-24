@@ -57,6 +57,7 @@ export const ItemRaritySchema = z.enum([
   "rare",
   "legendary",
   "unique",
+  "mythicUnique",
 ]);
 export type ItemRarity = z.infer<typeof ItemRaritySchema>;
 

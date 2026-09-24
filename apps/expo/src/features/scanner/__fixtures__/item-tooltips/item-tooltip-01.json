@@ -1,0 +1,406 @@
+{
+  "width": 3072,
+  "height": 4080,
+  "blocks": [
+    {
+      "text": "T",
+      "confidence": 1,
+      "frame": {
+        "x": 218,
+        "y": 3673,
+        "width": 19,
+        "height": 64
+      }
+    },
+    {
+      "text": "Boh|70 (155)",
+      "confidence": 1,
+      "frame": {
+        "x": 401,
+        "y": 595,
+        "width": 277,
+        "height": 67
+      }
+    },
+    {
+      "text": "AptAnthero",
+      "confidence": 1,
+      "frame": {
+        "x": 369,
+        "y": 668,
+        "width": 323,
+        "height": 68
+      }
+    },
+    {
+      "text": "Dian 70(GO)",
+      "confidence": 1,
+      "frame": {
+        "x": 418,
+        "y": 741,
+        "width": 308,
+        "height": 67
+      }
+    },
+    {
+      "text": "EQUIPPED",
+      "confidence": 1,
+      "frame": {
+        "x": 1209,
+        "y": 503,
+        "width": 363,
+        "height": 66
+      }
+    },
+    {
+      "text": "HARIMINY OF",
+      "confidence": 1,
+      "frame": {
+        "x": 840,
+        "y": 701,
+        "width": 553,
+        "height": 61
+      }
+    },
+    {
+      "text": "EBEWAKA",
+      "confidence": 1,
+      "frame": {
+        "x": 842,
+        "y": 796,
+        "width": 390,
+        "height": 64
+      }
+    },
+    {
+      "text": "Ancestral Unique Helm",
+      "confidence": 1,
+      "frame": {
+        "x": 841,
+        "y": 907,
+        "width": 625,
+        "height": 62
+      }
+    },
+    {
+      "text": "900 Item Power",
+      "confidence": 1,
+      "frame": {
+        "x": 845,
+        "y": 1007,
+        "width": 417,
+        "height": 49
+      }
+    },
+    {
+      "text": "HeadARACTER C",
+      "confidence": 1,
+      "frame": {
+        "x": 1315,
+        "y": 389,
+        "width": 719,
+        "height": 83
+      }
+    },
+    {
+      "text": "25 (* +25) Quality",
+      "confidence": 1,
+      "frame": {
+        "x": 847,
+        "y": 1089,
+        "width": 482,
+        "height": 65
+      }
+    },
+    {
+      "text": "2,004 Armor",
+      "confidence": 1,
+      "frame": {
+        "x": 850,
+        "y": 1261,
+        "width": 383,
+        "height": 67
+      }
+    },
+    {
+      "text": "• +150 Dexterity +[100- 121]",
+      "confidence": 1,
+      "frame": {
+        "x": 865,
+        "y": 1368,
+        "width": 774,
+        "height": 63
+      }
+    },
+    {
+      "text": "• +1,805 Maximum Life [1,226-1,450]",
+      "confidence": 1,
+      "frame": {
+        "x": 867,
+        "y": 1461,
+        "width": 1028,
+        "height": 65
+      }
+    },
+    {
+      "text": "+26 Maximum Resource [15 - 20]",
+      "confidence": 1,
+      "frame": {
+        "x": 957,
+        "y": 1555,
+        "width": 835,
+        "height": 64
+      }
+    },
+    {
+      "text": "o +3,125 Fire Resistance [2,275 - 2,800])",
+      "confidence": 1,
+      "frame": {
+        "x": 874,
+        "y": 1653,
+        "width": 1028,
+        "height": 60
+      }
+    },
+    {
+      "text": "+1,745 Maximum Life [1,000- 1,500]",
+      "confidence": 1,
+      "frame": {
+        "x": 939,
+        "y": 1744,
+        "width": 954,
+        "height": 64
+      }
+    },
+    {
+      "text": "* According to your secondary Spirit",
+      "confidence": 1,
+      "frame": {
+        "x": 868,
+        "y": 1840,
+        "width": 981,
+        "height": 63
+      }
+    },
+    {
+      "text": "Hall choice, your Skills are all",
+      "confidence": 1,
+      "frame": {
+        "x": 973,
+        "y": 1916,
+        "width": 730,
+        "height": 62
+      }
+    },
+    {
+      "text": "additionally Jaguar, Eagle, Gorilla, or",
+      "confidence": 1,
+      "frame": {
+        "x": 945,
+        "y": 1997,
+        "width": 947,
+        "height": 64
+      }
+    },
+    {
+      "text": "Centipede Skills.",
+      "confidence": 1,
+      "frame": {
+        "x": 946,
+        "y": 2074,
+        "width": 433,
+        "height": 69
+      }
+    },
+    {
+      "text": "Your Skills deal 28%[x] [25 -30]%",
+      "confidence": 1,
+      "frame": {
+        "x": 974,
+        "y": 2231,
+        "width": 827,
+        "height": 63
+      }
+    },
+    {
+      "text": "increased damage per Spirit type",
+      "confidence": 1,
+      "frame": {
+        "x": 951,
+        "y": 2314,
+        "width": 844,
+        "height": 59
+      }
+    },
+    {
+      "text": "they have.",
+      "confidence": 1,
+      "frame": {
+        "x": 953,
+        "y": 2396,
+        "width": 264,
+        "height": 59
+      }
+    },
+    {
+      "text": "PocTzic (5/200) - Voracious Stampede",
+      "confidence": 1,
+      "frame": {
+        "x": 955,
+        "y": 2477,
+        "width": 963,
+        "height": 66
+      }
+    },
+    {
+      "text": "Pa Spend 200% of your Maximum",
+      "confidence": 1,
+      "frame": {
+        "x": 877,
+        "y": 2562,
+        "width": 870,
+        "height": 75
+      }
+    },
+    {
+      "text": "Resource.Invoke the Spiritborn's",
+      "confidence": 1,
+      "frame": {
+        "x": 958,
+        "y": 2642,
+        "width": 832,
+        "height": 70
+      }
+    },
+    {
+      "text": "Concussive Stomp Skil, dealing",
+      "confidence": 1,
+      "frame": {
+        "x": 959,
+        "y": 2724,
+        "width": 820,
+        "height": 60
+      }
+    },
+    {
+      "text": "damage and Knocking Down",
+      "confidence": 1,
+      "frame": {
+        "x": 960,
+        "y": 2796,
+        "width": 736,
+        "height": 72
+      }
+    },
+    {
+      "text": "enemies.",
+      "confidence": 1,
+      "frame": {
+        "x": 964,
+        "y": 2884,
+        "width": 226,
+        "height": 47
+      }
+    },
+    {
+      "text": "(Overflow: Increase damage by 1%",
+      "confidence": 1,
+      "frame": {
+        "x": 966,
+        "y": 2949,
+        "width": 870,
+        "height": 68
+      }
+    },
+    {
+      "text": "per Offering)",
+      "confidence": 1,
+      "frame": {
+        "x": 968,
+        "y": 3028,
+        "width": 323,
+        "height": 67
+      }
+    },
+    {
+      "text": "Unequip",
+      "confidence": 1,
+      "frame": {
+        "x": 945,
+        "y": 3298,
+        "width": 217,
+        "height": 67
+      }
+    },
+    {
+      "text": "Only Ebewake Seroll Down",
+      "confidence": 1,
+      "frame": {
+        "x": 919,
+        "y": 3117,
+        "width": 716,
+        "height": 96
+      }
+    },
+    {
+      "text": "dozen",
+      "confidence": 1,
+      "frame": {
+        "x": 1655,
+        "y": 3124,
+        "width": 127,
+        "height": 45
+      }
+    },
+    {
+      "text": "Guardians. In ae, utey wekeiwar for his",
+      "confidence": 1,
+      "frame": {
+        "x": 910,
+        "y": 3196,
+        "width": 959,
+        "height": 58
+      }
+    },
+    {
+      "text": "fsHrT Link",
+      "confidence": 1,
+      "frame": {
+        "x": 862,
+        "y": 3384,
+        "width": 380,
+        "height": 71
+      }
+    },
+    {
+      "text": "Unmark Item",
+      "confidence": 1,
+      "frame": {
+        "x": 982,
+        "y": 3480,
+        "width": 332,
+        "height": 49
+      }
+    },
+    {
+      "text": "1,485",
+      "confidence": 1,
+      "frame": {
+        "x": 2257,
+        "y": 3516,
+        "width": 156,
+        "height": 60
+      }
+    },
+    {
+      "text": "909%",
+      "confidence": 1,
+      "frame": {
+        "x": 2910,
+        "y": 3833,
+        "width": 62,
+        "height": 21
+      }
+    }
+  ]
+}
