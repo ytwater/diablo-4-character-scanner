@@ -5,6 +5,7 @@ import type { DB } from "@acme/db/client";
 import type {
   CharacterCandidates,
   ItemCandidates,
+  ItemRarity,
   ScanMode,
 } from "@acme/validators";
 import { and, count, eq, gt } from "@acme/db";
@@ -38,17 +39,65 @@ function buildPrompt(mode: ScanMode): string {
   }
   return [
     "You are reading a screenshot of a Diablo 4 item tooltip.",
-    'Extract the item\'s name, type line (e.g. "Rare Helm"), rarity (common, magic, rare, legendary, or unique — read it from the text color), and its list of affix/aspect lines.',
+    'Extract the item\'s name, type line (e.g. "Rare Helm"), rarity (common, magic, rare, legendary, unique, or mythic unique — read it from the type line, or else the text color), and its list of affix/aspect lines.',
     'Respond with ONLY a JSON object of this exact shape, no other text: {"name": string, "type": string, "rarity": string, "affixes": string[]}.',
     "If a field isn't visible in the image, omit that key entirely; affixes defaults to an empty array if there are none.",
   ].join(" ");
 }
 
+const RARITY_BY_KEY: Record<string, ItemRarity> = {
+  common: "common",
+  magic: "magic",
+  rare: "rare",
+  legendary: "legendary",
+  unique: "unique",
+  mythicunique: "mythicUnique",
+};
+
+// The type line spells the rarity out ("Ancestral Mythic Unique
+// Quarterstaff") - more reliable than the model's color-based guess, which
+// also comes back capitalized ("Legendary") where upsertItem expects the
+// enum value.
+function normalizeRarity(candidates: ItemCandidates): ItemCandidates {
+  const fromType =
+    /\b(mythic unique|unique|legendary|rare|magic|common)\b/i.exec(
+      candidates.type ?? "",
+    )?.[1];
+  const key = (fromType ?? candidates.rarity ?? "")
+    .toLowerCase()
+    .replace(/[^a-z]/g, "");
+  return { ...candidates, rarity: RARITY_BY_KEY[key] };
+}
+
 /** Exported for unit testing — extracts and validates the model's JSON response. */
 export function parseCandidatesFromModelText(
-  text: string,
+  response: unknown,
   mode: ScanMode,
 ): CharacterCandidates | ItemCandidates {
+  const candidates = parseModelResponse(response, mode);
+  return mode === "item"
+    ? normalizeRarity(candidates as ItemCandidates)
+    : candidates;
+}
+
+function parseModelResponse(
+  response: unknown,
+  mode: ScanMode,
+): CharacterCandidates | ItemCandidates {
+  const schema =
+    mode === "character" ? CharacterCandidatesSchema : ItemCandidatesSchema;
+
+  // When the model replies with nothing but JSON, Workers AI parses it
+  // itself and `response` arrives as an object - its generated types
+  // declare a string regardless. Only prose/fenced replies stay strings.
+  if (typeof response === "object" && response !== null) {
+    return schema.parse(response);
+  }
+  if (typeof response !== "string") {
+    return mode === "item" ? { affixes: [] } : {};
+  }
+
+  const text = response;
   const start = text.indexOf("{");
   if (start === -1) {
     // No JSON-shaped content at all — the model didn't even attempt structured
@@ -64,8 +113,6 @@ export function parseCandidatesFromModelText(
   const candidate = jsonMatch ? jsonMatch[0] : text.slice(start);
 
   const parsed: unknown = JSON.parse(candidate);
-  const schema =
-    mode === "character" ? CharacterCandidatesSchema : ItemCandidatesSchema;
   return schema.parse(parsed);
 }
 
@@ -117,10 +164,8 @@ export const scanRouter = {
           max_tokens: 512,
         });
 
-        const text = result.response ?? "";
-
         try {
-          return parseCandidatesFromModelText(text, input.mode);
+          return parseCandidatesFromModelText(result.response, input.mode);
         } catch {
           throw new ORPCError("INTERNAL_SERVER_ERROR", {
             message: "OCR_FAILED",
