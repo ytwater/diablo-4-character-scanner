@@ -9,6 +9,7 @@ import type { OcrBlock } from "./anchor";
 import { findAnchor } from "./anchor";
 import { extractFields, findLevelBadgeRegion, pickBadgeLevel } from "./fields";
 import { extractItemFields } from "./itemFields";
+import { correctItemName } from "./itemName";
 import { classifyRarity, parseRarityFromAnyLine } from "./rarity";
 import { itemConfig, scannerConfig } from "./config";
 import { blocksInFrame, findTooltipFrame } from "./tooltipFrame";
@@ -130,7 +131,9 @@ export function useScan(mode: ScanMode, cameraRef: React.RefObject<Camera | null
             ...fields.affixes,
           ]) ?? (rarityColor ? classifyRarity(rarityColor) : undefined);
         setCandidates({
-          name: fields.name?.text,
+          // ML Kit drops/misreads glyphs of the item-name font - snap the
+          // name to known unique names and item-name words from game data.
+          name: fields.name && correctItemName(fields.name.text, fields.type?.text),
           type: fields.type?.text,
           affixes: fields.affixes,
           rarity,
