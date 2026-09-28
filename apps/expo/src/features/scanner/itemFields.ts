@@ -99,7 +99,7 @@ export function extractItemFields(blocks: OcrBlock[]): ItemFieldCandidates {
   // of its own casing - only look at casing to decide whether to keep
   // extending the name into subsequent blocks.
   let nameEnd = 1;
-  while (nameEnd < sorted.length && isAllCaps(sorted[nameEnd]!.text)) {
+  while (nameEnd < sorted.length && isAllCaps(sorted[nameEnd]?.text ?? "")) {
     nameEnd++;
   }
   const nameBlocks = sorted.slice(0, nameEnd);

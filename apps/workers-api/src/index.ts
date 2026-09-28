@@ -14,11 +14,11 @@ import type { Auth } from "@acme/auth";
 import { createDb } from "@acme/db/client";
 import type { DB } from "@acme/db/client";
 
-type Variables = {
+interface Variables {
   db: DB;
   auth: Auth;
   baseUrl: string;
-};
+}
 
 const rpcHandler = new RPCHandler(appRouter, {
   plugins: [new CORSPlugin()],
@@ -35,7 +35,7 @@ const app = new Hono<{ Bindings: Env; Variables: Variables }>();
 app.use(
   "*",
   cors({
-    origin: (origin) => origin ?? "*",
+    origin: (origin) => origin,
     allowHeaders: ["Content-Type", "Authorization", "Cookie", "x-orpc-source"],
     allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     credentials: true,
@@ -46,7 +46,9 @@ app.use(
 app.use("*", async (c, next) => {
   const url = new URL(c.req.url);
   const baseUrl = `${url.protocol}//${url.host}`;
-  const productionUrl = c.env.AUTH_PRODUCTION_URL || baseUrl;
+  // Typed as the wrangler.jsonc literal, but .dev.vars can override it with
+  // an empty string locally.
+  const productionUrl = (c.env.AUTH_PRODUCTION_URL as string) || baseUrl;
 
   const db = createDb(c.env.DB);
   const auth = initAuth({
