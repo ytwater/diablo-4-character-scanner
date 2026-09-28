@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "clean": "git clean -xdf .cache .turbo .wrangler dist node_modules",
-    "dev": "wrangler dev",
+    "dev": "wrangler dev --ip 0.0.0.0",
     "deploy": "wrangler deploy",
     "typegen": "wrangler types",
     "db:migrate:local": "wrangler d1 migrations apply DB --local",
