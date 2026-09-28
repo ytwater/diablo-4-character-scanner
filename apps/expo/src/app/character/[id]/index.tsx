@@ -1,14 +1,40 @@
 import type { Href } from "expo-router";
 import { Link, router, Stack, useLocalSearchParams } from "expo-router";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import type { CharacterClass, ItemRarity, ItemSlot } from "@acme/validators";
+import { CharacterClassSchema } from "@acme/validators";
 
 import { CharacterHeader } from "~/features/character/CharacterHeader";
 import { PaperDoll } from "~/features/character/PaperDoll";
 import { orpc } from "~/utils/api";
+
+// Shown in place of <PaperDoll> until a class is set — items can't be added
+// (or their slots validated) without one. See character router's
+// `assertValidSlot`.
+function ClassPicker(props: { onPick: (cls: CharacterClass) => void }) {
+  return (
+    <View className="gap-2 py-2">
+      <Text className="text-foreground text-lg">
+        Pick a class to start adding items
+      </Text>
+      <View className="flex-row flex-wrap gap-2">
+        {CharacterClassSchema.options.map((option) => (
+          <Pressable
+            key={option}
+            onPress={() => props.onPick(option)}
+            style={{ backgroundColor: "#3f3f46" }}
+            className="rounded-full px-4 py-2"
+          >
+            <Text className="capitalize text-white">{option}</Text>
+          </Pressable>
+        ))}
+      </View>
+    </View>
+  );
+}
 
 // "/character/[id]/scan" doesn't exist as a route yet (it lands in Task 8),
 // so it's outside the generated typed-routes union. Cast the same way
@@ -18,6 +44,13 @@ function scanHref(id: string, target: string): Href {
   return {
     pathname: "/character/[id]/scan",
     params: { id, target },
+  } as unknown as Href;
+}
+
+function itemHref(id: string, slot: string): Href {
+  return {
+    pathname: "/character/[id]/item/[slot]",
+    params: { id, slot },
   } as unknown as Href;
 }
 
@@ -80,15 +113,22 @@ export default function CharacterScreen() {
         <Link href={scanHref(id, "header")} className="text-primary py-2">
           Scan character sheet
         </Link>
-        {/*
-          Tapping a filled slot re-scans it directly for now. A real
-          tooltip-with-Re-scan/Remove view is a known gap, not built here.
-        */}
-        <PaperDoll
-          characterClass={character.class as CharacterClass}
-          items={paperDollItems}
-          onSlotPress={(slot: ItemSlot) => router.push(scanHref(id, slot))}
-        />
+        {character.class ? (
+          <PaperDoll
+            characterClass={character.class as CharacterClass}
+            items={paperDollItems}
+            onSlotPress={(slot: ItemSlot) => {
+              const filled = character.items.some((i) => i.slot === slot);
+              router.push(
+                filled ? itemHref(id, slot) : scanHref(id, slot),
+              );
+            }}
+          />
+        ) : (
+          <ClassPicker
+            onPick={(cls) => updateMutation.mutate({ id, class: cls })}
+          />
+        )}
       </View>
     </SafeAreaView>
   );

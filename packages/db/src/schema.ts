@@ -20,7 +20,9 @@ export const Character = sqliteTable("character", {
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
-  class: text("class").notNull(),
+  // Nullable: class is picked after creation, when the player adds their
+  // first item (see character router's `assertValidSlot`).
+  class: text("class"),
   level: integer("level").notNull().default(1),
   paragon: integer("paragon"),
   title: text("title"),

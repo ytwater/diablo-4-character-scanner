@@ -2,9 +2,9 @@ import type { Href } from "expo-router";
 import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Link, Stack } from "expo-router";
+import { Link, router, Stack } from "expo-router";
 import { LegendList } from "@legendapp/list";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import type { RouterOutputs } from "~/utils/api";
 import { ScanLink } from "~/components/scan-link";
@@ -13,13 +13,18 @@ import { authClient } from "~/utils/auth";
 
 const WEB_APP_URL = "https://diablo-4-character-scanner.ytwater.workers.dev";
 
-// "/character/new" and "/character/[id]" don't exist as routes yet (they
-// land in a later task), so they're outside the generated typed-routes
+// "/character/[id]" and "/character/[id]/scan" don't exist as routes yet
+// (they land in a later task), so they're outside the generated typed-routes
 // union. Cast the same way scan-link.native.tsx/scan-link.web.tsx do for
 // "/scan" until the route files exist.
-const NEW_CHARACTER_HREF = "/character/new" as Href;
 function characterHref(id: string): Href {
   return { pathname: "/character/[id]", params: { id } } as unknown as Href;
+}
+function characterHeaderScanHref(id: string): Href {
+  return {
+    pathname: "/character/[id]/scan",
+    params: { id, target: "header" },
+  } as unknown as Href;
 }
 
 function EmailPasswordAuth() {
@@ -153,7 +158,8 @@ function CharacterRow(props: {
             {props.character.name}
           </Text>
           <Text className="text-muted-foreground capitalize">
-            {props.character.class} · Level {props.character.level}
+            {props.character.class ?? "No class yet"} · Level{" "}
+            {props.character.level}
             {props.character.paragon != null &&
               ` · Paragon ${props.character.paragon}`}
           </Text>
@@ -168,10 +174,25 @@ function CharacterRow(props: {
 
 export default function Index() {
   const { data: session } = authClient.useSession();
+  const queryClient = useQueryClient();
   const charactersQuery = useQuery({
     ...orpc.character.list.queryOptions(),
     enabled: !!session,
   });
+
+  const createMutation = useMutation(
+    orpc.character.create.mutationOptions({
+      onSuccess: async (character) => {
+        await queryClient.invalidateQueries({
+          queryKey: orpc.character.list.key(),
+        });
+        // Class is picked later, when the player adds their first item —
+        // jump straight into the header scan to fill in name/level/title.
+        router.push(characterHref(character.id));
+        router.push(characterHeaderScanHref(character.id));
+      },
+    }),
+  );
 
   return (
     <SafeAreaView className="bg-background">
@@ -186,12 +207,14 @@ export default function Index() {
 
         {session && (
           <>
-            <Link
-              href={NEW_CHARACTER_HREF}
-              className="bg-primary my-2 items-center rounded-sm p-2 text-center"
+            <Pressable
+              disabled={createMutation.isPending}
+              onPress={() => createMutation.mutate({})}
+              style={{ backgroundColor: "#ec4899" }}
+              className="my-2 items-center rounded-sm p-2"
             >
-              + New Character
-            </Link>
+              <Text style={{ color: "#fff" }}>+ New Character</Text>
+            </Pressable>
             <LegendList
               data={charactersQuery.data ?? []}
               estimatedItemSize={72}

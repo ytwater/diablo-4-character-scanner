@@ -25,7 +25,12 @@ async function requireOwnedCharacter(db: DB, userId: string, id: string) {
   return character;
 }
 
-function assertValidSlot(cls: string, slot: ItemSlot) {
+function assertValidSlot(cls: string | null, slot: ItemSlot) {
+  if (!cls) {
+    throw new ORPCError("BAD_REQUEST", {
+      message: "Set a class before adding items",
+    });
+  }
   if (!slotsForClass(cls as never).includes(slot)) {
     throw new ORPCError("BAD_REQUEST", { message: "Invalid slot for class" });
   }
@@ -64,15 +69,22 @@ export const characterRouter = {
 
   create: protectedProcedure
     .input(
-      z.object({ name: z.string().min(1).max(64), class: CharacterClassSchema }),
+      z.object({
+        name: z.string().min(1).max(64).optional(),
+        // Picked later, when the player adds their first item — see
+        // `assertValidSlot`.
+        class: CharacterClassSchema.optional(),
+      }),
     )
     .handler(async ({ context, input }) => {
       return context.db
         .insert(Character)
         .values({
           userId: context.session.user.id,
-          name: input.name,
-          class: input.class,
+          // Header scan (Task 8) fills in the real name; this default holds
+          // it until then since `name` is NOT NULL.
+          name: input.name ?? "New Character",
+          class: input.class ?? null,
         })
         .returning()
         .get();
@@ -83,6 +95,7 @@ export const characterRouter = {
       z.object({
         id: z.string(),
         name: z.string().min(1).max(64).optional(),
+        class: CharacterClassSchema.optional(),
         level: z.number().int().min(1).max(70).optional(),
         paragon: z.number().int().min(0).nullable().optional(),
         title: z.string().nullable().optional(),
@@ -109,6 +122,7 @@ export const characterRouter = {
         .update(Character)
         .set({
           name: input.name ?? character.name,
+          class: input.class ?? character.class,
           level: nextLevel,
           paragon: nextParagon,
           title: input.title !== undefined ? input.title : character.title,

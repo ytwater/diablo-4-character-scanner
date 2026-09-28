@@ -34,9 +34,11 @@ export function CharacterHeader(props: {
             : `Level ${props.character.level}`}
           {props.character.title ? ` · ${props.character.title}` : ""}
         </Text>
-        <Text className="text-muted-foreground capitalize">
-          {props.character.class}
-        </Text>
+        {props.character.class && (
+          <Text className="text-muted-foreground capitalize">
+            {props.character.class}
+          </Text>
+        )}
       </Pressable>
     );
   }
