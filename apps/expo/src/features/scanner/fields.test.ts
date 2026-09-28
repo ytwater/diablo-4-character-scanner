@@ -43,6 +43,21 @@ describe("extractFields", () => {
     expect(fields.title?.text).toBe("Demonic Defender");
   });
 
+  it("ignores text outside the character panel's column, like a digit-free nameplate", () => {
+    const blocks = [
+      anchor,
+      block("Apt Antihero", 0, 60), // guild tag / nameplate left of the panel
+      block("Gutter Trash", 900, 70), // game-world text right of the panel
+      block("UDAN", 450, 100),
+      block("Demonic Defender", 420, 160),
+    ];
+
+    const fields = extractFields(blocks, anchor);
+
+    expect(fields.name?.text).toBe("UDAN");
+    expect(fields.title?.text).toBe("Demonic Defender");
+  });
+
   it("leaves the level blank rather than taking a nameplate or stat number", () => {
     const blocks = [
       anchor,

@@ -61,8 +61,10 @@ export function useScan(mode: ScanMode, cameraRef: React.RefObject<Camera | null
       setStatus("processing");
 
       if (mode === "character") {
-        const roi = scannerConfig.roi;
-        const result = await D4Ocr.recognizeImage(uri, roi, 1);
+        // OCR the whole photo rather than a fixed ROI, so the result doesn't
+        // depend on framing: the "CHARACTER" header anchors the fields, and
+        // extractFields only looks in the panel's column under it.
+        const result = await D4Ocr.recognizeImage(uri, null, 1);
         const anchor = findAnchor(result.blocks, scannerConfig.anchorText, scannerConfig.anchorFuzzyThreshold);
         const fields = anchor ? extractFields(result.blocks, anchor) : {};
 
@@ -71,14 +73,12 @@ export function useScan(mode: ScanMode, cameraRef: React.RefObject<Camera | null
         let level = fields.level;
         const badge = anchor && fields.name ? findLevelBadgeRegion(anchor, fields.name) : undefined;
         if (!level && badge) {
-          // The first pass ran on the ROI crop - convert the badge region from
-          // crop pixels to a ROI normalized against the whole photo.
-          const photoWidth = result.width / roi.width;
-          const photoHeight = result.height / roi.height;
-          const left = Math.max(0, roi.x + badge.x / photoWidth);
-          const top = Math.max(0, roi.y + badge.y / photoHeight);
-          const right = Math.min(1, roi.x + (badge.x + badge.width) / photoWidth);
-          const bottom = Math.min(1, roi.y + (badge.y + badge.height) / photoHeight);
+          // Badge region is in photo pixels; recognizeImage takes a ROI
+          // normalized to the photo.
+          const left = Math.max(0, badge.x / result.width);
+          const top = Math.max(0, badge.y / result.height);
+          const right = Math.min(1, (badge.x + badge.width) / result.width);
+          const bottom = Math.min(1, (badge.y + badge.height) / result.height);
           if (right > left && bottom > top) {
             const badgeRoi = { x: left, y: top, width: right - left, height: bottom - top };
             for (const scale of [1, 3]) {

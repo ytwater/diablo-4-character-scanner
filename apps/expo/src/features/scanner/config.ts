@@ -1,7 +1,7 @@
 export const scannerConfig = {
-  // Normalized (0-1) region of interest, relative to the captured photo.
-  // Placeholder values - tune against real device framing once the
-  // capture-based pipeline is on-device tested.
+  // Normalized (0-1) framing guide drawn over the camera preview. OCR runs
+  // on the full photo and finds the panel by its "CHARACTER" header, so
+  // this only helps the user frame the shot.
   roi: { x: 0.1, y: 0.15, width: 0.8, height: 0.5 },
   anchorText: "CHARACTER",
   // Similarity threshold (1 - normalizedLevenshteinDistance) to accept a
@@ -12,9 +12,10 @@ export const scannerConfig = {
 export type ScannerConfig = typeof scannerConfig;
 
 export const itemConfig = {
-  // Normalized (0-1) region of interest for item-tooltip captures, relative
-  // to the captured photo. Placeholder values - tune against real device
-  // framing the same way scannerConfig.roi was tuned.
+  // Normalized (0-1) framing guide drawn over the camera preview. OCR runs
+  // on the full photo and bounds the tooltip by its EQUIPPED header and
+  // Unequip action (tooltipFrame.ts); this region is only the fallback when
+  // no header is found.
   roi: { x: 0.3, y: 0.15, width: 0.45, height: 0.55 },
   // Approximate Diablo 4 rarity text colors - placeholder values, needs
   // on-device calibration against real item-tooltip captures.
