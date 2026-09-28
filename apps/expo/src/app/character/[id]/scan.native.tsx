@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Camera, useCameraDevice, useCameraPermission } from "react-native-vision-camera";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -114,7 +114,103 @@ export default function CharacterScanScreen() {
     );
   }
 
-  const showPhoto = status !== "idle" && photoPath;
+  // The captured photo is only useful while we're waiting on OCR — once
+  // results are in, it just makes the candidate text hard to read, so drop
+  // it in favor of a plain, scrollable results panel.
+  const showPhoto =
+    (status === "capturing" || status === "processing") && photoPath;
+
+  if (status === "done" || status === "error") {
+    return (
+      <View className="bg-background h-full w-full">
+        <Stack.Screen
+          options={{ title: isHeader ? "Scan Character Sheet" : "Scan Item" }}
+        />
+        <ScrollView contentContainerStyle={{ padding: 16, gap: 8 }}>
+          {status === "error" ? (
+            <Text className="mb-3 text-base" style={{ color: "#ffffff" }}>
+              Error: {error}
+            </Text>
+          ) : isHeader ? (
+            <>
+              <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
+                Level: {characterCandidates.level ?? "—"}
+              </Text>
+              <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
+                Title: {characterCandidates.title ?? "—"}
+              </Text>
+              <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
+                Name: {characterCandidates.name ?? "—"}
+              </Text>
+              {levelCandidate && (
+                <Pressable onPress={() => setTreatAsParagon((v) => !v)}>
+                  <Text
+                    style={{ color: treatAsParagon ? "#22d3ee" : "#ffffff" }}
+                  >
+                    {treatAsParagon ? "☑" : "☐"} Max level — treat as Paragon
+                  </Text>
+                </Pressable>
+              )}
+            </>
+          ) : (
+            <>
+              <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
+                Name: {itemCandidates.name ?? "—"}
+              </Text>
+              <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
+                Rarity: {itemCandidates.rarity ?? "—"}
+              </Text>
+              <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
+                Type: {itemCandidates.type ?? "—"}
+              </Text>
+              <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
+                Affixes:
+              </Text>
+              {itemCandidates.affixes.length === 0 ? (
+                <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
+                  —
+                </Text>
+              ) : (
+                itemCandidates.affixes.map((affix, i) => (
+                  <Text
+                    key={i}
+                    className="mb-1 text-base"
+                    style={{ color: "#ffffff" }}
+                  >
+                    {affix}
+                  </Text>
+                ))
+              )}
+            </>
+          )}
+          {status === "done" && (
+            <Pressable
+              onPress={() => void save()}
+              className="items-center rounded-full bg-cyan-400 px-6 py-3"
+            >
+              <Text
+                className="text-base font-semibold"
+                style={{ color: "#000000" }}
+              >
+                Save
+              </Text>
+            </Pressable>
+          )}
+          <Pressable
+            onPress={retake}
+            className="items-center rounded-full bg-zinc-700 px-6 py-3"
+          >
+            <Text
+              className="text-base font-semibold"
+              style={{ color: "#ffffff" }}
+            >
+              Retake
+            </Text>
+          </Pressable>
+        </ScrollView>
+      </View>
+    );
+  }
 
   return (
     <View className="h-full w-full">
@@ -167,100 +263,6 @@ export default function CharacterScanScreen() {
               style={{ color: "#000000" }}
             >
               Take Picture
-            </Text>
-          </Pressable>
-        </View>
-      )}
-      {status === "done" && (
-        <View className="absolute inset-x-4 bottom-16 gap-2 rounded-lg bg-black/60 p-3">
-          {isHeader ? (
-            <>
-              <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
-                Level: {characterCandidates.level ?? "—"}
-              </Text>
-              <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
-                Title: {characterCandidates.title ?? "—"}
-              </Text>
-              <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
-                Name: {characterCandidates.name ?? "—"}
-              </Text>
-              {levelCandidate && (
-                <Pressable onPress={() => setTreatAsParagon((v) => !v)}>
-                  <Text style={{ color: treatAsParagon ? "#22d3ee" : "#ffffff" }}>
-                    {treatAsParagon ? "☑" : "☐"} Max level — treat as Paragon
-                  </Text>
-                </Pressable>
-              )}
-            </>
-          ) : (
-            <>
-              <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
-                Name: {itemCandidates.name ?? "—"}
-              </Text>
-              <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
-                Rarity: {itemCandidates.rarity ?? "—"}
-              </Text>
-              <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
-                Type: {itemCandidates.type ?? "—"}
-              </Text>
-              <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
-                Affixes:
-              </Text>
-              {itemCandidates.affixes.length === 0 ? (
-                <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
-                  —
-                </Text>
-              ) : (
-                itemCandidates.affixes.map((affix, i) => (
-                  <Text
-                    key={i}
-                    className="mb-1 text-base"
-                    style={{ color: "#ffffff" }}
-                  >
-                    {affix}
-                  </Text>
-                ))
-              )}
-            </>
-          )}
-          <Pressable
-            onPress={() => void save()}
-            className="items-center rounded-full bg-cyan-400 px-6 py-3"
-          >
-            <Text
-              className="text-base font-semibold"
-              style={{ color: "#000000" }}
-            >
-              Save
-            </Text>
-          </Pressable>
-          <Pressable
-            onPress={retake}
-            className="items-center rounded-full bg-zinc-700 px-6 py-3"
-          >
-            <Text
-              className="text-base font-semibold"
-              style={{ color: "#ffffff" }}
-            >
-              Retake
-            </Text>
-          </Pressable>
-        </View>
-      )}
-      {status === "error" && (
-        <View className="absolute inset-x-4 bottom-16 rounded-lg bg-black/60 p-3">
-          <Text className="mb-3 text-base" style={{ color: "#ffffff" }}>
-            Error: {error}
-          </Text>
-          <Pressable
-            onPress={retake}
-            className="items-center rounded-full bg-cyan-400 px-6 py-3"
-          >
-            <Text
-              className="text-base font-semibold"
-              style={{ color: "#000000" }}
-            >
-              Retake
             </Text>
           </Pressable>
         </View>

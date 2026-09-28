@@ -56,10 +56,22 @@ export function extractFields(
   blocks: OcrBlock[],
   anchor: OcrBlock,
 ): FieldCandidates {
+  // The level badge, name and title sit in a column under the "CHARACTER"
+  // header - from just left of it (the badge) to a little past its right
+  // edge. On a full-frame photo, nameplates and game-world text beside the
+  // panel fall outside it.
+  const columnLeft = anchor.frame.x - anchor.frame.width * 0.5;
+  const columnRight = anchor.frame.x + anchor.frame.width * 1.5;
   const below = blocks
-    .filter(
-      (b) => b !== anchor && b.frame.y > anchor.frame.y + anchor.frame.height,
-    )
+    .filter((b) => {
+      const centerX = b.frame.x + b.frame.width / 2;
+      return (
+        b !== anchor &&
+        b.frame.y > anchor.frame.y + anchor.frame.height &&
+        centerX >= columnLeft &&
+        centerX <= columnRight
+      );
+    })
     .sort((a, b) => a.frame.y - b.frame.y);
 
   const [name, title] = below.filter((b) => !/\d/.test(b.text));
