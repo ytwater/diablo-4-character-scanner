@@ -53,6 +53,7 @@ export function ItemTooltip(props: {
           }}
         >
           {line.kind === "affix" ? "◆ " : ""}
+          {line.kind === "greater" ? "★ " : ""}
           {line.kind === "socket" ? "◇ " : ""}
           {line.text}
         </Text>

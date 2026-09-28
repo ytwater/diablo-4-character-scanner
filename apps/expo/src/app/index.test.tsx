@@ -27,7 +27,8 @@ jest.mock("expo-router", () => {
     children?: ReactNode;
     [key: string]: unknown;
   }) => (asChild ? children : <MockText {...props}>{children}</MockText>);
-  return { Stack, Link };
+  const router = { push: jest.fn(), replace: jest.fn(), back: jest.fn() };
+  return { Stack, Link, router };
 });
 
 // ~/utils/auth resolves to auth.native.ts (or auth.web.ts) depending on the
@@ -50,6 +51,10 @@ jest.mock("~/utils/api", () => ({
           queryKey: ["character", "list"],
           queryFn: () => Promise.resolve([]),
         }),
+        key: () => ["character", "list"],
+      },
+      create: {
+        mutationOptions: () => ({ mutationFn: () => Promise.resolve() }),
       },
     },
   },

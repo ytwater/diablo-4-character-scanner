@@ -29,6 +29,13 @@
       "when": 1790195954888,
       "tag": "0003_fine_roland_deschain",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1790203765249,
+      "tag": "0004_common_thor",
+      "breakpoints": true
     }
   ]
 }
