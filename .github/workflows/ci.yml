@@ -53,6 +53,10 @@ jobs:
       - name: Setup
         uses: ./tooling/github/setup
 
+      - name: Copy worker dev vars
+        shell: bash
+        run: cp apps/workers-api/.dev.vars.example apps/workers-api/.dev.vars
+
       - name: Typecheck
         run: pnpm typecheck
 
