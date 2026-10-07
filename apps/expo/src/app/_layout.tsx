@@ -1,9 +1,9 @@
 import { useColorScheme } from "react-native";
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { AlegreyaSans_400Regular } from "@expo-google-fonts/alegreya-sans";
 import { Cinzel_700Bold } from "@expo-google-fonts/cinzel";
-import { Stack } from "expo-router";
-import { useFonts } from "expo-font";
-import { StatusBar } from "expo-status-bar";
 import { QueryClientProvider } from "@tanstack/react-query";
 
 import { queryClient } from "~/utils/api";

@@ -1,18 +1,18 @@
+import { onError } from "@orpc/server";
+import { RPCHandler } from "@orpc/server/fetch";
+import { CORSPlugin } from "@orpc/server/plugins";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { CORSPlugin } from "@orpc/server/plugins";
-import { RPCHandler } from "@orpc/server/fetch";
-import { onError } from "@orpc/server";
 
+import type { Auth } from "@acme/auth";
+import type { DB } from "@acme/db/client";
 import {
   appRouter,
   createORPCContext,
   validationErrorInterceptor,
 } from "@acme/api";
 import { initAuth } from "@acme/auth";
-import type { Auth } from "@acme/auth";
 import { createDb } from "@acme/db/client";
-import type { DB } from "@acme/db/client";
 
 interface Variables {
   db: DB;

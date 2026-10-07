@@ -32,7 +32,9 @@ function restoreDroppedO(text: string): string {
 // Power" line that always follows the type, contains no digits.
 function continuesTypeLine(prev: OcrBlock, next: OcrBlock): boolean {
   const gap = next.frame.y - (prev.frame.y + prev.frame.height);
-  return !/\d/.test(next.text) && !isAllCaps(next.text) && gap < prev.frame.height;
+  return (
+    !/\d/.test(next.text) && !isAllCaps(next.text) && gap < prev.frame.height
+  );
 }
 
 // Tab labels from the always-visible character-screen tab bar ("CHARACTER",
@@ -74,7 +76,9 @@ export function extractItemFields(blocks: OcrBlock[]): ItemFieldCandidates {
   });
   const byY = [...withoutChrome].sort((a, b) => a.frame.y - b.frame.y);
 
-  const equippedIndex = byY.findIndex((b) => EQUIPPED_HEADER_PATTERN.test(b.text.trim()));
+  const equippedIndex = byY.findIndex((b) =>
+    EQUIPPED_HEADER_PATTERN.test(b.text.trim()),
+  );
   const withoutEquipped =
     equippedIndex === -1
       ? byY
@@ -93,7 +97,9 @@ export function extractItemFields(blocks: OcrBlock[]): ItemFieldCandidates {
   const sorted =
     columnX === undefined
       ? withoutEquipped
-      : withoutEquipped.filter((b) => b.frame.x >= columnX - COLUMN_TOLERANCE_PX);
+      : withoutEquipped.filter(
+          (b) => b.frame.x >= columnX - COLUMN_TOLERANCE_PX,
+        );
 
   // The first block is always (at least the start of) the name, regardless
   // of its own casing - only look at casing to decide whether to keep
@@ -129,10 +135,15 @@ export function extractItemFields(blocks: OcrBlock[]): ItemFieldCandidates {
   // Keep any trailing "*" as-is - it's the in-game Greater Affix star count
   // (one "*" per starred attribute), not OCR noise.
   const name: OcrBlock | undefined = nameBlocks[0]
-    ? { ...nameBlocks[0], text: restoreDroppedO(nameBlocks.map((b) => b.text).join(" ")) }
+    ? {
+        ...nameBlocks[0],
+        text: restoreDroppedO(nameBlocks.map((b) => b.text).join(" ")),
+      }
     : undefined;
 
-  const footerIndex = affixBlocks.findIndex((b) => FOOTER_START_PATTERN.test(b.text));
+  const footerIndex = affixBlocks.findIndex((b) =>
+    FOOTER_START_PATTERN.test(b.text),
+  );
   const affixBlocksTrimmed =
     footerIndex === -1 ? affixBlocks : affixBlocks.slice(0, footerIndex);
 

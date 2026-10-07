@@ -1,4 +1,9 @@
-import { integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+import {
+  integer,
+  sqliteTable,
+  text,
+  uniqueIndex,
+} from "drizzle-orm/sqlite-core";
 
 import { user } from "./auth-schema";
 
@@ -49,9 +54,9 @@ export const Item = sqliteTable(
     name: text("name").notNull(),
     rarity: text("rarity"),
     typeLine: text("type_line"),
-    lines: text("lines", { mode: "json" }).notNull().$type<
-      { kind: string; text: string }[]
-    >(),
+    lines: text("lines", { mode: "json" })
+      .notNull()
+      .$type<{ kind: string; text: string }[]>(),
     scannedAt: integer("scanned_at", { mode: "timestamp" })
       .notNull()
       .$defaultFn(() => new Date()),

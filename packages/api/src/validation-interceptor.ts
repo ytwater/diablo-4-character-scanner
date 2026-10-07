@@ -18,9 +18,7 @@ export async function validationErrorInterceptor<T>({
       error.code === "BAD_REQUEST" &&
       error.cause instanceof ValidationError
     ) {
-      const zodError = new z.ZodError(
-        error.cause.issues as z.core.$ZodIssue[],
-      );
+      const zodError = new z.ZodError(error.cause.issues as z.core.$ZodIssue[]);
 
       throw new ORPCError("INPUT_VALIDATION_FAILED", {
         message: z.prettifyError(zodError),

@@ -29,7 +29,11 @@ export function ItemTooltip(props: {
       }}
     >
       <Text
-        style={{ color: rarityColor, fontFamily: "Cinzel_700Bold", fontSize: 18 }}
+        style={{
+          color: rarityColor,
+          fontFamily: "Cinzel_700Bold",
+          fontSize: 18,
+        }}
       >
         {props.item.name}
       </Text>

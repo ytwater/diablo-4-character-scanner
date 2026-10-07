@@ -1,18 +1,29 @@
 import { useRef, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
-import { Camera, useCameraDevice, useCameraPermission } from "react-native-vision-camera";
+import {
+  Camera,
+  useCameraDevice,
+  useCameraPermission,
+} from "react-native-vision-camera";
 import { Stack } from "expo-router";
 
+import type {
+  CharacterCandidates,
+  ItemCandidates,
+  ScanMode,
+} from "~/features/scanner/useScan";
 import { itemConfig, scannerConfig } from "~/features/scanner/config";
 import { useScan } from "~/features/scanner/useScan";
-import type { CharacterCandidates, ItemCandidates, ScanMode } from "~/features/scanner/useScan";
 
 export default function ScanScreen() {
   const { hasPermission, requestPermission } = useCameraPermission();
   const device = useCameraDevice("back");
   const cameraRef = useRef<Camera>(null);
   const [mode, setMode] = useState<ScanMode>("character");
-  const { candidates, status, photoPath, error, capture, retake } = useScan(mode, cameraRef);
+  const { candidates, status, photoPath, error, capture, retake } = useScan(
+    mode,
+    cameraRef,
+  );
 
   if (!hasPermission) {
     void requestPermission();
@@ -42,9 +53,19 @@ export default function ScanScreen() {
     <View className="h-full w-full">
       <Stack.Screen options={{ title: "Scan" }} />
       {showPhoto ? (
-        <Image source={{ uri: photoPath }} style={StyleSheet.absoluteFill} resizeMode="cover" />
+        <Image
+          source={{ uri: photoPath }}
+          style={StyleSheet.absoluteFill}
+          resizeMode="cover"
+        />
       ) : (
-        <Camera ref={cameraRef} style={StyleSheet.absoluteFill} device={device} isActive={true} photo={true} />
+        <Camera
+          ref={cameraRef}
+          style={StyleSheet.absoluteFill}
+          device={device}
+          isActive={true}
+          photo={true}
+        />
       )}
       {status === "idle" && (
         <View
@@ -61,7 +82,9 @@ export default function ScanScreen() {
       )}
       {(status === "capturing" || status === "processing") && (
         <View className="absolute inset-0 items-center justify-center bg-black/40">
-          <Text className="text-base" style={{ color: "#ffffff" }}>Scanning…</Text>
+          <Text className="text-base" style={{ color: "#ffffff" }}>
+            Scanning…
+          </Text>
         </View>
       )}
       {status === "idle" && (
@@ -71,7 +94,9 @@ export default function ScanScreen() {
               key={m}
               onPress={() => setMode(m)}
               className="rounded-full px-4 py-2"
-              style={{ backgroundColor: mode === m ? "#22d3ee" : "rgba(0,0,0,0.5)" }}
+              style={{
+                backgroundColor: mode === m ? "#22d3ee" : "rgba(0,0,0,0.5)",
+              }}
             >
               <Text
                 className="text-sm font-semibold capitalize"
@@ -85,44 +110,100 @@ export default function ScanScreen() {
       )}
       {status === "idle" && (
         <View className="absolute inset-x-4 bottom-16 items-center">
-          <Pressable onPress={() => void capture()} className="rounded-full bg-cyan-400 px-6 py-3">
-            <Text className="text-base font-semibold" style={{ color: "#000000" }}>Take Picture</Text>
+          <Pressable
+            onPress={() => void capture()}
+            className="rounded-full bg-cyan-400 px-6 py-3"
+          >
+            <Text
+              className="text-base font-semibold"
+              style={{ color: "#000000" }}
+            >
+              Take Picture
+            </Text>
           </Pressable>
         </View>
       )}
       {status === "done" && mode === "character" && (
         <View className="absolute inset-x-4 bottom-16 rounded-lg bg-black/60 p-3">
-          <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>Level: {characterCandidates.level ?? "—"}</Text>
-          <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>Title: {characterCandidates.title ?? "—"}</Text>
-          <Text className="mb-3 text-base" style={{ color: "#ffffff" }}>Name: {characterCandidates.name ?? "—"}</Text>
-          <Pressable onPress={retake} className="items-center rounded-full bg-cyan-400 px-6 py-3">
-            <Text className="text-base font-semibold" style={{ color: "#000000" }}>Retake</Text>
+          <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
+            Level: {characterCandidates.level ?? "—"}
+          </Text>
+          <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
+            Title: {characterCandidates.title ?? "—"}
+          </Text>
+          <Text className="mb-3 text-base" style={{ color: "#ffffff" }}>
+            Name: {characterCandidates.name ?? "—"}
+          </Text>
+          <Pressable
+            onPress={retake}
+            className="items-center rounded-full bg-cyan-400 px-6 py-3"
+          >
+            <Text
+              className="text-base font-semibold"
+              style={{ color: "#000000" }}
+            >
+              Retake
+            </Text>
           </Pressable>
         </View>
       )}
       {status === "done" && mode === "item" && (
         <View className="absolute inset-x-4 bottom-16 rounded-lg bg-black/60 p-3">
-          <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>Name: {itemCandidates.name ?? "—"}</Text>
-          <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>Rarity: {itemCandidates.rarity ?? "—"}</Text>
-          <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>Type: {itemCandidates.type ?? "—"}</Text>
-          <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>Affixes:</Text>
+          <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
+            Name: {itemCandidates.name ?? "—"}
+          </Text>
+          <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
+            Rarity: {itemCandidates.rarity ?? "—"}
+          </Text>
+          <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
+            Type: {itemCandidates.type ?? "—"}
+          </Text>
+          <Text className="mb-1 text-base" style={{ color: "#ffffff" }}>
+            Affixes:
+          </Text>
           {itemCandidates.affixes.length === 0 ? (
-            <Text className="mb-3 text-base" style={{ color: "#ffffff" }}>—</Text>
+            <Text className="mb-3 text-base" style={{ color: "#ffffff" }}>
+              —
+            </Text>
           ) : (
             itemCandidates.affixes.map((affix, i) => (
-              <Text key={i} className="mb-1 text-base" style={{ color: "#ffffff" }}>{affix}</Text>
+              <Text
+                key={i}
+                className="mb-1 text-base"
+                style={{ color: "#ffffff" }}
+              >
+                {affix}
+              </Text>
             ))
           )}
-          <Pressable onPress={retake} className="mt-2 items-center rounded-full bg-cyan-400 px-6 py-3">
-            <Text className="text-base font-semibold" style={{ color: "#000000" }}>Retake</Text>
+          <Pressable
+            onPress={retake}
+            className="mt-2 items-center rounded-full bg-cyan-400 px-6 py-3"
+          >
+            <Text
+              className="text-base font-semibold"
+              style={{ color: "#000000" }}
+            >
+              Retake
+            </Text>
           </Pressable>
         </View>
       )}
       {status === "error" && (
         <View className="absolute inset-x-4 bottom-16 rounded-lg bg-black/60 p-3">
-          <Text className="mb-3 text-base" style={{ color: "#ffffff" }}>Error: {error}</Text>
-          <Pressable onPress={retake} className="items-center rounded-full bg-cyan-400 px-6 py-3">
-            <Text className="text-base font-semibold" style={{ color: "#000000" }}>Retake</Text>
+          <Text className="mb-3 text-base" style={{ color: "#ffffff" }}>
+            Error: {error}
+          </Text>
+          <Pressable
+            onPress={retake}
+            className="items-center rounded-full bg-cyan-400 px-6 py-3"
+          >
+            <Text
+              className="text-base font-semibold"
+              style={{ color: "#000000" }}
+            >
+              Retake
+            </Text>
           </Pressable>
         </View>
       )}

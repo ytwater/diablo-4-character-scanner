@@ -33,7 +33,13 @@ function classifyOne(block: OcrBlock): ItemLineKind {
   if (ARMOR_PATTERN.test(text)) return "armor";
   if (DPS_PATTERN.test(text)) return "dps";
   if (SOCKET_PATTERN.test(text)) return "socket";
-  if (colorNear(block.color, itemConfig.aspectColor, itemConfig.aspectColorThreshold)) {
+  if (
+    colorNear(
+      block.color,
+      itemConfig.aspectColor,
+      itemConfig.aspectColorThreshold,
+    )
+  ) {
     return "aspect";
   }
   // A "*" anywhere on an affix line marks it as a rolled Greater Affix (one

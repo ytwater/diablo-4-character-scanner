@@ -1,17 +1,21 @@
+import type { Camera } from "react-native-vision-camera";
 import { useRef, useState } from "react";
 import { File } from "expo-file-system";
-import type { Camera } from "react-native-vision-camera";
 
-import type { CharacterCandidates, ItemCandidates, ScanMode } from "@acme/validators";
+import type {
+  CharacterCandidates,
+  ItemCandidates,
+  ScanMode,
+} from "@acme/validators";
 
-import D4Ocr from "../../../modules/d4-ocr";
 import type { OcrBlock } from "./anchor";
+import D4Ocr from "../../../modules/d4-ocr";
 import { findAnchor } from "./anchor";
+import { itemConfig, scannerConfig } from "./config";
 import { extractFields, findLevelBadgeRegion, pickBadgeLevel } from "./fields";
 import { extractItemFields } from "./itemFields";
 import { correctItemName } from "./itemName";
 import { classifyRarity, parseRarityFromAnyLine } from "./rarity";
-import { itemConfig, scannerConfig } from "./config";
 import { blocksInFrame, findTooltipFrame } from "./tooltipFrame";
 
 function blocksInRoi(
@@ -37,8 +41,13 @@ export type ScanStatus = "idle" | "capturing" | "processing" | "done" | "error";
 
 export type { ScanMode, CharacterCandidates, ItemCandidates };
 
-export function useScan(mode: ScanMode, cameraRef: React.RefObject<Camera | null>) {
-  const [candidates, setCandidates] = useState<CharacterCandidates | ItemCandidates>({});
+export function useScan(
+  mode: ScanMode,
+  cameraRef: React.RefObject<Camera | null>,
+) {
+  const [candidates, setCandidates] = useState<
+    CharacterCandidates | ItemCandidates
+  >({});
   const [status, setStatus] = useState<ScanStatus>("idle");
   const [photoPath, setPhotoPath] = useState<string | undefined>();
   const [error, setError] = useState<string | undefined>();
@@ -55,7 +64,9 @@ export function useScan(mode: ScanMode, cameraRef: React.RefObject<Camera | null
       const photo = await cameraRef.current?.takePhoto();
       if (!photo) throw new Error("takePhoto() returned no result");
 
-      const uri = photo.path.startsWith("file://") ? photo.path : `file://${photo.path}`;
+      const uri = photo.path.startsWith("file://")
+        ? photo.path
+        : `file://${photo.path}`;
       photoFileRef.current = new File(uri);
       setPhotoPath(uri);
       setStatus("processing");
@@ -65,13 +76,20 @@ export function useScan(mode: ScanMode, cameraRef: React.RefObject<Camera | null
         // depend on framing: the "CHARACTER" header anchors the fields, and
         // extractFields only looks in the panel's column under it.
         const result = await D4Ocr.recognizeImage(uri, null, 1);
-        const anchor = findAnchor(result.blocks, scannerConfig.anchorText, scannerConfig.anchorFuzzyThreshold);
+        const anchor = findAnchor(
+          result.blocks,
+          scannerConfig.anchorText,
+          scannerConfig.anchorFuzzyThreshold,
+        );
         const fields = anchor ? extractFields(result.blocks, anchor) : {};
 
         // ML Kit often misses the small level badge in the first pass. Re-OCR
         // just the badge region, then the same region upscaled 3x.
         let level = fields.level;
-        const badge = anchor && fields.name ? findLevelBadgeRegion(anchor, fields.name) : undefined;
+        const badge =
+          anchor && fields.name
+            ? findLevelBadgeRegion(anchor, fields.name)
+            : undefined;
         if (!level && badge) {
           // Badge region is in photo pixels; recognizeImage takes a ROI
           // normalized to the photo.
@@ -80,7 +98,12 @@ export function useScan(mode: ScanMode, cameraRef: React.RefObject<Camera | null
           const right = Math.min(1, (badge.x + badge.width) / result.width);
           const bottom = Math.min(1, (badge.y + badge.height) / result.height);
           if (right > left && bottom > top) {
-            const badgeRoi = { x: left, y: top, width: right - left, height: bottom - top };
+            const badgeRoi = {
+              x: left,
+              y: top,
+              width: right - left,
+              height: bottom - top,
+            };
             for (const scale of [1, 3]) {
               const pass = await D4Ocr.recognizeImage(uri, badgeRoi, scale);
               level = pickBadgeLevel(pass.blocks);
@@ -101,10 +124,19 @@ export function useScan(mode: ScanMode, cameraRef: React.RefObject<Camera | null
         // fixed ROI region when the header isn't found (e.g. a non-equipped
         // item's tooltip).
         const result = await D4Ocr.recognizeImage(uri, null, 1);
-        const frame = findTooltipFrame(result.blocks, result.width, result.height);
+        const frame = findTooltipFrame(
+          result.blocks,
+          result.width,
+          result.height,
+        );
         const tooltipBlocks = frame
           ? blocksInFrame(result.blocks, frame)
-          : blocksInRoi(result.blocks, result.width, result.height, itemConfig.roi);
+          : blocksInRoi(
+              result.blocks,
+              result.width,
+              result.height,
+              itemConfig.roi,
+            );
         const fields = extractItemFields(tooltipBlocks);
         // The type line ("Rare Helm") and the item name are both rendered in
         // the item's rarity color - the type line uses a plainer font, so it
@@ -133,7 +165,8 @@ export function useScan(mode: ScanMode, cameraRef: React.RefObject<Camera | null
         setCandidates({
           // ML Kit drops/misreads glyphs of the item-name font - snap the
           // name to known unique names and item-name words from game data.
-          name: fields.name && correctItemName(fields.name.text, fields.type?.text),
+          name:
+            fields.name && correctItemName(fields.name.text, fields.type?.text),
           type: fields.type?.text,
           affixes: fields.affixes,
           rarity,

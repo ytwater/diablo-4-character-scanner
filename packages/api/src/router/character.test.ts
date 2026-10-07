@@ -1,14 +1,14 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import type { InferRouterInitialContext } from "@orpc/server";
+import { call, ORPCError } from "@orpc/server";
 import Database from "better-sqlite3";
 import { drizzle } from "drizzle-orm/better-sqlite3";
 import { beforeEach, describe, expect, it } from "vitest";
 
 import type { DB } from "@acme/db/client";
 import * as schema from "@acme/db/schema";
-import type { InferRouterInitialContext } from "@orpc/server";
-import { call, ORPCError } from "@orpc/server";
 
 import { characterRouter } from "./character";
 
@@ -136,7 +136,11 @@ describe("character router", () => {
       { characterId: created.id, slot: "helm", name: "New Helm", lines: [] },
       { context: ctx },
     );
-    const full = await call(characterRouter.byId, { id: created.id }, { context: ctx });
+    const full = await call(
+      characterRouter.byId,
+      { id: created.id },
+      { context: ctx },
+    );
     expect(full.items.filter((i) => i.slot === "helm")).toHaveLength(1);
     expect(full.items.find((i) => i.slot === "helm")?.name).toBe("New Helm");
   });

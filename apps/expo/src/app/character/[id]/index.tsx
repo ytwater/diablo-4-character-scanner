@@ -1,7 +1,7 @@
 import type { Href } from "expo-router";
-import { Link, router, Stack, useLocalSearchParams } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Link, router, Stack, useLocalSearchParams } from "expo-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import type { CharacterClass, ItemRarity, ItemSlot } from "@acme/validators";
@@ -28,7 +28,7 @@ function ClassPicker(props: { onPick: (cls: CharacterClass) => void }) {
             style={{ backgroundColor: "#3f3f46" }}
             className="rounded-full px-4 py-2"
           >
-            <Text className="capitalize text-white">{option}</Text>
+            <Text className="text-white capitalize">{option}</Text>
           </Pressable>
         ))}
       </View>
@@ -80,13 +80,8 @@ export default function CharacterScreen() {
   if (characterQuery.isError) {
     return (
       <SafeAreaView className="bg-background h-full items-center justify-center gap-2">
-        <Text className="text-destructive">
-          Couldn't load this character.
-        </Text>
-        <Text
-          onPress={() => characterQuery.refetch()}
-          className="text-primary"
-        >
+        <Text className="text-destructive">Couldn't load this character.</Text>
+        <Text onPress={() => characterQuery.refetch()} className="text-primary">
           Retry
         </Text>
       </SafeAreaView>
@@ -95,12 +90,15 @@ export default function CharacterScreen() {
 
   const character = characterQuery.data;
 
-  const paperDollItems: { slot: ItemSlot; name: string; rarity?: ItemRarity }[] =
-    character.items.map((item) => ({
-      slot: item.slot,
-      name: item.name,
-      rarity: item.rarity ? (item.rarity as ItemRarity) : undefined,
-    }));
+  const paperDollItems: {
+    slot: ItemSlot;
+    name: string;
+    rarity?: ItemRarity;
+  }[] = character.items.map((item) => ({
+    slot: item.slot,
+    name: item.name,
+    rarity: item.rarity ? (item.rarity as ItemRarity) : undefined,
+  }));
 
   return (
     <SafeAreaView className="bg-background h-full">
@@ -119,9 +117,7 @@ export default function CharacterScreen() {
             items={paperDollItems}
             onSlotPress={(slot: ItemSlot) => {
               const filled = character.items.some((i) => i.slot === slot);
-              router.push(
-                filled ? itemHref(id, slot) : scanHref(id, slot),
-              );
+              router.push(filled ? itemHref(id, slot) : scanHref(id, slot));
             }}
           />
         ) : (

@@ -1,6 +1,6 @@
 import type { OcrBlock } from "./anchor";
-import { itemConfig } from "./config";
 import { classifyLines } from "./classifyLines";
+import { itemConfig } from "./config";
 
 // Synthetic OcrBlock fixtures, hand-built inline. There is no real
 // item-tooltip OCR-block capture data in this repo yet (temp-items/ raw
@@ -77,7 +77,9 @@ describe("classifyLines", () => {
     expect(aspectLines[0]?.text).toBe(
       "Aspect of Disobedience Your Golem gains 20% increased life.",
     );
-    expect(lines.some((l) => l.kind === "affix" && l.text === "+15% Damage")).toBe(true);
+    expect(
+      lines.some((l) => l.kind === "affix" && l.text === "+15% Damage"),
+    ).toBe(true);
   });
 
   it("does not merge two aspect-colored blocks separated by a non-aspect block", () => {

@@ -17,7 +17,11 @@ export interface RecognizeImageResult {
 
 interface D4OcrModule {
   /** `scale` > 1 upscales the cropped image before recognition. */
-  recognizeImage(uri: string, roi: Roi | null, scale: number): Promise<RecognizeImageResult>;
+  recognizeImage(
+    uri: string,
+    roi: Roi | null,
+    scale: number,
+  ): Promise<RecognizeImageResult>;
 }
 
 export default requireNativeModule<D4OcrModule>("D4Ocr");
