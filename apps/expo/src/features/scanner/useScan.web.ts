@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 
-import type { CharacterCandidates, ItemCandidates, ScanMode } from "@acme/validators";
+import type {
+  CharacterCandidates,
+  ItemCandidates,
+  ScanMode,
+} from "@acme/validators";
 
 import { orpc } from "~/utils/api";
 
@@ -15,7 +19,10 @@ const MAX_EDGE_PX = 1600;
 
 async function downscaleImage(file: File): Promise<File> {
   const bitmap = await createImageBitmap(file);
-  const scale = Math.min(1, MAX_EDGE_PX / Math.max(bitmap.width, bitmap.height));
+  const scale = Math.min(
+    1,
+    MAX_EDGE_PX / Math.max(bitmap.width, bitmap.height),
+  );
   if (scale === 1) {
     bitmap.close();
     return file;
@@ -43,9 +50,9 @@ async function downscaleImage(file: File): Promise<File> {
 }
 
 export function useScan(mode: ScanMode) {
-  const [candidates, setCandidates] = useState<CharacterCandidates | ItemCandidates>(
-    mode === "item" ? { affixes: [] } : {},
-  );
+  const [candidates, setCandidates] = useState<
+    CharacterCandidates | ItemCandidates
+  >(mode === "item" ? { affixes: [] } : {});
   const [status, setStatus] = useState<ScanStatus>("idle");
   const [error, setError] = useState<string | undefined>();
 

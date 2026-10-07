@@ -135,7 +135,11 @@ export const characterRouter = {
   delete: protectedProcedure
     .input(z.object({ id: z.string() }))
     .handler(async ({ context, input }) => {
-      await requireOwnedCharacter(context.db, context.session.user.id, input.id);
+      await requireOwnedCharacter(
+        context.db,
+        context.session.user.id,
+        input.id,
+      );
       await context.db.delete(Character).where(eq(Character.id, input.id));
     }),
 
@@ -192,7 +196,10 @@ export const characterRouter = {
       await context.db
         .delete(Item)
         .where(
-          and(eq(Item.characterId, input.characterId), eq(Item.slot, input.slot)),
+          and(
+            eq(Item.characterId, input.characterId),
+            eq(Item.slot, input.slot),
+          ),
         );
     }),
 };

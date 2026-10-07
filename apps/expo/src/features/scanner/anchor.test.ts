@@ -16,7 +16,13 @@ describe("findAnchor", () => {
 
   it("returns undefined when no block is close enough", () => {
     const anchor = findAnchor(
-      [{ text: "totally unrelated", confidence: 1, frame: { x: 0, y: 0, width: 10, height: 10 } }],
+      [
+        {
+          text: "totally unrelated",
+          confidence: 1,
+          frame: { x: 0, y: 0, width: 10, height: 10 },
+        },
+      ],
       scannerConfig.anchorText,
       scannerConfig.anchorFuzzyThreshold,
     );

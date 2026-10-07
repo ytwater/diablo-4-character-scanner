@@ -1,7 +1,7 @@
 import type { Href } from "expo-router";
-import { router, Stack, useLocalSearchParams } from "expo-router";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { router, Stack, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 
 import type { ItemLine, ItemRarity } from "@acme/validators";
@@ -36,10 +36,7 @@ export default function ItemDetailScreen() {
     return (
       <SafeAreaView className="bg-background h-full items-center justify-center gap-2">
         <Text className="text-destructive">Couldn't load this item.</Text>
-        <Text
-          onPress={() => characterQuery.refetch()}
-          className="text-primary"
-        >
+        <Text onPress={() => characterQuery.refetch()} className="text-primary">
           Retry
         </Text>
       </SafeAreaView>

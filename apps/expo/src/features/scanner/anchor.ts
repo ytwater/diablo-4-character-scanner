@@ -51,7 +51,9 @@ export function findAnchor(
 
   for (const block of blocks) {
     const textUpper = block.text.trim().toUpperCase();
-    const score = textUpper.includes(anchorUpper) ? 1 : similarity(textUpper, anchorUpper);
+    const score = textUpper.includes(anchorUpper)
+      ? 1
+      : similarity(textUpper, anchorUpper);
     if (score >= threshold && score > bestScore) {
       best = block;
       bestScore = score;

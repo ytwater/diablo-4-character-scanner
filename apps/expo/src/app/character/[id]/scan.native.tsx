@@ -1,14 +1,25 @@
 import { useRef, useState } from "react";
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { Camera, useCameraDevice, useCameraPermission } from "react-native-vision-camera";
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import {
+  Camera,
+  useCameraDevice,
+  useCameraPermission,
+} from "react-native-vision-camera";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import type { CharacterCandidates, ItemCandidates } from "@acme/validators";
 
 import { classifyLines } from "~/features/scanner/classifyLines";
-import { interpretBadge } from "~/features/scanner/interpretBadge";
 import { itemConfig, scannerConfig } from "~/features/scanner/config";
+import { interpretBadge } from "~/features/scanner/interpretBadge";
 import { useScan } from "~/features/scanner/useScan";
 import { orpc } from "~/utils/api";
 
@@ -18,10 +29,8 @@ export default function CharacterScanScreen() {
   const { hasPermission, requestPermission } = useCameraPermission();
   const device = useCameraDevice("back");
   const cameraRef = useRef<Camera>(null);
-  const { candidates, status, photoPath, error, blocks, capture, retake } = useScan(
-    isHeader ? "character" : "item",
-    cameraRef,
-  );
+  const { candidates, status, photoPath, error, blocks, capture, retake } =
+    useScan(isHeader ? "character" : "item", cameraRef);
   const queryClient = useQueryClient();
   const [treatAsParagon, setTreatAsParagon] = useState(false);
 

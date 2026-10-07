@@ -68,6 +68,8 @@ describe("parseRarityFromAnyLine", () => {
   });
 
   it("skips undefined entries and returns undefined when nothing matches", () => {
-    expect(parseRarityFromAnyLine([undefined, "garbled", undefined])).toBeUndefined();
+    expect(
+      parseRarityFromAnyLine([undefined, "garbled", undefined]),
+    ).toBeUndefined();
   });
 });

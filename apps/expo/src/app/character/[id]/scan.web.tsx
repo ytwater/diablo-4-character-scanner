@@ -145,7 +145,10 @@ export default function CharacterScanWebScreen() {
           >
             <Text>Save</Text>
           </Pressable>
-          <Pressable onPress={retake} className="mt-2 rounded-full bg-zinc-700 px-6 py-3">
+          <Pressable
+            onPress={retake}
+            className="mt-2 rounded-full bg-zinc-700 px-6 py-3"
+          >
             <Text>Retake</Text>
           </Pressable>
         </View>
@@ -170,7 +173,10 @@ export default function CharacterScanWebScreen() {
           >
             <Text>Save</Text>
           </Pressable>
-          <Pressable onPress={retake} className="mt-2 rounded-full bg-zinc-700 px-6 py-3">
+          <Pressable
+            onPress={retake}
+            className="mt-2 rounded-full bg-zinc-700 px-6 py-3"
+          >
             <Text>Retake</Text>
           </Pressable>
         </View>
@@ -179,7 +185,10 @@ export default function CharacterScanWebScreen() {
       {status === "error" && (
         <View className="mt-4">
           <Text className="text-destructive">Error: {error}</Text>
-          <Pressable onPress={retake} className="mt-2 rounded-full bg-cyan-400 px-6 py-3">
+          <Pressable
+            onPress={retake}
+            className="mt-2 rounded-full bg-cyan-400 px-6 py-3"
+          >
             <Text>Try again</Text>
           </Pressable>
         </View>

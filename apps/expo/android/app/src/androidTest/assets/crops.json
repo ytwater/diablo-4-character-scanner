@@ -1,146 +1,26 @@
 {
- "character-sheets/character-sheet-01": [
-  432,
-  667,
-  772,
-  898
- ],
- "character-sheets/character-sheet-02": [
-  -154,
-  923,
-  182,
-  1147
- ],
- "character-sheets/character-sheet-03": [
-  467,
-  936,
-  749,
-  1111
- ],
- "character-sheets/character-sheet-04": [
-  519,
-  1108,
-  829,
-  1310
- ],
- "character-sheets/character-sheet-05": [
-  900,
-  850,
-  1202,
-  1042
- ],
- "character-sheets/character-sheet-07": [
-  587,
-  865,
-  859,
-  1043
- ],
- "character-sheets/character-sheet-08": [
-  423,
-  969,
-  707,
-  1159
- ],
- "character-sheets/character-sheet-09": [
-  122,
-  299,
-  488,
-  542
- ],
- "character-sheets/character-sheet-10": [
-  894,
-  841,
-  1130,
-  990
- ],
- "character-sheets/character-sheet-11": [
-  -218,
-  835,
-  80,
-  1032
- ],
- "character-sheets/character-sheet-12": [
-  -150,
-  498,
-  258,
-  758
- ],
- "character-sheets/character-sheet-14": [
-  230,
-  561,
-  598,
-  815
- ],
- "item-tooltips/item-tooltip-01": [
-  780,
-  569,
-  2001,
-  3298
- ],
- "item-tooltips/item-tooltip-02": [
-  739,
-  558,
-  2219,
-  3323
- ],
- "item-tooltips/item-tooltip-03": [
-  886,
-  485,
-  2160,
-  3270
- ],
- "item-tooltips/item-tooltip-04": [
-  951,
-  516,
-  2239,
-  3078
- ],
- "item-tooltips/item-tooltip-05": [
-  852,
-  396,
-  2377,
-  2700
- ],
- "item-tooltips/item-tooltip-06": [
-  908,
-  370,
-  2205,
-  3215
- ],
- "item-tooltips/item-tooltip-07": [
-  868,
-  384,
-  2211,
-  3239
- ],
- "item-tooltips/item-tooltip-08": [
-  868,
-  335,
-  2245,
-  3167
- ],
- "item-tooltips/item-tooltip-09": [
-  1048,
-  695,
-  2262,
-  3134
- ],
- "item-tooltips/item-tooltip-10": [
-  805,
-  1019,
-  2307,
-  2569
- ],
- "item-tooltips/item-tooltip-11": [
-  957,
-  504,
-  2257,
-  2964
- ],
- "item-tooltips/item-tooltip-12": [
-  1070,
-  374,
-  2316,
-  3112
- ]
+  "character-sheets/character-sheet-01": [432, 667, 772, 898],
+  "character-sheets/character-sheet-02": [-154, 923, 182, 1147],
+  "character-sheets/character-sheet-03": [467, 936, 749, 1111],
+  "character-sheets/character-sheet-04": [519, 1108, 829, 1310],
+  "character-sheets/character-sheet-05": [900, 850, 1202, 1042],
+  "character-sheets/character-sheet-07": [587, 865, 859, 1043],
+  "character-sheets/character-sheet-08": [423, 969, 707, 1159],
+  "character-sheets/character-sheet-09": [122, 299, 488, 542],
+  "character-sheets/character-sheet-10": [894, 841, 1130, 990],
+  "character-sheets/character-sheet-11": [-218, 835, 80, 1032],
+  "character-sheets/character-sheet-12": [-150, 498, 258, 758],
+  "character-sheets/character-sheet-14": [230, 561, 598, 815],
+  "item-tooltips/item-tooltip-01": [780, 569, 2001, 3298],
+  "item-tooltips/item-tooltip-02": [739, 558, 2219, 3323],
+  "item-tooltips/item-tooltip-03": [886, 485, 2160, 3270],
+  "item-tooltips/item-tooltip-04": [951, 516, 2239, 3078],
+  "item-tooltips/item-tooltip-05": [852, 396, 2377, 2700],
+  "item-tooltips/item-tooltip-06": [908, 370, 2205, 3215],
+  "item-tooltips/item-tooltip-07": [868, 384, 2211, 3239],
+  "item-tooltips/item-tooltip-08": [868, 335, 2245, 3167],
+  "item-tooltips/item-tooltip-09": [1048, 695, 2262, 3134],
+  "item-tooltips/item-tooltip-10": [805, 1019, 2307, 2569],
+  "item-tooltips/item-tooltip-11": [957, 504, 2257, 2964],
+  "item-tooltips/item-tooltip-12": [1070, 374, 2316, 3112]
 }

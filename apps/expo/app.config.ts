@@ -71,7 +71,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       "react-native-vision-camera",
       {
-        cameraPermissionText: "$(PRODUCT_NAME) needs camera access to scan your Diablo 4 character sheet.",
+        cameraPermissionText:
+          "$(PRODUCT_NAME) needs camera access to scan your Diablo 4 character sheet.",
         enableMicrophonePermission: false,
         enableFrameProcessors: false,
       },

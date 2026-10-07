@@ -1,5 +1,5 @@
-import { extractItemFields } from "./itemFields";
 import type { OcrBlock } from "./anchor";
+import { extractItemFields } from "./itemFields";
 
 function block(text: string, y: number, x = 0): OcrBlock {
   return { text, confidence: 1, frame: { x, y, width: 100, height: 20 } };
@@ -22,7 +22,11 @@ describe("extractItemFields", () => {
   });
 
   it("sorts out-of-order blocks by y-position first", () => {
-    const blocks = [block("+120 Strength", 70), block("Silent Crown", 10), block("Head", 40)];
+    const blocks = [
+      block("+120 Strength", 70),
+      block("Silent Crown", 10),
+      block("Head", 40),
+    ];
 
     const result = extractItemFields(blocks);
 
@@ -111,7 +115,9 @@ describe("extractItemFields", () => {
       block("850 Item Power", 100),
     ];
 
-    expect(extractItemFields(blocks).name?.text).toBe("RING OF THE MIDNIGHT SUN");
+    expect(extractItemFields(blocks).name?.text).toBe(
+      "RING OF THE MIDNIGHT SUN",
+    );
   });
 
   it("merges a type line that wraps onto a second line", () => {
